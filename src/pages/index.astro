@@ -23,7 +23,7 @@ const featuredStats = await Promise.all(
 
     <!-- Latest 5 (featured) -->
     <section class="mb-10">
-      <h2 class="text-[10px] text-gray-400 uppercase tracking-widest mb-4">最新文章</h2>
+      <h2 class="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-4">最新文章</h2>
       {featured.map((s, i) => (
         <StoryCard
           variant="featured"
@@ -42,7 +42,7 @@ const featuredStats = await Promise.all(
 
     {rest.length > 0 && (
       <section>
-        <h2 class="text-[10px] text-gray-400 uppercase tracking-widest mb-3">所有文章</h2>
+        <h2 class="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-3">所有文章</h2>
         <div class="flex flex-col">
           {rest.map(s => (
             <StoryCard

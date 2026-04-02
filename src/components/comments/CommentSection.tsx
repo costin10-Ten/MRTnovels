@@ -55,25 +55,25 @@ export default function CommentSection({ storySlug, initialComments, isLoggedIn 
   }
 
   return (
-    <section class="mt-12 pt-8 border-t border-gray-200">
-      <h3 class="text-sm font-medium text-gray-500 uppercase tracking-widest mb-6">留言</h3>
+    <section class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800">
+      <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-6">留言</h3>
 
       {/* Comment list */}
       {comments.length === 0 ? (
-        <p class="text-sm text-gray-400 mb-8">還沒有留言，來第一個吧。</p>
+        <p class="text-sm text-gray-400 dark:text-gray-500 mb-8">還沒有留言，來第一個吧。</p>
       ) : (
         <ul class="flex flex-col gap-5 mb-8">
           {comments.map(c => (
             <li key={c.id} class="flex gap-3">
-              <div class="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-xs text-gray-500 shrink-0 mt-0.5">
+              <div class="w-7 h-7 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-xs text-gray-500 dark:text-gray-400 shrink-0 mt-0.5">
                 {c.user_id.slice(5, 7).toUpperCase()}
               </div>
               <div class="flex-1">
                 <div class="flex items-center gap-2 mb-1">
-                  <span class="text-xs text-gray-500">讀者</span>
-                  <span class="text-xs text-gray-300">{timeAgo(c.created_at)}</span>
+                  <span class="text-xs text-gray-500 dark:text-gray-400">讀者</span>
+                  <span class="text-xs text-gray-300 dark:text-gray-600">{timeAgo(c.created_at)}</span>
                 </div>
-                <p class="text-sm text-gray-700 leading-relaxed">{c.body}</p>
+                <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{c.body}</p>
               </div>
             </li>
           ))}
@@ -89,23 +89,23 @@ export default function CommentSection({ storySlug, initialComments, isLoggedIn 
             placeholder="寫下你的想法..."
             maxLength={1000}
             rows={3}
-            class="w-full border border-gray-200 px-3 py-2 text-sm resize-none focus:outline-none focus:border-gray-400 placeholder-gray-300"
+            class="w-full border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0f0f0f] text-gray-900 dark:text-gray-100 px-3 py-2 text-sm resize-none focus:outline-none focus:border-gray-400 dark:focus:border-gray-500 placeholder-gray-300 dark:placeholder-gray-600"
           />
           {error && <p class="text-xs text-red-500">{error}</p>}
           <div class="flex items-center justify-between">
-            <span class="text-xs text-gray-300">{body.length} / 1000</span>
+            <span class="text-xs text-gray-300 dark:text-gray-600">{body.length} / 1000</span>
             <button
               type="submit"
               disabled={posting || !body.trim()}
-              class="px-5 py-1.5 bg-gray-900 text-white text-sm disabled:opacity-40 hover:bg-gray-700 transition-colors"
+              class="px-5 py-1.5 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-sm disabled:opacity-40 hover:bg-gray-700 dark:hover:bg-gray-300 transition-colors"
             >
               {posting ? '送出中…' : '送出'}
             </button>
           </div>
         </form>
       ) : (
-        <p class="text-sm text-gray-400">
-          <a href="/sign-in" class="underline text-gray-600 hover:text-gray-900">登入</a>
+        <p class="text-sm text-gray-400 dark:text-gray-500">
+          <a href="/sign-in" class="underline text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">登入</a>
           {' '}後才能留言。
         </p>
       )}

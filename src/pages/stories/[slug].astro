@@ -68,12 +68,12 @@ const dateStr = story.data.publishDate.toLocaleDateString('zh-TW', {
   <article class="max-w-2xl mx-auto px-5 py-10">
 
     <!-- Title -->
-    <h1 class="text-2xl font-semibold text-gray-900 leading-snug mb-4">
+    <h1 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 leading-snug mb-4">
       {story.data.title}
     </h1>
 
     <!-- Meta row -->
-    <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-2">
+    <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 dark:text-gray-400 mb-2">
       <span>{stats.views.toLocaleString('zh-TW')} 人讀過</span>
       <span>·</span>
       <span>{stats.likes.toLocaleString('zh-TW')} 個讚</span>
@@ -109,7 +109,7 @@ const dateStr = story.data.publishDate.toLocaleDateString('zh-TW', {
       {userId && (
         <a
           href={`/api/bookmarks?action=${bookmarked ? 'remove' : 'add'}&slug=${slug}&ref=/stories/${slug}`}
-          class="text-sm text-gray-400 hover:text-gray-700 transition-colors"
+          class="text-sm text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
         >
           {bookmarked ? '★ 已收藏' : '☆ 收藏'}
         </a>
@@ -139,17 +139,17 @@ const dateStr = story.data.publishDate.toLocaleDateString('zh-TW', {
     </div>
 
     <!-- Prev / Next -->
-    <nav class="mt-12 pt-8 border-t border-gray-200 flex items-center justify-between gap-4 text-sm">
+    <nav class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between gap-4 text-sm">
       {prev ? (
-        <a href={`/stories/${prev.slug}`} class="flex-1 text-gray-500 hover:text-gray-900 transition-colors group">
-          <div class="text-[10px] text-gray-300 uppercase tracking-widest mb-1">上一篇</div>
+        <a href={`/stories/${prev.slug}`} class="flex-1 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors group">
+          <div class="text-[10px] text-gray-300 dark:text-gray-600 uppercase tracking-widest mb-1">上一篇</div>
           <div class="group-hover:underline line-clamp-1">{prev.data.title}</div>
         </a>
       ) : <div class="flex-1" />}
 
       {next ? (
-        <a href={`/stories/${next.slug}`} class="flex-1 text-right text-gray-500 hover:text-gray-900 transition-colors group">
-          <div class="text-[10px] text-gray-300 uppercase tracking-widest mb-1">下一篇</div>
+        <a href={`/stories/${next.slug}`} class="flex-1 text-right text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors group">
+          <div class="text-[10px] text-gray-300 dark:text-gray-600 uppercase tracking-widest mb-1">下一篇</div>
           <div class="group-hover:underline line-clamp-1">{next.data.title}</div>
         </a>
       ) : <div class="flex-1" />}

@@ -21,7 +21,7 @@ const MILESTONES = [
   description="狂小說網的故事：一個人、一個網站、通勤時間裡的文學宇宙。"
 >
   <article class="max-w-xl mx-auto px-5 py-10">
-    <h1 class="text-xl font-semibold text-gray-900 mb-8">關於本站</h1>
+    <h1 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-8">關於本站</h1>
 
     <section class="story-body text-base mb-12">
       <p>
@@ -41,22 +41,22 @@ const MILESTONES = [
 
     <!-- 100 萬按讚企劃 -->
     <section id="million" class="mb-12">
-      <h2 class="text-[10px] text-gray-400 uppercase tracking-widest mb-4">100 萬按讚企劃</h2>
-      <p class="text-sm text-gray-600 mb-4 leading-relaxed">
+      <h2 class="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-4">100 萬按讚企劃</h2>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
         目標是讓這個網站收到 100 萬個讚。不是 follower、不是點擊，是每一篇故事讓你覺得值得按的那個讚。
       </p>
       <div class="mb-2">
-        <div class="flex items-center justify-between text-xs text-gray-500 mb-1.5">
+        <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-1.5">
           <span>目前進度</span>
           <span class="tabular-nums">{stats.likes.toLocaleString('zh-TW')} / 1,000,000</span>
         </div>
-        <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+        <div class="h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
           <div
-            class="h-full bg-gray-900 rounded-full transition-all"
+            class="h-full bg-gray-900 dark:bg-gray-100 rounded-full transition-all"
             style={`width: ${Math.min(100, (stats.likes / 1000000) * 100).toFixed(2)}%`}
           ></div>
         </div>
-        <div class="text-right text-[10px] text-gray-300 mt-1">
+        <div class="text-right text-[10px] text-gray-300 dark:text-gray-600 mt-1">
           {((stats.likes / 1000000) * 100).toFixed(3)}%
         </div>
       </div>
@@ -64,19 +64,19 @@ const MILESTONES = [
 
     <!-- Milestones -->
     <section>
-      <h2 class="text-[10px] text-gray-400 uppercase tracking-widest mb-4">網站里程碑</h2>
+      <h2 class="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-4">網站里程碑</h2>
       <ul class="flex flex-col gap-2">
         {MILESTONES.map(m => (
           <li class="flex items-center gap-3 text-sm">
-            <span class={`w-3.5 h-3.5 rounded-full shrink-0 border-2 ${m.done ? 'bg-gray-900 border-gray-900' : 'border-gray-300'}`}></span>
-            <span class={m.done ? 'text-gray-700' : 'text-gray-400'}>{m.label}</span>
-            <span class="text-[10px] text-gray-300 ml-auto">{m.date}</span>
+            <span class={`w-3.5 h-3.5 rounded-full shrink-0 border-2 ${m.done ? 'bg-gray-900 border-gray-900 dark:bg-gray-100 dark:border-gray-100' : 'border-gray-300 dark:border-gray-600'}`}></span>
+            <span class={m.done ? 'text-gray-700 dark:text-gray-300' : 'text-gray-400 dark:text-gray-600'}>{m.label}</span>
+            <span class="text-[10px] text-gray-300 dark:text-gray-600 ml-auto">{m.date}</span>
           </li>
         ))}
       </ul>
     </section>
 
-    <div class="mt-12 pt-8 border-t border-gray-200 text-xs text-gray-400">
+    <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 text-xs text-gray-400 dark:text-gray-500">
       目前共 {allStories.length} 篇文章 · {stats.views.toLocaleString('zh-TW')} 次瀏覽
     </div>
   </article>

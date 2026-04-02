@@ -38,7 +38,7 @@ const filtered = sorted.filter(s => {
   description="狂小說網全部文章索引，支援分類標籤篩選與搜尋。"
 >
   <div class="max-w-2xl mx-auto px-5 py-10">
-    <h1 class="text-sm font-medium text-gray-900 mb-6">內容索引</h1>
+    <h1 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-6">內容索引</h1>
 
     <!-- Search + filter bar -->
     <form method="get" class="flex gap-2 mb-6">
@@ -47,11 +47,11 @@ const filtered = sorted.filter(s => {
         name="q"
         value={q}
         placeholder="搜尋標題、摘要…"
-        class="flex-1 border border-gray-200 px-3 py-1.5 text-sm focus:outline-none focus:border-gray-400 placeholder-gray-300"
+        class="flex-1 border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0f0f0f] text-gray-900 dark:text-gray-100 px-3 py-1.5 text-sm focus:outline-none focus:border-gray-400 dark:focus:border-gray-500 placeholder-gray-300 dark:placeholder-gray-600"
       />
       <button
         type="submit"
-        class="px-4 py-1.5 border border-gray-300 text-sm text-gray-600 hover:border-gray-900 hover:text-gray-900 transition-colors"
+        class="px-4 py-1.5 border border-gray-300 dark:border-gray-600 text-sm text-gray-600 dark:text-gray-400 hover:border-gray-900 dark:hover:border-gray-100 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
       >搜尋</button>
     </form>
 
@@ -59,12 +59,12 @@ const filtered = sorted.filter(s => {
     <div class="flex flex-wrap gap-1.5 mb-8">
       <a
         href="/stories"
-        class={`text-xs px-3 py-1 border transition-colors ${!tag ? 'border-gray-900 bg-gray-900 text-white' : 'border-gray-200 text-gray-500 hover:border-gray-900 hover:text-gray-900'}`}
+        class={`text-xs px-3 py-1 border transition-colors ${!tag ? 'border-gray-900 bg-gray-900 text-white dark:border-gray-100 dark:bg-gray-100 dark:text-gray-900' : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-gray-900 dark:hover:border-gray-100 hover:text-gray-900 dark:hover:text-gray-100'}`}
       >全部</a>
       {allTags.map(t => (
         <a
           href={`/stories?tag=${t}${q ? '&q=' + encodeURIComponent(q) : ''}`}
-          class={`text-xs px-3 py-1 border transition-colors ${tag === t ? 'border-gray-900 bg-gray-900 text-white' : 'border-gray-200 text-gray-500 hover:border-gray-900 hover:text-gray-900'}`}
+          class={`text-xs px-3 py-1 border transition-colors ${tag === t ? 'border-gray-900 bg-gray-900 text-white dark:border-gray-100 dark:bg-gray-100 dark:text-gray-900' : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-gray-900 dark:hover:border-gray-100 hover:text-gray-900 dark:hover:text-gray-100'}`}
         >
           {TAG_LABELS[t]}
         </a>
@@ -76,10 +76,10 @@ const filtered = sorted.filter(s => {
       <div class="flex flex-col gap-6">
         {allTags.filter(t => grouped[t].length > 0).map(t => (
           <div>
-            <div class="flex items-center gap-2 py-1.5 border-b border-gray-200 mb-1">
-              <span class="text-xs text-gray-400">▶</span>
-              <span class="text-xs font-medium text-gray-700 uppercase tracking-wider">{TAG_LABELS[t]}</span>
-              <span class="text-xs text-gray-300 ml-auto">{grouped[t].length}</span>
+            <div class="flex items-center gap-2 py-1.5 border-b border-gray-200 dark:border-gray-800 mb-1">
+              <span class="text-xs text-gray-400 dark:text-gray-500">▶</span>
+              <span class="text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">{TAG_LABELS[t]}</span>
+              <span class="text-xs text-gray-300 dark:text-gray-600 ml-auto">{grouped[t].length}</span>
             </div>
             {grouped[t].map(s => (
               <a
@@ -87,12 +87,12 @@ const filtered = sorted.filter(s => {
                 class="story-tree-item no-underline flex items-center justify-between"
               >
                 <span class="flex items-center gap-2 min-w-0">
-                  <span class="text-gray-300 text-xs">·</span>
+                  <span class="text-gray-300 dark:text-gray-600 text-xs">·</span>
                   <span class="truncate">{s.data.title}</span>
                 </span>
                 <div class="flex items-center gap-1.5 shrink-0 ml-2">
                   {s.data.access !== 'public' && <Badge type="access" value={s.data.access} />}
-                  <span class="text-[10px] text-gray-300">
+                  <span class="text-[10px] text-gray-300 dark:text-gray-600">
                     {s.data.publishDate.toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' })}
                   </span>
                 </div>
@@ -104,19 +104,19 @@ const filtered = sorted.filter(s => {
     ) : (
       /* Filtered list view */
       <div class="flex flex-col">
-        <div class="text-xs text-gray-400 mb-3">共 {filtered.length} 篇</div>
+        <div class="text-xs text-gray-400 dark:text-gray-500 mb-3">共 {filtered.length} 篇</div>
         {filtered.length === 0 ? (
-          <p class="text-sm text-gray-400 py-8 text-center">找不到符合的文章。</p>
+          <p class="text-sm text-gray-400 dark:text-gray-500 py-8 text-center">找不到符合的文章。</p>
         ) : (
           filtered.map(s => (
             <a
               href={`/stories/${s.slug}`}
-              class="flex items-baseline gap-3 py-2 px-1 hover:bg-gray-50 group no-underline border-b border-gray-100"
+              class="flex items-baseline gap-3 py-2 px-1 hover:bg-gray-50 dark:hover:bg-gray-900 group no-underline border-b border-gray-100 dark:border-gray-800"
             >
-              <span class="text-xs text-gray-400 whitespace-nowrap w-24 shrink-0">
+              <span class="text-xs text-gray-400 dark:text-gray-500 whitespace-nowrap w-24 shrink-0">
                 {s.data.publishDate.toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' })}
               </span>
-              <span class="text-sm text-gray-900 group-hover:underline flex-1 truncate">{s.data.title}</span>
+              <span class="text-sm text-gray-900 dark:text-gray-100 group-hover:underline flex-1 truncate">{s.data.title}</span>
               <div class="flex items-center gap-1.5 shrink-0">
                 {s.data.access !== 'public' && <Badge type="access" value={s.data.access} />}
                 {s.data.tags.slice(0, 1).map(t => <Badge type="tag" value={t} />)}
