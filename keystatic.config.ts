@@ -21,9 +21,6 @@ export default config({
         }
       : { kind: 'local' },
 
-  // Required so Keystatic uses the real public URL (not localhost) for OAuth callbacks on Vercel
-  url: process.env.PUBLIC_SITE_URL ?? 'https://mrt-novels.vercel.app',
-
   ui: {
     brand: { name: '狂小說後台' },
     navigation: {
