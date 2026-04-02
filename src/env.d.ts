@@ -1,5 +1,6 @@
 /// <reference path="../.astro/types.d.ts" />
 /// <reference types="astro/client" />
+/// <reference types="@clerk/astro/types" />
 
 interface ImportMetaEnv {
   readonly PUBLIC_CLERK_PUBLISHABLE_KEY: string;

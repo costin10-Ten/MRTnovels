@@ -1,11 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
-import { getAuth } from '@clerk/astro/server';
+
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Badge from '../../components/ui/Badge.astro';
 import { getBookmarks } from '../../lib/supabase';
 
-const { userId } = getAuth(Astro.request);
+const { userId } = Astro.locals.auth();
 if (!userId) return Astro.redirect('/sign-in');
 
 const allStories = await getCollection('stories');

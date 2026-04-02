@@ -1,10 +1,8 @@
-import { getAuth } from '@clerk/astro/server';
-import type { APIContext, AstroGlobal } from 'astro';
+import type { APIContext } from 'astro';
 
-/** Returns userId or null. Use in API routes and SSR pages. */
-export function getUserId(context: APIContext | AstroGlobal): string | null {
-  const { userId } = getAuth(context.request);
-  return userId ?? null;
+/** Returns userId or null. Use in API routes (context.locals.auth()). */
+export function getUserId(context: APIContext): string | null {
+  return context.locals.auth().userId ?? null;
 }
 
 /** Throws 401 JSON response if not authenticated. */

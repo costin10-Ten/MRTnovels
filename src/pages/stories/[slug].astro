@@ -5,7 +5,6 @@ import Badge from '../../components/ui/Badge.astro';
 import LikeButton from '../../components/reader/LikeButton';
 import ReadingTracker from '../../components/reader/ReadingTracker';
 import CommentSection from '../../components/comments/CommentSection';
-import { getAuth } from '@clerk/astro/server';
 import {
   getStoryStats, getComments, isLiked, isBookmarked,
   incrementViews, getProgress,
@@ -25,7 +24,7 @@ const story = sorted[idx];
 const prev = sorted[idx + 1] ?? null;
 const next = sorted[idx - 1] ?? null;
 
-const { userId } = getAuth(Astro.request);
+const { userId } = Astro.locals.auth();
 
 // Access control
 if (story.data.access === 'member' && !userId) {
