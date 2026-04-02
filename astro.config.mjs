@@ -6,6 +6,7 @@ import clerk from '@clerk/astro';
 import keystatic from '@keystatic/astro';
 
 export default defineConfig({
+  site: process.env.PUBLIC_SITE_URL ?? 'https://mrt-novels.vercel.app',
   output: 'server',
   adapter: vercel(),
   integrations: [
