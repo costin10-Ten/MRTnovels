@@ -1,0 +1,63 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import StoryCard from '../components/story/StoryCard.astro';
+import { getGlobalStats, getStoryStats } from '../lib/supabase';
+
+const allStories = await getCollection('stories');
+const sorted = allStories.sort(
+  (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime(),
+);
+
+const featured = sorted.slice(0, 5);
+const rest = sorted.slice(5);
+
+// Fetch stats for featured stories
+const featuredStats = await Promise.all(
+  featured.map(s => getStoryStats(s.slug).catch(() => ({ views: 0, likes: 0 }))),
+);
+---
+
+<BaseLayout title="狂小說網">
+  <div class="max-w-2xl mx-auto px-5 py-10">
+
+    <!-- Latest 5 (featured) -->
+    <section class="mb-10">
+      <h2 class="text-[10px] text-gray-400 uppercase tracking-widest mb-4">最新文章</h2>
+      {featured.map((s, i) => (
+        <StoryCard
+          variant="featured"
+          slug={s.slug}
+          title={s.data.title}
+          publishDate={s.data.publishDate}
+          author={s.data.author}
+          tags={s.data.tags}
+          access={s.data.access}
+          summary={s.data.summary}
+          views={featuredStats[i].views}
+          likes={featuredStats[i].likes}
+        />
+      ))}
+    </section>
+
+    {rest.length > 0 && (
+      <section>
+        <h2 class="text-[10px] text-gray-400 uppercase tracking-widest mb-3">所有文章</h2>
+        <div class="flex flex-col">
+          {rest.map(s => (
+            <StoryCard
+              variant="row"
+              slug={s.slug}
+              title={s.data.title}
+              publishDate={s.data.publishDate}
+              author={s.data.author}
+              tags={s.data.tags}
+              access={s.data.access}
+              summary={s.data.summary}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+  </div>
+</BaseLayout>

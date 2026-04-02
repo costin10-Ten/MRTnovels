@@ -1,0 +1,167 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Badge from '../../components/ui/Badge.astro';
+import LikeButton from '../../components/reader/LikeButton';
+import ReadingTracker from '../../components/reader/ReadingTracker';
+import CommentSection from '../../components/comments/CommentSection';
+import { getAuth } from '@clerk/astro/server';
+import {
+  getStoryStats, getComments, isLiked, isBookmarked,
+  incrementViews, getProgress,
+} from '../../lib/supabase';
+
+const { slug } = Astro.params;
+if (!slug) return Astro.redirect('/stories');
+
+const allStories = await getCollection('stories');
+const sorted = allStories.sort(
+  (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime(),
+);
+const idx = sorted.findIndex(s => s.slug === slug);
+if (idx === -1) return Astro.redirect('/stories');
+
+const story = sorted[idx];
+const prev = sorted[idx + 1] ?? null;
+const next = sorted[idx - 1] ?? null;
+
+const { userId } = getAuth(Astro.request);
+
+// Access control
+if (story.data.access === 'member' && !userId) {
+  return Astro.redirect(`/sign-in?redirect=/stories/${slug}`);
+}
+if (story.data.access === 'paid' && !userId) {
+  return Astro.redirect(`/sign-in?redirect=/stories/${slug}`);
+}
+
+// Increment view (fire and forget)
+incrementViews(slug).catch(() => {});
+
+// Parallel data fetching
+const [stats, comments, liked, bookmarked, savedPct] = await Promise.all([
+  getStoryStats(slug).catch(() => ({ views: 0, likes: 0 })),
+  getComments(slug).catch(() => []),
+  userId ? isLiked(userId, slug).catch(() => false) : false,
+  userId ? isBookmarked(userId, slug).catch(() => false) : false,
+  userId ? getProgress(userId, slug).catch(() => 0) : 0,
+]);
+
+const { Content } = await render(story);
+
+const siteURL = import.meta.env.PUBLIC_SITE_URL ?? Astro.url.origin;
+const canonicalURL = `${siteURL}/stories/${slug}`;
+
+const dateStr = story.data.publishDate.toLocaleDateString('zh-TW', {
+  year: 'numeric', month: 'long', day: 'numeric',
+});
+---
+
+<BaseLayout
+  title={story.data.title}
+  description={story.data.summary}
+  ogImage={story.data.cover ? `${siteURL}${story.data.cover}` : undefined}
+  canonicalURL={canonicalURL}
+  type="article"
+  publishDate={story.data.publishDate}
+  author={story.data.author}
+>
+  <article class="max-w-2xl mx-auto px-5 py-10">
+
+    <!-- Title -->
+    <h1 class="text-2xl font-semibold text-gray-900 leading-snug mb-4">
+      {story.data.title}
+    </h1>
+
+    <!-- Meta row -->
+    <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-2">
+      <span>{stats.views.toLocaleString('zh-TW')} 人讀過</span>
+      <span>·</span>
+      <span>{stats.likes.toLocaleString('zh-TW')} 個讚</span>
+      <span>·</span>
+      <span>{dateStr}</span>
+      <span>·</span>
+      <span>{story.data.author}</span>
+    </div>
+
+    <!-- Tags -->
+    <div class="flex flex-wrap items-center gap-1.5 mb-8">
+      {story.data.access !== 'public' && <Badge type="access" value={story.data.access} />}
+      {story.data.tags.map(t => <Badge type="tag" value={t} />)}
+    </div>
+
+    <!-- Cover image -->
+    {story.data.cover && (
+      <img
+        src={story.data.cover}
+        alt={story.data.title}
+        class="w-full aspect-[2/1] object-cover mb-8 grayscale opacity-80"
+      />
+    )}
+
+    <!-- Like button (top) -->
+    <div class="flex items-center gap-3 mb-10">
+      <LikeButton
+        client:load
+        storySlug={slug}
+        initialLiked={liked}
+        initialCount={stats.likes}
+      />
+      {userId && (
+        <a
+          href={`/api/bookmarks?action=${bookmarked ? 'remove' : 'add'}&slug=${slug}&ref=/stories/${slug}`}
+          class="text-sm text-gray-400 hover:text-gray-700 transition-colors"
+        >
+          {bookmarked ? '★ 已收藏' : '☆ 收藏'}
+        </a>
+      )}
+    </div>
+
+    <!-- Reading progress bar -->
+    <ReadingTracker
+      client:load
+      storySlug={slug}
+      isLoggedIn={!!userId}
+    />
+
+    <!-- Article body -->
+    <div id="story-content" class="story-body">
+      <Content />
+    </div>
+
+    <!-- Like button (bottom) -->
+    <div class="mt-12 flex justify-center">
+      <LikeButton
+        client:load
+        storySlug={slug}
+        initialLiked={liked}
+        initialCount={stats.likes}
+      />
+    </div>
+
+    <!-- Prev / Next -->
+    <nav class="mt-12 pt-8 border-t border-gray-200 flex items-center justify-between gap-4 text-sm">
+      {prev ? (
+        <a href={`/stories/${prev.slug}`} class="flex-1 text-gray-500 hover:text-gray-900 transition-colors group">
+          <div class="text-[10px] text-gray-300 uppercase tracking-widest mb-1">上一篇</div>
+          <div class="group-hover:underline line-clamp-1">{prev.data.title}</div>
+        </a>
+      ) : <div class="flex-1" />}
+
+      {next ? (
+        <a href={`/stories/${next.slug}`} class="flex-1 text-right text-gray-500 hover:text-gray-900 transition-colors group">
+          <div class="text-[10px] text-gray-300 uppercase tracking-widest mb-1">下一篇</div>
+          <div class="group-hover:underline line-clamp-1">{next.data.title}</div>
+        </a>
+      ) : <div class="flex-1" />}
+    </nav>
+
+    <!-- Comments -->
+    <CommentSection
+      client:load
+      storySlug={slug}
+      initialComments={comments}
+      isLoggedIn={!!userId}
+    />
+  </article>
+</BaseLayout>

@@ -1,0 +1,56 @@
+---
+import { getCollection } from 'astro:content';
+import { getAuth } from '@clerk/astro/server';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getUserHistory } from '../../lib/supabase';
+
+const { userId } = getAuth(Astro.request);
+if (!userId) return Astro.redirect('/sign-in');
+
+const allStories = await getCollection('stories');
+const storyMap = Object.fromEntries(allStories.map(s => [s.slug, s]));
+
+const history = await getUserHistory(userId);
+---
+
+<BaseLayout title="閱讀紀錄">
+  <div class="max-w-xl mx-auto px-5 py-10">
+    <div class="flex items-center gap-4 mb-6">
+      <a href="/member" class="text-xs text-gray-400 hover:text-gray-700">← 會員中心</a>
+    </div>
+    <h1 class="text-sm font-medium text-gray-900 mb-6">閱讀紀錄</h1>
+
+    {history.length === 0 ? (
+      <p class="text-sm text-gray-400 py-8 text-center">
+        還沒有閱讀紀錄。<a href="/stories" class="underline text-gray-600">去看看文章</a>。
+      </p>
+    ) : (
+      <div class="flex flex-col gap-3">
+        {history.map(h => {
+          const story = storyMap[h.story_slug];
+          if (!story) return null;
+          return (
+            <a
+              href={`/stories/${h.story_slug}`}
+              class="group block no-underline"
+            >
+              <div class="flex items-center justify-between mb-1">
+                <span class="text-sm text-gray-900 group-hover:underline">{story.data.title}</span>
+                <span class="text-xs text-gray-400 tabular-nums">{h.pct}%</span>
+              </div>
+              <div class="h-1 bg-gray-100 rounded-full overflow-hidden">
+                <div
+                  class={`h-full rounded-full ${h.pct >= 80 ? 'bg-gray-900' : 'bg-gray-400'}`}
+                  style={`width: ${h.pct}%`}
+                ></div>
+              </div>
+              <div class="text-[10px] text-gray-300 mt-1">
+                {new Date(h.updated_at).toLocaleDateString('zh-TW')}
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    )}
+  </div>
+</BaseLayout>

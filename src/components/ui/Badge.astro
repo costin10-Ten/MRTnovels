@@ -1,0 +1,39 @@
+---
+interface Props {
+  type: 'access' | 'tag';
+  value: string;
+}
+const { type, value } = Astro.props;
+
+const TAG_LABELS: Record<string, string> = {
+  thriller: '驚悚',
+  politics: '政治',
+  eco: '環保',
+  mystery: '推理',
+  scifi: '科幻',
+  youth: '青春',
+  romance: '感情',
+  career: '職業',
+};
+
+const ACCESS_CONFIG: Record<string, { label: string; class: string }> = {
+  public:  { label: '公開',  class: 'bg-gray-100 text-gray-500' },
+  member:  { label: '會員',  class: 'bg-gray-200 text-gray-700' },
+  paid:    { label: '付費',  class: 'bg-gray-800 text-gray-100' },
+};
+
+let label = '';
+let cls = '';
+
+if (type === 'tag') {
+  label = TAG_LABELS[value] ?? value;
+  cls = 'bg-gray-100 text-gray-600';
+} else {
+  const cfg = ACCESS_CONFIG[value] ?? ACCESS_CONFIG.public;
+  label = cfg.label;
+  cls = cfg.class;
+}
+---
+<span class={`inline-block text-[10px] px-2 py-0.5 leading-5 tracking-wide ${cls}`}>
+  {label}
+</span>

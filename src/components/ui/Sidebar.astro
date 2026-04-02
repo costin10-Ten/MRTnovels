@@ -1,0 +1,66 @@
+---
+interface Props {
+  views: number;
+  likes: number;
+}
+const { views, likes } = Astro.props;
+
+const NAV = [
+  { href: '/stories', label: '內容索引', icon: '≡' },
+  { href: '/sign-up', label: '加入會員', icon: '+' },
+  { href: '/about', label: '關於本站', icon: 'ℹ' },
+  { href: '/about#million', label: '100萬按讚企劃', icon: '♥' },
+];
+
+function fmt(n: number) {
+  return n >= 10000
+    ? (n / 10000).toFixed(1) + ' 萬'
+    : n.toLocaleString('zh-TW');
+}
+
+const currentPath = Astro.url.pathname;
+---
+<aside class="sidebar py-5 px-4 select-none">
+  <!-- Site brand (desktop only title) -->
+  <div class="hidden md:block mb-6">
+    <a href="/" class="block no-underline">
+      <div class="text-sm font-semibold text-gray-900 leading-snug">狂小說網</div>
+      <div class="text-[10px] text-gray-400 tracking-widest mt-0.5">通勤文學速讀</div>
+    </a>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="flex flex-col gap-0.5">
+    {NAV.map(({ href, label, icon }) => {
+      const active = currentPath === href || (href !== '/' && currentPath.startsWith(href) && href !== '/sign-up');
+      return (
+        <a
+          href={href}
+          class={`flex items-center gap-2.5 px-2 py-2 rounded-sm text-sm transition-colors ${
+            active
+              ? 'bg-gray-900 text-white'
+              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+          }`}
+        >
+          <span class="w-4 text-center text-xs opacity-70">{icon}</span>
+          <span>{label}</span>
+        </a>
+      );
+    })}
+  </nav>
+
+  <!-- Divider -->
+  <div class="border-t border-gray-200 my-5"></div>
+
+  <!-- Stats -->
+  <div class="flex flex-col gap-4 px-2">
+    <div>
+      <div class="text-[10px] text-gray-400 uppercase tracking-widest mb-0.5">瀏覽人次</div>
+      <div class="text-lg font-light text-gray-900 tabular-nums">{fmt(views)}</div>
+    </div>
+    <div>
+      <div class="text-[10px] text-gray-400 uppercase tracking-widest mb-0.5">總按讚數</div>
+      <div class="text-lg font-light text-gray-900 tabular-nums">{fmt(likes)}</div>
+    </div>
+  </div>
+</aside>

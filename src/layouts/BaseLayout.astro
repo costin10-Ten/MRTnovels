@@ -1,0 +1,118 @@
+---
+import '../styles/global.css';
+import Header from '../components/ui/Header.astro';
+import Sidebar from '../components/ui/Sidebar.astro';
+import { getGlobalStats } from '../lib/supabase';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  canonicalURL?: string;
+  type?: 'website' | 'article';
+  publishDate?: Date;
+  author?: string;
+}
+
+const {
+  title,
+  description = '狂小說網・通勤文學速讀 — 極簡閱讀，通勤時間的文學宇宙',
+  ogImage,
+  canonicalURL,
+  type = 'website',
+  publishDate,
+  author,
+} = Astro.props;
+
+const siteURL = import.meta.env.PUBLIC_SITE_URL ?? Astro.url.origin;
+const canonical = canonicalURL ?? Astro.url.href;
+const ogImg = ogImage ?? `${siteURL}/og-default.png`;
+
+let globalStats = { views: 0, likes: 0 };
+try { globalStats = await getGlobalStats(); } catch {}
+
+const fullTitle = title === '狂小說網' ? title + '・通勤文學速讀' : `${title} — 狂小說網`;
+---
+<!doctype html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content={type} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={ogImg} />
+  <meta property="og:locale" content="zh_TW" />
+  <meta property="og:site_name" content="狂小說網" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={fullTitle} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImg} />
+
+  {type === 'article' && publishDate && (
+    <meta property="article:published_time" content={publishDate.toISOString()} />
+  )}
+  {type === 'article' && author && (
+    <meta property="article:author" content={author} />
+  )}
+
+  <!-- JSON-LD -->
+  {type === 'article' ? (
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": title,
+      "description": description,
+      "image": ogImg,
+      "author": { "@type": "Person", "name": author ?? '站長' },
+      "publisher": {
+        "@type": "Organization",
+        "name": "狂小說網",
+        "url": siteURL,
+      },
+      "datePublished": publishDate?.toISOString(),
+      "mainEntityOfPage": { "@type": "WebPage", "@id": canonical },
+    })} />
+  ) : (
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "狂小說網・通勤文學速讀",
+      "url": siteURL,
+    })} />
+  )}
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+</head>
+<body>
+  <Header />
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <Sidebar views={globalStats.views} likes={globalStats.likes} />
+
+  <main class="main-wrap">
+    <slot />
+  </main>
+
+  <script>
+    const btn = document.getElementById('sidebar-toggle');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    function toggle() { document.body.classList.toggle('sidebar-open'); }
+    btn?.addEventListener('click', toggle);
+    overlay?.addEventListener('click', toggle);
+
+    // Restore desktop state
+    if (window.innerWidth >= 768) {
+      document.body.classList.add('sidebar-open');
+    }
+  </script>
+</body>
+</html>

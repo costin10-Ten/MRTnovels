@@ -1,0 +1,121 @@
+---
+import { getCollection } from 'astro:content';
+import { getAuth } from '@clerk/astro/server';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getUserHistory, getBookmarks, getLikedSlugs } from '../../lib/supabase';
+
+const { userId } = getAuth(Astro.request);
+if (!userId) return Astro.redirect('/sign-in');
+
+const allStories = await getCollection('stories');
+const totalStories = allStories.length;
+
+const [history, bookmarks, likedSlugs] = await Promise.all([
+  getUserHistory(userId),
+  getBookmarks(userId),
+  getLikedSlugs(userId),
+]);
+
+const readCount = history.filter(h => h.pct >= 80).length;
+const likedCount = likedSlugs.length;
+const bookmarkCount = bookmarks.length;
+
+// Unliked public stories for recommendation
+const unlikedPublic = allStories
+  .filter(s => s.data.access === 'public' && !likedSlugs.includes(s.slug))
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
+  .slice(0, 5);
+
+function pctBar(value: number, total: number) {
+  return total === 0 ? 0 : Math.round((value / total) * 100);
+}
+---
+
+<BaseLayout title="會員中心">
+  <div class="max-w-xl mx-auto px-5 py-10">
+    <h1 class="text-sm font-medium text-gray-900 mb-8">會員中心</h1>
+
+    <!-- Stats grid -->
+    <div class="grid grid-cols-3 gap-4 mb-10 text-center">
+      <div class="border border-gray-200 py-4">
+        <div class="text-2xl font-light text-gray-900 tabular-nums">{readCount}</div>
+        <div class="text-[10px] text-gray-400 mt-1">已讀完</div>
+      </div>
+      <div class="border border-gray-200 py-4">
+        <div class="text-2xl font-light text-gray-900 tabular-nums">{likedCount}</div>
+        <div class="text-[10px] text-gray-400 mt-1">已按讚</div>
+      </div>
+      <div class="border border-gray-200 py-4">
+        <div class="text-2xl font-light text-gray-900 tabular-nums">{bookmarkCount}</div>
+        <div class="text-[10px] text-gray-400 mt-1">收藏</div>
+      </div>
+    </div>
+
+    <!-- Progress bars -->
+    <div class="flex flex-col gap-5 mb-10">
+      <!-- Read progress -->
+      <div>
+        <div class="flex items-center justify-between mb-1.5 text-xs text-gray-500">
+          <span>閱讀進度</span>
+          <span class="tabular-nums">{readCount} / {totalStories} 篇已讀完</span>
+        </div>
+        <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+          <div
+            class="h-full bg-gray-900 rounded-full transition-all"
+            style={`width: ${pctBar(readCount, totalStories)}%`}
+          ></div>
+        </div>
+        <div class="text-right text-[10px] text-gray-300 mt-1">
+          {pctBar(readCount, totalStories)}%
+        </div>
+      </div>
+
+      <!-- Like progress -->
+      <div>
+        <div class="flex items-center justify-between mb-1.5 text-xs text-gray-500">
+          <span>按讚進度</span>
+          <span class="tabular-nums">{likedCount} / {totalStories} 篇已按讚</span>
+        </div>
+        <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+          <div
+            class="h-full bg-gray-800 rounded-full transition-all"
+            style={`width: ${pctBar(likedCount, totalStories)}%`}
+          ></div>
+        </div>
+        <div class="text-right text-[10px] text-gray-300 mt-1">
+          {pctBar(likedCount, totalStories)}%
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick links -->
+    <div class="flex gap-3 mb-10 text-sm">
+      <a href="/member/history" class="flex-1 border border-gray-200 py-2.5 text-center text-gray-600 hover:border-gray-900 hover:text-gray-900 transition-colors">
+        閱讀紀錄
+      </a>
+      <a href="/member/bookmarks" class="flex-1 border border-gray-200 py-2.5 text-center text-gray-600 hover:border-gray-900 hover:text-gray-900 transition-colors">
+        收藏清單
+      </a>
+    </div>
+
+    <!-- Unliked recommendations -->
+    {unlikedPublic.length > 0 && (
+      <section>
+        <h2 class="text-[10px] text-gray-400 uppercase tracking-widest mb-3">還沒按讚的文章</h2>
+        <div class="flex flex-col">
+          {unlikedPublic.map(s => (
+            <a
+              href={`/stories/${s.slug}`}
+              class="flex items-baseline gap-3 py-2 px-1 hover:bg-gray-50 group no-underline border-b border-gray-100"
+            >
+              <span class="text-xs text-gray-400 whitespace-nowrap">
+                {s.data.publishDate.toLocaleDateString('zh-TW', { month: '2-digit', day: '2-digit' })}
+              </span>
+              <span class="text-sm text-gray-900 group-hover:underline flex-1 truncate">{s.data.title}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+  </div>
+</BaseLayout>
