@@ -16,7 +16,9 @@ export default config({
     process.env.NODE_ENV === 'production'
       ? {
           kind: 'github',
-          repo: `${process.env.GITHUB_REPO_OWNER}/${process.env.GITHUB_REPO_NAME}` as `${string}/${string}`,
+          // REQUIRED Vercel env vars: GITHUB_REPO_OWNER, GITHUB_REPO_NAME,
+          // KEYSTATIC_GITHUB_CLIENT_ID, KEYSTATIC_GITHUB_CLIENT_SECRET, KEYSTATIC_SECRET
+          repo: `${process.env.GITHUB_REPO_OWNER ?? 'costin10-ten'}/${process.env.GITHUB_REPO_NAME ?? 'MRTnovels'}` as `${string}/${string}`,
           branchPrefix: 'keystatic/',
         }
       : { kind: 'local' },
