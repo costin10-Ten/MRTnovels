@@ -5,9 +5,9 @@ type Size  = 'sm' | 'md' | 'lg';
 type Theme = 'light' | 'dark' | 'system';
 
 const FONT_MAP: Record<Font, string> = {
-  sans:    "'Noto Sans TC','Google Sans',Roboto,'PingFang TC','Microsoft JhengHei',sans-serif",
-  serif:   "'Noto Serif TC','Songti SC',STSong,Georgia,serif",
-  cursive: "'DFKai-SB',BiauKai,KaiTi,STKaiti,cursive,serif",
+  sans:    "'Noto Sans TC','Google Sans','PingFang TC','Microsoft JhengHei',sans-serif",
+  serif:   "'Noto Serif TC','Songti SC','PMingLiU','新細明體',Georgia,serif",
+  cursive: "'DFKai-SB','標楷體','BiauKai','Ma Shan Zheng',cursive,serif",
   system:  "system-ui,-apple-system,'Segoe UI',sans-serif",
 };
 
