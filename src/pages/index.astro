@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import StoryCard from '../components/story/StoryCard.astro';
-import { getStoryStats, getLikedSlugs, getReadSlugs } from '../lib/supabase';
+import { getMultipleStoryStats, getLikedSlugs, getReadSlugs } from '../lib/supabase';
 
 const PAGE_SIZE = 4;
 
@@ -35,9 +35,9 @@ const pageStories = filteredStories.slice(
   currentPage * PAGE_SIZE,
 );
 
-// Stats for current page
-const pageStats = await Promise.all(
-  pageStories.map(s => getStoryStats(s.slug).catch(() => ({ views: 0, likes: 0 }))),
+// Stats for current page — one batch query instead of N individual queries
+const pageStats = await getMultipleStoryStats(pageStories.map(s => s.slug)).catch(
+  () => pageStories.map(() => ({ views: 0, likes: 0 })),
 );
 
 // Tag folder grouping

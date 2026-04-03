@@ -97,7 +97,8 @@ export async function getReadSlugs(userId: string): Promise<string[]> {
   const { data } = await supabase
     .from('reading_progress')
     .select('story_slug')
-    .eq('user_id', userId);
+    .eq('user_id', userId)
+    .gte('pct', 70);          // 70% 以上才算讀完
   return (data ?? []).map((r) => r.story_slug);
 }
 
@@ -126,6 +127,20 @@ export async function getStoryStats(storySlug: string) {
     .eq('story_slug', storySlug)
     .single();
   return { views: data?.views ?? 0, likes: data?.likes ?? 0 };
+}
+
+// Batch version — one query for multiple slugs
+export async function getMultipleStoryStats(slugs: string[]) {
+  if (slugs.length === 0) return [];
+  const { data } = await supabase
+    .from('story_stats')
+    .select('story_slug, views, likes')
+    .in('story_slug', slugs);
+  const map = new Map((data ?? []).map(r => [r.story_slug, r]));
+  return slugs.map(slug => ({
+    views: map.get(slug)?.views ?? 0,
+    likes: map.get(slug)?.likes ?? 0,
+  }));
 }
 
 export async function incrementViews(storySlug: string) {

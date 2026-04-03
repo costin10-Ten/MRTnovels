@@ -30,6 +30,15 @@ function applyAll(font: Font, size: Size, theme: Theme, red: boolean) {
     else h.classList.remove('dark');
   }
 
+  // Lazy-load LXGW WenKai TC only when cursive is selected
+  if (font === 'cursive' && !document.getElementById('lxgw-css')) {
+    const l = document.createElement('link');
+    l.id = 'lxgw-css';
+    l.rel = 'stylesheet';
+    l.href = 'https://cdn.jsdelivr.net/npm/lxgw-wenkai-tc-web@1.522.0/style.css';
+    document.head.appendChild(l);
+  }
+
   // Font — inline style with !important beats anti-flash <style> !important
   document.body.style.setProperty('font-family', FONT_MAP[font], 'important');
 

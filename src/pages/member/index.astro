@@ -16,7 +16,7 @@ const [history, bookmarks, likedSlugs] = await Promise.all([
   getLikedSlugs(userId),
 ]);
 
-const readCount = history.filter(h => h.pct >= 80).length;
+const readCount = history.filter(h => h.pct >= 70).length;
 const likedCount = likedSlugs.length;
 const bookmarkCount = bookmarks.length;
 
