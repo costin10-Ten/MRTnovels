@@ -2,51 +2,117 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import StoryCard from '../components/story/StoryCard.astro';
-import { getGlobalStats, getStoryStats } from '../lib/supabase';
+import { getStoryStats, getLikedSlugs, getReadSlugs } from '../lib/supabase';
+
+const PAGE_SIZE = 4;
+
+const url   = Astro.url;
+const page  = Math.max(1, parseInt(url.searchParams.get('page') ?? '1'));
+const filter = (url.searchParams.get('filter') ?? 'all') as 'all' | 'unread' | 'unliked';
+
+const { userId } = Astro.locals.auth();
 
 const allStories = await getCollection('stories');
 const sorted = allStories.sort(
   (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime(),
 );
 
-const featured = sorted.slice(0, 5);
-const rest = sorted.slice(5);
+// Member filters — unread / unliked
+let filteredStories = sorted;
+if (userId && filter !== 'all') {
+  const [likedSlugs, readSlugs] = await Promise.all([
+    filter === 'unliked' ? getLikedSlugs(userId).catch(() => []) : Promise.resolve([]),
+    filter === 'unread'  ? getReadSlugs(userId).catch(()  => []) : Promise.resolve([]),
+  ]);
+  const skipSet = new Set(filter === 'unliked' ? likedSlugs : readSlugs);
+  filteredStories = sorted.filter(s => !skipSet.has(s.slug));
+}
 
-// Fetch stats for featured stories
-const featuredStats = await Promise.all(
-  featured.map(s => getStoryStats(s.slug).catch(() => ({ views: 0, likes: 0 }))),
+const totalPages  = Math.max(1, Math.ceil(filteredStories.length / PAGE_SIZE));
+const currentPage = Math.min(page, totalPages);
+const pageStories = filteredStories.slice(
+  (currentPage - 1) * PAGE_SIZE,
+  currentPage * PAGE_SIZE,
 );
+
+// Stats for current page
+const pageStats = await Promise.all(
+  pageStories.map(s => getStoryStats(s.slug).catch(() => ({ views: 0, likes: 0 }))),
+);
+
+// Tag folder grouping
+const TAG_LABELS: Record<string, string> = {
+  thriller: '驚悚', politics: '政治', eco: '環保', mystery: '推理',
+  scifi: '科幻',   youth: '青春',   romance: '感情', career: '職業',
+};
+const byTag: Record<string, typeof sorted> = {};
+for (const story of sorted) {
+  for (const tag of (story.data.tags ?? [])) {
+    if (!byTag[tag]) byTag[tag] = [];
+    byTag[tag].push(story);
+  }
+}
+const tagEntries = Object.entries(byTag).sort((a, b) => b[1].length - a[1].length);
+
+// Pagination helper
+function pageLink(p: number) {
+  const q = new URLSearchParams({ page: String(p) });
+  if (filter !== 'all') q.set('filter', filter);
+  return `/?${q}`;
+}
+function filterLink(f: string) {
+  return `/?filter=${f}`;
+}
+
+// Show up to 7 page buttons, with ellipsis if needed
+function pageRange(cur: number, total: number): (number | '…')[] {
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+  const pages: (number | '…')[] = [1];
+  if (cur > 3) pages.push('…');
+  for (let i = Math.max(2, cur - 1); i <= Math.min(total - 1, cur + 1); i++) pages.push(i);
+  if (cur < total - 2) pages.push('…');
+  pages.push(total);
+  return pages;
+}
 ---
 
 <BaseLayout title="狂小說網">
-  <div class="max-w-2xl mx-auto px-5 py-10">
+  <div class="max-w-2xl mx-auto px-5 py-8">
 
-    <!-- Latest 5 (featured) -->
-    <section class="mb-10">
-      <h2 class="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-4">最新文章</h2>
-      {featured.map((s, i) => (
-        <StoryCard
-          variant="featured"
-          slug={s.slug}
-          title={s.data.title}
-          publishDate={s.data.publishDate}
-          author={s.data.author}
-          tags={s.data.tags}
-          access={s.data.access}
-          summary={s.data.summary}
-          views={featuredStats[i].views}
-          likes={featuredStats[i].likes}
-        />
-      ))}
-    </section>
+    <!-- ── Latest stories section ── -->
+    <section class="mb-8">
 
-    {rest.length > 0 && (
-      <section>
-        <h2 class="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-3">所有文章</h2>
-        <div class="flex flex-col">
-          {rest.map(s => (
+      <!-- Section heading + member filter tabs -->
+      <div class="flex items-center flex-wrap gap-2 mb-5">
+        <h2 class="text-[10px] text-[#9aa0a6] uppercase tracking-widest font-medium mr-1">最新文章</h2>
+        {userId && (
+          <div class="flex gap-1">
+            {(['all', 'unread', 'unliked'] as const).map(f => {
+              const labels = { all: '全部文章', unread: '未讀', unliked: '未按讚' };
+              const active = filter === f;
+              return (
+                <a
+                  href={filterLink(f)}
+                  class={`px-3 py-0.5 rounded-full text-xs font-medium transition-colors no-underline hover:no-underline ${
+                    active
+                      ? 'bg-[#1a73e8] text-white'
+                      : 'bg-transparent border border-[#dadce0] dark:border-[#3c4043] text-[#5f6368] dark:text-[#9aa0a6] hover:bg-[#f1f3f4] dark:hover:bg-[#3c4043]'
+                  }`}
+                >
+                  {labels[f]}
+                </a>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      <!-- Story cards -->
+      {pageStories.length > 0 ? (
+        <div class="flex flex-col gap-3">
+          {pageStories.map((s, i) => (
             <StoryCard
-              variant="row"
+              variant="featured"
               slug={s.slug}
               title={s.data.title}
               publishDate={s.data.publishDate}
@@ -54,7 +120,98 @@ const featuredStats = await Promise.all(
               tags={s.data.tags}
               access={s.data.access}
               summary={s.data.summary}
+              views={pageStats[i].views}
+              likes={pageStats[i].likes}
             />
+          ))}
+        </div>
+      ) : (
+        <p class="text-sm text-[#9aa0a6] py-6 text-center">
+          {filter === 'unread' ? '所有文章都讀過了！' : '所有文章都按讚了！'}
+        </p>
+      )}
+
+      <!-- Google-style pagination -->
+      {totalPages > 1 && (
+        <nav class="flex items-center justify-center gap-0.5 mt-8" aria-label="分頁">
+          {currentPage > 1 && (
+            <a
+              href={pageLink(currentPage - 1)}
+              class="px-3 py-2 rounded-full text-sm text-[#1a73e8] dark:text-[#8ab4f8] hover:bg-[#e8f0fe] dark:hover:bg-[#1e3a5f] transition-colors no-underline"
+            >‹ 上一頁</a>
+          )}
+
+          {pageRange(currentPage, totalPages).map((p, idx) =>
+            p === '…' ? (
+              <span key={`ellipsis-${idx}`} class="px-1 text-[#9aa0a6] text-sm select-none">…</span>
+            ) : (
+              <a
+                key={p}
+                href={pageLink(p as number)}
+                class={`w-9 h-9 flex items-center justify-center rounded-full text-sm font-medium transition-colors no-underline ${
+                  p === currentPage
+                    ? 'bg-[#1a73e8] text-white'
+                    : 'text-[#1a73e8] dark:text-[#8ab4f8] hover:bg-[#e8f0fe] dark:hover:bg-[#1e3a5f]'
+                }`}
+              >
+                {p}
+              </a>
+            )
+          )}
+
+          {currentPage < totalPages && (
+            <a
+              href={pageLink(currentPage + 1)}
+              class="px-3 py-2 rounded-full text-sm text-[#1a73e8] dark:text-[#8ab4f8] hover:bg-[#e8f0fe] dark:hover:bg-[#1e3a5f] transition-colors no-underline"
+            >下一頁 ›</a>
+          )}
+        </nav>
+      )}
+    </section>
+
+    <!-- ── Tag folder explorer ── -->
+    {tagEntries.length > 0 && (
+      <section>
+        <h2 class="text-[10px] text-[#9aa0a6] uppercase tracking-widest font-medium mb-3">全部文章</h2>
+        <div class="flex flex-col gap-0.5">
+          {tagEntries.map(([tag, stories]) => (
+            <details class="group">
+              <summary class="flex items-center gap-2 px-2 py-1.5 rounded-lg cursor-pointer list-none select-none hover:bg-[#f1f3f4] dark:hover:bg-[#3c4043] transition-colors">
+                <!-- Folder icon (closed / open via group-open) -->
+                <span class="text-[#9aa0a6] flex-shrink-0">
+                  <svg class="group-open:hidden" width="14" height="14" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M2 5a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5z"/>
+                  </svg>
+                  <svg class="hidden group-open:block" width="14" height="14" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M2 6a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v1H2V6zm0 4h16v5a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-5z"/>
+                  </svg>
+                </span>
+                <!-- Chevron -->
+                <span class="text-[#9aa0a6] text-[10px] transition-transform group-open:rotate-90">▶</span>
+                <span class="text-sm font-medium text-[#202124] dark:text-[#e8eaed]">
+                  {TAG_LABELS[tag] ?? tag}
+                </span>
+                <span class="text-xs text-[#9aa0a6] ml-auto pr-1">{stories.length}</span>
+              </summary>
+
+              <!-- Stories in this tag -->
+              <div class="ml-8 mt-0.5 mb-1 flex flex-col gap-0">
+                {stories.map(s => (
+                  <a
+                    href={`/stories/${s.slug}`}
+                    class="story-tree-item group"
+                  >
+                    <span class="text-[#dadce0] dark:text-[#3c4043] flex-shrink-0 text-xs">—</span>
+                    <span class="flex-1 min-w-0 truncate group-hover:text-[#1a73e8] dark:group-hover:text-[#8ab4f8] transition-colors">
+                      {s.data.title}
+                    </span>
+                    <span class="text-[10px] text-[#9aa0a6] flex-shrink-0">
+                      {s.data.publishDate.toLocaleDateString('zh-TW', { month: '2-digit', day: '2-digit' })}
+                    </span>
+                  </a>
+                ))}
+              </div>
+            </details>
           ))}
         </div>
       </section>

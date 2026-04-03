@@ -93,6 +93,14 @@ export async function getLikedSlugs(userId: string): Promise<string[]> {
   return (data ?? []).map((r) => r.story_slug);
 }
 
+export async function getReadSlugs(userId: string): Promise<string[]> {
+  const { data } = await supabase
+    .from('reading_progress')
+    .select('story_slug')
+    .eq('user_id', userId);
+  return (data ?? []).map((r) => r.story_slug);
+}
+
 export async function toggleLike(userId: string, storySlug: string) {
   const liked = await isLiked(userId, storySlug);
   if (liked) {

@@ -92,6 +92,22 @@ const fullTitle = title === '狂小說網' ? title + '・通勤文學速讀' : `
 
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
+  <!-- Anti-flash: apply theme/font/size BEFORE first paint -->
+  <script>
+    (function(){
+      var h=document.documentElement;
+      var t=localStorage.getItem('ks-theme')||'system';
+      if(t==='dark'){h.classList.add('dark');}
+      else if(t==='light'){h.classList.remove('dark');}
+      else if(window.matchMedia('(prefers-color-scheme: dark)').matches){h.classList.add('dark');}
+      var f=localStorage.getItem('ks-font');
+      if(f&&f!=='sans')h.setAttribute('data-font',f);
+      var s=localStorage.getItem('ks-size');
+      if(s&&s!=='md')h.setAttribute('data-size',s);
+      if(localStorage.getItem('ks-highlight-red')==='true')h.setAttribute('data-highlight','red');
+    })();
+  </script>
+
   <!-- Google Fonts: Noto Sans TC (Google's official Chinese font) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
