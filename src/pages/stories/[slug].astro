@@ -5,6 +5,7 @@ import Badge from '../../components/ui/Badge.astro';
 import LikeButton from '../../components/reader/LikeButton';
 import ReadingTracker from '../../components/reader/ReadingTracker';
 import CommentSection from '../../components/comments/CommentSection';
+import ShareButtons from '../../components/ui/ShareButtons.astro';
 import {
   getStoryStats, getComments, isLiked, isBookmarked,
   incrementViews, getProgress,
@@ -51,6 +52,12 @@ const { Content } = await render(story);
 const siteURL = import.meta.env.PUBLIC_SITE_URL ?? Astro.url.origin;
 const canonicalURL = `${siteURL}/stories/${slug}`;
 
+const TAG_ZH: Record<string, string> = {
+  thriller: '驚悚', politics: '政治', eco: '環保', mystery: '推理',
+  scifi: '科幻', youth: '青春', romance: '感情', career: '職業',
+};
+const storyKeywords = story.data.tags.map(t => TAG_ZH[t] ?? t);
+
 const dateStr = story.data.publishDate.toLocaleDateString('zh-TW', {
   year: 'numeric', month: 'long', day: 'numeric',
 });
@@ -59,11 +66,12 @@ const dateStr = story.data.publishDate.toLocaleDateString('zh-TW', {
 <BaseLayout
   title={story.data.title}
   description={story.data.summary}
-  ogImage={story.data.cover ? `${siteURL}${story.data.cover}` : undefined}
+  ogImage={story.data.cover}
   canonicalURL={canonicalURL}
   type="article"
   publishDate={story.data.publishDate}
   author={story.data.author}
+  keywords={storyKeywords}
 >
   <article class="max-w-2xl mx-auto px-5 py-10">
 
@@ -115,6 +123,14 @@ const dateStr = story.data.publishDate.toLocaleDateString('zh-TW', {
         </a>
       )}
     </div>
+
+    <!-- Share buttons -->
+    <ShareButtons
+      url={canonicalURL}
+      title={story.data.title}
+      description={story.data.summary}
+      cover={story.data.cover}
+    />
 
     <!-- Reading progress bar -->
     <ReadingTracker

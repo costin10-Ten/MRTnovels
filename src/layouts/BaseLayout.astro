@@ -12,6 +12,8 @@ interface Props {
   type?: 'website' | 'article';
   publishDate?: Date;
   author?: string;
+  keywords?: string[];
+  noindex?: boolean;
 }
 
 const {
@@ -22,11 +24,19 @@ const {
   type = 'website',
   publishDate,
   author,
+  keywords = [],
+  noindex = false,
 } = Astro.props;
 
 const siteURL = import.meta.env.PUBLIC_SITE_URL ?? Astro.url.origin;
 const canonical = canonicalURL ?? Astro.url.href;
-const ogImg = ogImage ?? `${siteURL}/og-default.png`;
+// Fallback OG image — always an absolute URL
+const ogImg = ogImage
+  ? (ogImage.startsWith('http') ? ogImage : `${siteURL}${ogImage}`)
+  : `https://picsum.photos/seed/mrtnovels-og/1200/630`;
+
+const defaultKW = ['短篇小說', '台灣文學', '通勤文學', '短篇故事', '捷運'];
+const allKW = [...new Set([...defaultKW, ...keywords])].join(', ');
 
 let globalStats = { views: 0, likes: 0 };
 try { globalStats = await getGlobalStats(); } catch {}
@@ -40,6 +50,9 @@ const fullTitle = title === '狂小說網' ? title + '・通勤文學速讀' : `
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{fullTitle}</title>
   <meta name="description" content={description} />
+  <meta name="keywords" content={allKW} />
+  <meta name="robots" content={noindex ? 'noindex,nofollow' : 'index,follow'} />
+  <meta name="author" content={author ?? '狂小說網'} />
   <link rel="canonical" href={canonical} />
 
   <!-- Open Graph -->
@@ -72,11 +85,14 @@ const fullTitle = title === '狂小說網' ? title + '・通勤文學速讀' : `
       "headline": title,
       "description": description,
       "image": ogImg,
+      "keywords": allKW,
+      "inLanguage": "zh-TW",
       "author": { "@type": "Person", "name": author ?? '站長' },
       "publisher": {
         "@type": "Organization",
         "name": "狂小說網",
         "url": siteURL,
+        "logo": { "@type": "ImageObject", "url": `${siteURL}/favicon.svg` },
       },
       "datePublished": publishDate?.toISOString(),
       "mainEntityOfPage": { "@type": "WebPage", "@id": canonical },
@@ -87,6 +103,13 @@ const fullTitle = title === '狂小說網' ? title + '・通勤文學速讀' : `
       "@type": "WebSite",
       "name": "狂小說網・通勤文學速讀",
       "url": siteURL,
+      "description": description,
+      "inLanguage": "zh-TW",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": { "@type": "EntryPoint", "urlTemplate": `${siteURL}/stories?q={search_term_string}` },
+        "query-input": "required name=search_term_string",
+      },
     })} />
   )}
 
