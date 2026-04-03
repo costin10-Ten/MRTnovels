@@ -6,10 +6,11 @@ interface Props {
 const { views, likes } = Astro.props;
 
 const NAV = [
-  { href: '/stories', label: '內容索引', icon: '≡' },
-  { href: '/sign-up', label: '加入會員', icon: '+' },
-  { href: '/about', label: '關於本站', icon: 'ℹ' },
-  { href: '/about#million', label: '100萬按讚企劃', icon: '♥' },
+  { href: '/',             label: '首頁',       icon: 'home' },
+  { href: '/stories',      label: '內容索引',   icon: 'list' },
+  { href: '/sign-up',      label: '加入會員',   icon: 'plus' },
+  { href: '/about',        label: '關於本站',   icon: 'info' },
+  { href: '/about#million',label: '100萬按讚企劃', icon: 'heart' },
 ];
 
 function fmt(n: number) {
@@ -21,18 +22,28 @@ function fmt(n: number) {
 const currentPath = Astro.url.pathname;
 ---
 <aside class="sidebar py-4 px-3 select-none">
-  <!-- Site brand (desktop) -->
-  <div class="hidden md:block mb-5 px-3">
-    <a href="/" class="block no-underline hover:no-underline">
-      <div class="text-sm font-medium text-[#202124] dark:text-[#e8eaed] leading-snug">狂小說網</div>
-      <div class="text-[10px] text-[#9aa0a6] tracking-widest mt-0.5">通勤文學速讀</div>
+
+  <!-- Logo (desktop) -->
+  <div class="hidden md:flex items-center gap-2.5 mb-5 px-2">
+    <a href="/" class="flex items-center gap-2.5 no-underline hover:no-underline group">
+      <!-- Logo mark: Google-Blue tile with 狂 -->
+      <div class="w-8 h-8 rounded-xl bg-[#1a73e8] flex items-center justify-center shadow-sm flex-shrink-0 group-hover:bg-[#1557b0] transition-colors">
+        <span class="text-white font-bold text-sm leading-none">狂</span>
+      </div>
+      <div class="flex flex-col leading-none">
+        <span class="text-[0.8125rem] font-semibold text-[#202124] dark:text-[#e8eaed] tracking-tight">小說網</span>
+        <span class="text-[9px] text-[#9aa0a6] tracking-widest mt-0.5">通勤文學速讀</span>
+      </div>
     </a>
   </div>
 
   <!-- Navigation -->
   <nav class="flex flex-col gap-0.5">
     {NAV.map(({ href, label, icon }) => {
-      const active = currentPath === href || (href !== '/' && currentPath.startsWith(href) && href !== '/sign-up');
+      const isHome = href === '/';
+      const active = isHome
+        ? currentPath === '/'
+        : currentPath === href || (currentPath.startsWith(href) && href !== '/sign-up');
       return (
         <a
           href={href}
@@ -42,7 +53,37 @@ const currentPath = Astro.url.pathname;
               : 'text-[#5f6368] dark:text-[#9aa0a6] hover:bg-[#f1f3f4] hover:text-[#202124] dark:hover:bg-[#3c4043] dark:hover:text-[#e8eaed]'
           }`}
         >
-          <span class="w-4 text-center text-xs">{icon}</span>
+          <!-- Icon -->
+          {icon === 'home' && (
+            <svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor" class="flex-shrink-0 opacity-80">
+              <path d="M10 2L2 9h2v9h5v-5h2v5h5V9h2L10 2z"/>
+            </svg>
+          )}
+          {icon === 'list' && (
+            <svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor" class="flex-shrink-0 opacity-80">
+              <rect x="2" y="4" width="16" height="1.5" rx="1"/>
+              <rect x="2" y="9" width="16" height="1.5" rx="1"/>
+              <rect x="2" y="14" width="10" height="1.5" rx="1"/>
+            </svg>
+          )}
+          {icon === 'plus' && (
+            <svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor" class="flex-shrink-0 opacity-80">
+              <rect x="9" y="2" width="2" height="16" rx="1"/>
+              <rect x="2" y="9" width="16" height="2" rx="1"/>
+            </svg>
+          )}
+          {icon === 'info' && (
+            <svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor" class="flex-shrink-0 opacity-80">
+              <circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <rect x="9.25" y="9" width="1.5" height="6" rx="0.75"/>
+              <circle cx="10" cy="6.5" r="1"/>
+            </svg>
+          )}
+          {icon === 'heart' && (
+            <svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor" class="flex-shrink-0 opacity-80">
+              <path d="M10 17s-7-4.5-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 17 8c0 4.5-7 9-7 9z"/>
+            </svg>
+          )}
           <span>{label}</span>
         </a>
       );
