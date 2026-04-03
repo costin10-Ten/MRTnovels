@@ -2,8 +2,10 @@ import type { APIRoute } from 'astro';
 
 export const POST: APIRoute = async ({ request, locals }) => {
   const { userId } = (locals as any).auth();
-  if (!userId) {
-    return new Response(JSON.stringify({ error: '請先登入' }), { status: 401 });
+  const adminId = process.env.ADMIN_USER_ID;
+
+  if (!userId || !adminId || userId !== adminId) {
+    return new Response(JSON.stringify({ error: '沒有上傳權限' }), { status: 403 });
   }
 
   let body: Record<string, string>;

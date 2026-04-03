@@ -11,9 +11,9 @@ const { views, likes } = Astro.props;
 const NAV = [
   { href: '/',              label: '首頁',          icon: 'home'  },
   { href: '/stories',       label: '內容索引',      icon: 'list'  },
-  { href: '/member',        label: '會員資料',      icon: 'user',   memberOnly: true },
-  { href: '/upload-story',  label: '上傳文章',      icon: 'upload', memberOnly: true },
-  { href: '/sign-up',       label: '加入會員',      icon: 'plus',   guestOnly: true  },
+  { href: '/member',        label: '會員資料',      icon: 'user',   memberOnly: true  },
+  { href: '/upload-story',  label: '上傳文章',      icon: 'upload', adminOnly: true   },
+  { href: '/sign-up',       label: '加入會員',      icon: 'plus',   guestOnly: true   },
   { href: '/about',         label: '關於本站',      icon: 'info'  },
   { href: '/about#million', label: '100萬按讚企劃', icon: 'heart' },
 ];
@@ -24,6 +24,7 @@ function fmt(n: number) {
 
 const currentPath = Astro.url.pathname;
 const { userId } = Astro.locals.auth();
+const adminId = import.meta.env.ADMIN_USER_ID;
 ---
 <aside class="sidebar py-4 px-3 select-none">
 
@@ -42,9 +43,10 @@ const { userId } = Astro.locals.auth();
 
   <!-- Navigation -->
   <nav class="flex flex-col gap-0.5">
-    {NAV.map(({ href, label, icon, memberOnly, guestOnly }) => {
+    {NAV.map(({ href, label, icon, memberOnly, adminOnly, guestOnly }) => {
       if (memberOnly && !userId) return null;
       if (guestOnly  &&  userId) return null;
+      if (adminOnly  && userId !== adminId) return null;
       const isHome = href === '/';
       const active = isHome
         ? currentPath === '/'

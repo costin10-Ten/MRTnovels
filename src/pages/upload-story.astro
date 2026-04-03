@@ -2,7 +2,10 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const { userId } = Astro.locals.auth();
+const adminId = import.meta.env.ADMIN_USER_ID;
+
 if (!userId) return Astro.redirect('/sign-in');
+if (!adminId || userId !== adminId) return Astro.redirect('/');
 ---
 
 <BaseLayout title="上傳文章">
