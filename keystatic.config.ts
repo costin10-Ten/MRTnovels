@@ -82,6 +82,16 @@ export default config({
           label: '文章內容',
           extension: 'md',
         }),
+
+        iceberg: fields.text({
+          label: '冰山之下（會員解鎖）',
+          multiline: true,
+        }),
+
+        characters: fields.text({
+          label: '出場人物資料（會員解鎖）',
+          multiline: true,
+        }),
       },
     }),
   },

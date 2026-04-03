@@ -1,0 +1,247 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const { userId } = Astro.locals.auth();
+if (!userId) return Astro.redirect('/sign-in');
+---
+
+<BaseLayout title="上傳文章">
+  <div class="max-w-2xl mx-auto px-5 py-8">
+    <h1 class="text-lg font-semibold text-[#202124] dark:text-[#e8eaed] mb-1">上傳新文章</h1>
+    <p class="text-sm text-[#9aa0a6] mb-6">上傳 TXT 檔，系統會自動解析並新增到 GitHub 倉庫。</p>
+
+    <!-- TXT Upload Zone -->
+    <div id="drop-zone"
+      class="border-2 border-dashed border-[#dadce0] dark:border-[#3c4043] rounded-xl p-8 text-center cursor-pointer hover:border-[#1a73e8] transition-colors mb-6"
+    >
+      <svg class="mx-auto mb-3 text-[#9aa0a6]" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>
+        <polyline points="16 8 12 4 8 8"/>
+        <line x1="12" y1="4" x2="12" y2="16"/>
+      </svg>
+      <p class="text-sm text-[#5f6368] dark:text-[#9aa0a6]">拖曳 TXT 檔到這裡，或</p>
+      <label class="mt-2 inline-block cursor-pointer text-[#1a73e8] dark:text-[#8ab4f8] text-sm font-medium hover:underline">
+        點此選擇檔案
+        <input type="file" id="file-input" accept=".txt" class="hidden" />
+      </label>
+    </div>
+
+    <!-- Parsed form (hidden until file is loaded) -->
+    <form id="story-form" class="hidden flex flex-col gap-4">
+      <div class="bg-[#e8f0fe] dark:bg-[#1e3a5f] rounded-xl px-4 py-3 text-sm text-[#1a73e8] dark:text-[#8ab4f8]">
+        已解析檔案，請確認以下資訊後送出。
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="text-xs text-[#9aa0a6]">標題 *</label>
+        <input id="f-title" name="title" required
+          class="border border-[#dadce0] dark:border-[#3c4043] rounded-lg px-3 py-2 text-sm bg-white dark:bg-[#303134] text-[#202124] dark:text-[#e8eaed] focus:outline-none focus:border-[#1a73e8]" />
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div class="flex flex-col gap-1">
+          <label class="text-xs text-[#9aa0a6]">作者</label>
+          <input id="f-author" name="author" value="站長"
+            class="border border-[#dadce0] dark:border-[#3c4043] rounded-lg px-3 py-2 text-sm bg-white dark:bg-[#303134] text-[#202124] dark:text-[#e8eaed] focus:outline-none focus:border-[#1a73e8]" />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="text-xs text-[#9aa0a6]">發布日期</label>
+          <input id="f-date" name="publishDate" type="date"
+            class="border border-[#dadce0] dark:border-[#3c4043] rounded-lg px-3 py-2 text-sm bg-white dark:bg-[#303134] text-[#202124] dark:text-[#e8eaed] focus:outline-none focus:border-[#1a73e8]" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div class="flex flex-col gap-1">
+          <label class="text-xs text-[#9aa0a6]">分類標籤（逗號分隔）</label>
+          <input id="f-tags" name="tags" placeholder="thriller, scifi"
+            class="border border-[#dadce0] dark:border-[#3c4043] rounded-lg px-3 py-2 text-sm bg-white dark:bg-[#303134] text-[#202124] dark:text-[#e8eaed] focus:outline-none focus:border-[#1a73e8]" />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="text-xs text-[#9aa0a6]">機密等級</label>
+          <select id="f-access" name="access"
+            class="border border-[#dadce0] dark:border-[#3c4043] rounded-lg px-3 py-2 text-sm bg-white dark:bg-[#303134] text-[#202124] dark:text-[#e8eaed] focus:outline-none focus:border-[#1a73e8]">
+            <option value="public">公開</option>
+            <option value="member">會員</option>
+            <option value="paid">付費</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="text-xs text-[#9aa0a6]">摘要</label>
+        <textarea id="f-summary" name="summary" rows="2"
+          class="border border-[#dadce0] dark:border-[#3c4043] rounded-lg px-3 py-2 text-sm bg-white dark:bg-[#303134] text-[#202124] dark:text-[#e8eaed] focus:outline-none focus:border-[#1a73e8] resize-none"></textarea>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="text-xs text-[#9aa0a6]">封面圖 URL（選填）</label>
+        <input id="f-cover" name="cover" placeholder="https://..."
+          class="border border-[#dadce0] dark:border-[#3c4043] rounded-lg px-3 py-2 text-sm bg-white dark:bg-[#303134] text-[#202124] dark:text-[#e8eaed] focus:outline-none focus:border-[#1a73e8]" />
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="text-xs text-[#9aa0a6]">本文</label>
+        <textarea id="f-content" name="content" rows="10"
+          class="border border-[#dadce0] dark:border-[#3c4043] rounded-lg px-3 py-2 text-sm bg-white dark:bg-[#303134] text-[#202124] dark:text-[#e8eaed] focus:outline-none focus:border-[#1a73e8] resize-y font-mono"></textarea>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="text-xs text-[#9aa0a6]">冰山之下（會員解鎖，選填）</label>
+        <textarea id="f-iceberg" name="iceberg" rows="4"
+          class="border border-[#dadce0] dark:border-[#3c4043] rounded-lg px-3 py-2 text-sm bg-white dark:bg-[#303134] text-[#202124] dark:text-[#e8eaed] focus:outline-none focus:border-[#1a73e8] resize-y"></textarea>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="text-xs text-[#9aa0a6]">出場人物資料（會員解鎖，選填）</label>
+        <textarea id="f-characters" name="characters" rows="4"
+          class="border border-[#dadce0] dark:border-[#3c4043] rounded-lg px-3 py-2 text-sm bg-white dark:bg-[#303134] text-[#202124] dark:text-[#e8eaed] focus:outline-none focus:border-[#1a73e8] resize-y"></textarea>
+      </div>
+
+      <div id="error-msg" class="hidden text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 rounded-lg px-4 py-3"></div>
+
+      <button type="submit" id="submit-btn"
+        class="w-full py-2.5 rounded-full bg-[#1a73e8] text-white text-sm font-medium hover:bg-[#1557b0] transition-colors cursor-pointer">
+        上傳到 GitHub
+      </button>
+    </form>
+
+    <!-- Success banner -->
+    <div id="success-banner" class="hidden bg-[#e6f4ea] dark:bg-[#1b3a2a] rounded-xl px-5 py-4 text-sm text-[#137333] dark:text-[#81c995]">
+      <p class="font-medium mb-1">上傳成功！</p>
+      <p>文章已提交到 GitHub，稍候幾分鐘後 Vercel 會自動重新部署。</p>
+      <a href="/" class="mt-3 inline-block text-[#1a73e8] dark:text-[#8ab4f8] hover:underline">← 回首頁</a>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+// Section markers used to split the TXT file
+const SECTION = {
+  title:      /^【標題】/,
+  author:     /^【作者】/,
+  date:       /^【日期】/,
+  tags:       /^【標籤】/,
+  access:     /^【等級】/,
+  summary:    /^【摘要】/,
+  cover:      /^【封面】/,
+  content:    /^【本文】/,
+  iceberg:    /^【冰山之下】/,
+  characters: /^【出場人物】/,
+};
+
+type SectionKey = keyof typeof SECTION;
+
+function parseTxt(text: string): Record<string, string> {
+  const lines = text.split(/\r?\n/);
+  const result: Record<string, string> = {};
+  let current: SectionKey | null = null;
+  const buf: string[] = [];
+
+  function flush() {
+    if (current) result[current] = buf.join('\n').trim();
+  }
+
+  for (const line of lines) {
+    let matched = false;
+    for (const [key, rx] of Object.entries(SECTION)) {
+      if (rx.test(line)) {
+        flush();
+        current = key as SectionKey;
+        buf.length = 0;
+        const after = line.replace(rx, '').trim();
+        if (after) buf.push(after);
+        matched = true;
+        break;
+      }
+    }
+    if (!matched && current) buf.push(line);
+  }
+  flush();
+  return result;
+}
+
+function fill(id: string, value: string) {
+  const el = document.getElementById(id) as HTMLInputElement | HTMLTextAreaElement | null;
+  if (el) el.value = value;
+}
+
+function handleFile(file: File) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const text = (e.target?.result as string) ?? '';
+    const data = parseTxt(text);
+    fill('f-title',      data.title      ?? '');
+    fill('f-author',     data.author     ?? '站長');
+    fill('f-date',       data.date       ?? new Date().toISOString().slice(0, 10));
+    fill('f-tags',       data.tags       ?? '');
+    fill('f-summary',    data.summary    ?? '');
+    fill('f-cover',      data.cover      ?? '');
+    fill('f-content',    data.content    ?? '');
+    fill('f-iceberg',    data.iceberg    ?? '');
+    fill('f-characters', data.characters ?? '');
+    const sel = document.getElementById('f-access') as HTMLSelectElement | null;
+    if (sel && data.access) sel.value = data.access;
+    document.getElementById('story-form')?.classList.remove('hidden');
+  };
+  reader.readAsText(file, 'utf-8');
+}
+
+// Drop zone
+const dropZone = document.getElementById('drop-zone')!;
+const fileInput = document.getElementById('file-input') as HTMLInputElement;
+
+dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('border-[#1a73e8]'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('border-[#1a73e8]'));
+dropZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropZone.classList.remove('border-[#1a73e8]');
+  const file = e.dataTransfer?.files[0];
+  if (file) handleFile(file);
+});
+fileInput.addEventListener('change', () => {
+  const file = fileInput.files?.[0];
+  if (file) handleFile(file);
+});
+
+// Form submit
+document.getElementById('story-form')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('submit-btn') as HTMLButtonElement;
+  const errBox = document.getElementById('error-msg')!;
+  btn.disabled = true;
+  btn.textContent = '上傳中…';
+  errBox.classList.add('hidden');
+
+  const payload = {
+    title:      (document.getElementById('f-title')      as HTMLInputElement).value,
+    author:     (document.getElementById('f-author')     as HTMLInputElement).value,
+    publishDate:(document.getElementById('f-date')       as HTMLInputElement).value,
+    tags:       (document.getElementById('f-tags')       as HTMLInputElement).value,
+    access:     (document.getElementById('f-access')     as HTMLSelectElement).value,
+    summary:    (document.getElementById('f-summary')    as HTMLTextAreaElement).value,
+    cover:      (document.getElementById('f-cover')      as HTMLInputElement).value,
+    content:    (document.getElementById('f-content')    as HTMLTextAreaElement).value,
+    iceberg:    (document.getElementById('f-iceberg')    as HTMLTextAreaElement).value,
+    characters: (document.getElementById('f-characters') as HTMLTextAreaElement).value,
+  };
+
+  try {
+    const res = await fetch('/api/upload-story', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error ?? '上傳失敗');
+    document.getElementById('story-form')!.classList.add('hidden');
+    document.getElementById('drop-zone')!.classList.add('hidden');
+    document.getElementById('success-banner')!.classList.remove('hidden');
+  } catch (err: any) {
+    errBox.textContent = err.message;
+    errBox.classList.remove('hidden');
+    btn.disabled = false;
+    btn.textContent = '上傳到 GitHub';
+  }
+});
+</script>

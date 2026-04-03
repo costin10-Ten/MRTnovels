@@ -10,6 +10,8 @@ const stories = defineCollection({
     access: z.enum(['public', 'member', 'paid']).default('public'),
     summary: z.string(),
     cover: z.string().optional(),
+    iceberg: z.string().optional(),
+    characters: z.string().optional(),
   }),
 });
 

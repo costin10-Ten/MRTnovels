@@ -30,11 +30,11 @@ function applyAll(font: Font, size: Size, theme: Theme, red: boolean) {
     else h.classList.remove('dark');
   }
 
-  // Font — inline style on body (beats all CSS specificity)
-  document.body.style.fontFamily = FONT_MAP[font];
+  // Font — inline style with !important beats anti-flash <style> !important
+  document.body.style.setProperty('font-family', FONT_MAP[font], 'important');
 
-  // Size — inline style on html (rem base)
-  h.style.fontSize = SIZE_MAP[size];
+  // Size — inline style with !important beats anti-flash <style> !important
+  h.style.setProperty('font-size', SIZE_MAP[size], 'important');
 
   // Red highlight
   if (red) h.setAttribute('data-highlight', 'red');
