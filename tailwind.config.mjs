@@ -5,15 +5,38 @@ export default {
   theme: {
     extend: {
       fontFamily: {
+        // Noto Sans TC is Google's official Chinese font; Roboto for Latin
         sans: [
-          '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"',
-          '"Noto Sans TC"', '"PingFang TC"', '"Microsoft JhengHei"',
+          '"Noto Sans TC"', '"Google Sans"', 'Roboto',
+          '"PingFang TC"', '"Microsoft JhengHei"',
           'Helvetica Neue', 'Arial', 'sans-serif',
         ],
       },
       colors: {
-        border: '#e5e5e5',
-        sidebar: '#fafafa',
+        // Google Material / Search palette
+        gblue: {
+          DEFAULT: '#1a73e8',
+          light:   '#e8f0fe',
+          dark:    '#8ab4f8',
+          'dark-light': '#1e3a5f',
+        },
+        gsurface: {
+          DEFAULT: '#ffffff',
+          bg:      '#f8f9fa',
+          dark:    '#303134',
+          'dark-bg': '#202124',
+        },
+        gtext: {
+          DEFAULT: '#202124',
+          '2':     '#5f6368',
+          '3':     '#9aa0a6',
+          dark:    '#e8eaed',
+          'dark-2': '#9aa0a6',
+        },
+        gborder: {
+          DEFAULT: '#dadce0',
+          dark:    '#3c4043',
+        },
       },
     },
   },

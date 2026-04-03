@@ -33,21 +33,20 @@ const dateStr = publishDate.toLocaleDateString('zh-TW', {
 ---
 
 {variant === 'featured' ? (
-  <!-- Featured card (homepage top 5) -->
-  <article class="border-b border-gray-200 dark:border-gray-800 py-5 first:border-t">
-    <div class="flex items-start justify-between gap-4">
+  <article class="bg-white dark:bg-[#303134] rounded-xl border border-[#dadce0] dark:border-[#3c4043] px-5 py-4 hover:shadow-md transition-shadow">
+    <div class="flex items-start gap-4">
       <div class="flex-1 min-w-0">
-        <div class="flex items-center gap-2 mb-1.5">
+        <div class="flex items-center gap-1.5 mb-2">
           {access !== 'public' && <Badge type="access" value={access} />}
           {tags.slice(0, 2).map(t => <Badge type="tag" value={t} />)}
         </div>
-        <a href={`/stories/${slug}`} class="block group no-underline">
-          <h2 class="text-base font-medium text-gray-900 dark:text-gray-100 group-hover:underline leading-snug mb-1.5">
+        <a href={`/stories/${slug}`} class="block group no-underline hover:no-underline">
+          <h2 class="text-[0.9375rem] font-medium text-[#202124] dark:text-[#e8eaed] group-hover:text-[#1a73e8] dark:group-hover:text-[#8ab4f8] leading-snug mb-2 transition-colors">
             {title}
           </h2>
-          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed line-clamp-2">{summary}</p>
+          <p class="text-sm text-[#5f6368] dark:text-[#9aa0a6] leading-relaxed line-clamp-2">{summary}</p>
         </a>
-        <div class="flex items-center gap-3 mt-2 text-xs text-gray-400 dark:text-gray-500">
+        <div class="flex items-center gap-2 mt-2.5 text-xs text-[#9aa0a6]">
           <span>{dateStr}</span>
           <span>·</span>
           <span>{author}</span>
@@ -58,13 +57,12 @@ const dateStr = publishDate.toLocaleDateString('zh-TW', {
     </div>
   </article>
 ) : (
-  <!-- Row variant (full list) -->
   <a
     href={`/stories/${slug}`}
-    class="flex items-baseline gap-3 py-2 px-1 hover:bg-gray-50 dark:hover:bg-gray-900 group no-underline border-b border-gray-100 dark:border-gray-800"
+    class="flex items-baseline gap-3 py-2 px-3 rounded-lg hover:bg-[#f1f3f4] dark:hover:bg-[#3c4043] group no-underline hover:no-underline transition-colors"
   >
-    <span class="text-xs text-gray-400 dark:text-gray-500 whitespace-nowrap w-24 shrink-0">{dateStr}</span>
-    <span class="text-sm text-gray-900 dark:text-gray-100 group-hover:underline flex-1 min-w-0 truncate">{title}</span>
+    <span class="text-xs text-[#9aa0a6] whitespace-nowrap w-24 shrink-0">{dateStr}</span>
+    <span class="text-sm text-[#202124] dark:text-[#e8eaed] group-hover:text-[#1a73e8] dark:group-hover:text-[#8ab4f8] flex-1 min-w-0 truncate transition-colors">{title}</span>
     <div class="flex items-center gap-1.5 shrink-0">
       {access !== 'public' && <Badge type="access" value={access} />}
       {tags.slice(0, 1).map(t => <Badge type="tag" value={t} />)}

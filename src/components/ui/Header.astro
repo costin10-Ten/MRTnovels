@@ -6,7 +6,7 @@ import { SignedIn, SignedOut, UserButton } from '@clerk/astro/components';
     <button
       id="sidebar-toggle"
       aria-label="開關側欄"
-      class="p-1 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 md:hidden"
+      class="p-1 text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed] md:hidden"
     >
       <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
         <rect y="3" width="20" height="1.5" rx="1"/>
@@ -14,9 +14,9 @@ import { SignedIn, SignedOut, UserButton } from '@clerk/astro/components';
         <rect y="15" width="20" height="1.5" rx="1"/>
       </svg>
     </button>
-    <a href="/" class="flex flex-col leading-none no-underline">
-      <span class="text-sm font-semibold tracking-tight text-gray-900 dark:text-gray-100">狂小說網</span>
-      <span class="text-[10px] text-gray-400 dark:text-gray-500 tracking-widest">通勤文學速讀</span>
+    <a href="/" class="flex flex-col leading-none no-underline hover:no-underline">
+      <span class="text-sm font-medium tracking-tight text-[#202124] dark:text-[#e8eaed]">狂小說網</span>
+      <span class="text-[10px] text-[#9aa0a6] tracking-widest">通勤文學速讀</span>
     </a>
   </div>
 
@@ -24,15 +24,18 @@ import { SignedIn, SignedOut, UserButton } from '@clerk/astro/components';
     <SignedOut>
       <a
         href="/sign-in"
-        class="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+        class="text-[#5f6368] dark:text-[#9aa0a6] hover:text-[#1a73e8] dark:hover:text-[#8ab4f8] transition-colors no-underline"
       >登入</a>
       <a
         href="/sign-up"
-        class="px-3 py-1 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-gray-100 hover:text-gray-900 dark:hover:text-gray-100 transition-colors text-xs"
+        class="px-4 py-1.5 rounded-full bg-[#1a73e8] text-white text-xs font-medium hover:bg-[#1557b0] transition-colors no-underline"
       >加入會員</a>
     </SignedOut>
     <SignedIn>
-      <a href="/member" class="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 text-xs transition-colors">我的</a>
+      <a
+        href="/member"
+        class="text-[#5f6368] dark:text-[#9aa0a6] hover:text-[#1a73e8] dark:hover:text-[#8ab4f8] text-xs transition-colors no-underline"
+      >我的</a>
       <UserButton />
     </SignedIn>
   </div>

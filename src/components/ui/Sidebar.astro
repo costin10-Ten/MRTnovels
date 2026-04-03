@@ -20,12 +20,12 @@ function fmt(n: number) {
 
 const currentPath = Astro.url.pathname;
 ---
-<aside class="sidebar py-5 px-4 select-none">
-  <!-- Site brand (desktop only title) -->
-  <div class="hidden md:block mb-6">
-    <a href="/" class="block no-underline">
-      <div class="text-sm font-semibold text-gray-900 dark:text-gray-100 leading-snug">狂小說網</div>
-      <div class="text-[10px] text-gray-400 dark:text-gray-500 tracking-widest mt-0.5">通勤文學速讀</div>
+<aside class="sidebar py-4 px-3 select-none">
+  <!-- Site brand (desktop) -->
+  <div class="hidden md:block mb-5 px-3">
+    <a href="/" class="block no-underline hover:no-underline">
+      <div class="text-sm font-medium text-[#202124] dark:text-[#e8eaed] leading-snug">狂小說網</div>
+      <div class="text-[10px] text-[#9aa0a6] tracking-widest mt-0.5">通勤文學速讀</div>
     </a>
   </div>
 
@@ -36,13 +36,13 @@ const currentPath = Astro.url.pathname;
       return (
         <a
           href={href}
-          class={`flex items-center gap-2.5 px-2 py-2 rounded-sm text-sm transition-colors ${
+          class={`flex items-center gap-3 px-3 py-2 rounded-full text-sm font-medium transition-colors no-underline hover:no-underline ${
             active
-              ? 'bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900'
-              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800'
+              ? 'bg-[#e8f0fe] text-[#1a73e8] dark:bg-[#1e3a5f] dark:text-[#8ab4f8]'
+              : 'text-[#5f6368] dark:text-[#9aa0a6] hover:bg-[#f1f3f4] hover:text-[#202124] dark:hover:bg-[#3c4043] dark:hover:text-[#e8eaed]'
           }`}
         >
-          <span class="w-4 text-center text-xs opacity-70">{icon}</span>
+          <span class="w-4 text-center text-xs">{icon}</span>
           <span>{label}</span>
         </a>
       );
@@ -50,17 +50,17 @@ const currentPath = Astro.url.pathname;
   </nav>
 
   <!-- Divider -->
-  <div class="border-t border-gray-200 dark:border-gray-800 my-5"></div>
+  <div class="border-t border-[#dadce0] dark:border-[#3c4043] my-4"></div>
 
   <!-- Stats -->
-  <div class="flex flex-col gap-4 px-2">
+  <div class="flex flex-col gap-4 px-3">
     <div>
-      <div class="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">瀏覽人次</div>
-      <div class="text-lg font-light text-gray-900 dark:text-gray-100 tabular-nums">{fmt(views)}</div>
+      <div class="text-[10px] text-[#9aa0a6] uppercase tracking-widest mb-0.5">瀏覽人次</div>
+      <div class="text-lg font-light text-[#202124] dark:text-[#e8eaed] tabular-nums">{fmt(views)}</div>
     </div>
     <div>
-      <div class="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">總按讚數</div>
-      <div class="text-lg font-light text-gray-900 dark:text-gray-100 tabular-nums">{fmt(likes)}</div>
+      <div class="text-[10px] text-[#9aa0a6] uppercase tracking-widest mb-0.5">總按讚數</div>
+      <div class="text-lg font-light text-[#202124] dark:text-[#e8eaed] tabular-nums">{fmt(likes)}</div>
     </div>
   </div>
 </aside>
