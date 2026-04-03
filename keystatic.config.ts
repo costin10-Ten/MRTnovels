@@ -78,11 +78,9 @@ export default config({
           publicPath: '/covers/',
         }),
 
-        content: fields.document({
+        content: fields.markdoc({
           label: '文章內容',
-          formatting: true,
-          dividers: true,
-          links: true,
+          extension: 'md',
         }),
       },
     }),
