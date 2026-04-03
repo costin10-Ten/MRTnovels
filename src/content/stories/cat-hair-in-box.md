@@ -5,6 +5,7 @@ author: 站長
 tags: [mystery]
 access: public
 summary: 命案現場一塵不染，但推理的起點是一根波斯貓的白毛。
+cover: https://picsum.photos/seed/detective-mystery/800/400
 ---
 
 命案現場一塵不染。
@@ -17,7 +18,7 @@ summary: 命案現場一塵不染，但推理的起點是一根波斯貓的白�
 
 又一根貓毛。
 
-「送貨員。」她說。
+「**送貨員**。」她說。
 
 「什麼？」
 

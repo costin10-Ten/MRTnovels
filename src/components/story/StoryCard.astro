@@ -9,6 +9,7 @@ interface Props {
   tags: string[];
   access: string;
   summary: string;
+  cover?: string;
   views?: number;
   likes?: number;
   variant?: 'featured' | 'row';
@@ -22,6 +23,7 @@ const {
   tags,
   access,
   summary,
+  cover,
   views = 0,
   likes = 0,
   variant = 'row',
@@ -33,8 +35,18 @@ const dateStr = publishDate.toLocaleDateString('zh-TW', {
 ---
 
 {variant === 'featured' ? (
-  <article class="bg-white dark:bg-[#303134] rounded-xl border border-[#dadce0] dark:border-[#3c4043] px-5 py-4 hover:shadow-md transition-shadow">
-    <div class="flex items-start gap-4">
+  <article class="bg-white dark:bg-[#303134] rounded-xl border border-[#dadce0] dark:border-[#3c4043] overflow-hidden hover:shadow-md transition-shadow">
+    {cover && (
+      <a href={`/stories/${slug}`} class="block overflow-hidden" tabindex="-1">
+        <img
+          src={cover}
+          alt={title}
+          class="w-full h-36 object-cover grayscale opacity-80 hover:opacity-90 transition-opacity"
+          loading="lazy"
+        />
+      </a>
+    )}
+    <div class="flex items-start gap-4 px-5 py-4">
       <div class="flex-1 min-w-0">
         <div class="flex items-center gap-1.5 mb-2">
           {access !== 'public' && <Badge type="access" value={access} />}
@@ -57,6 +69,7 @@ const dateStr = publishDate.toLocaleDateString('zh-TW', {
     </div>
   </article>
 ) : (
+
   <a
     href={`/stories/${slug}`}
     class="flex items-baseline gap-3 py-2 px-3 rounded-lg hover:bg-[#f1f3f4] dark:hover:bg-[#3c4043] group no-underline hover:no-underline transition-colors"

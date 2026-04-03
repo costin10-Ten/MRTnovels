@@ -96,15 +96,22 @@ const fullTitle = title === '狂小說網' ? title + '・通勤文學速讀' : `
   <script>
     (function(){
       var h=document.documentElement;
+      // Theme
       var t=localStorage.getItem('ks-theme')||'system';
-      if(t==='dark'){h.classList.add('dark');}
-      else if(t==='light'){h.classList.remove('dark');}
-      else if(window.matchMedia('(prefers-color-scheme: dark)').matches){h.classList.add('dark');}
-      var f=localStorage.getItem('ks-font');
-      if(f&&f!=='sans')h.setAttribute('data-font',f);
-      var s=localStorage.getItem('ks-size');
-      if(s&&s!=='md')h.setAttribute('data-size',s);
-      if(localStorage.getItem('ks-highlight-red')==='true')h.setAttribute('data-highlight','red');
+      if(t==='dark')h.classList.add('dark');
+      else if(t==='light')h.classList.remove('dark');
+      else if(window.matchMedia('(prefers-color-scheme: dark)').matches)h.classList.add('dark');
+      // Font & size: inject <style> so it works before body renders
+      var fontMap={'serif':"'Noto Serif TC','Songti SC',Georgia,serif",'cursive':"'DFKai-SB',BiauKai,KaiTi,cursive,serif",'system':"system-ui,-apple-system,sans-serif"};
+      var sizeMap={'sm':'87.5%','lg':'112.5%'};
+      var f=localStorage.getItem('ks-font')||'sans';
+      var s=localStorage.getItem('ks-size')||'md';
+      var r=localStorage.getItem('ks-highlight-red')==='true';
+      var css='';
+      if(fontMap[f])css+='body{font-family:'+fontMap[f]+'!important}';
+      if(sizeMap[s])css+='html{font-size:'+sizeMap[s]+'!important}';
+      if(r)css+='.story-body strong,.story-body b{color:#e53935;font-weight:500}';
+      if(css){var st=document.createElement('style');st.textContent=css;document.head.appendChild(st);}
     })();
   </script>
 

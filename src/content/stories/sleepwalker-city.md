@@ -5,11 +5,12 @@ author: 站長
 tags: [thriller]
 access: member
 summary: 她第一次醒來的地方是仁愛路的人行道，鞋底沾著不知道從哪裡來的血。
+cover: https://picsum.photos/seed/rainy-city-sidewalk/800/400
 ---
 
 她第一次醒來的地方，是仁愛路的人行道。
 
-鞋底沾著什麼，低頭看：是血。
+**鞋底沾著什麼，低頭看：是血**。
 
 她的手沒有傷，腿沒有傷。她打開手機，凌晨四點十七分。她只記得在床上讀書，接著就是這裡。
 
