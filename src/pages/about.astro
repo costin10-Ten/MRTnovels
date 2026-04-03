@@ -7,13 +7,41 @@ const allStories = await getCollection('stories');
 const stats = await getGlobalStats().catch(() => ({ views: 0, likes: 0 }));
 
 const MILESTONES = [
-  { date: '2023-01', label: '第一篇文章上線', done: true },
-  { date: '2023-06', label: '累計 10 篇文章', done: true },
-  { date: '2024-01', label: '累計 1,000 瀏覽', done: stats.views >= 1000 },
-  { date: '2024-06', label: '累計 20 篇文章', done: allStories.length >= 20 },
-  { date: '2025-01', label: '累計 10,000 瀏覽', done: stats.views >= 10000 },
-  { date: '?', label: '100 萬個讚', done: stats.likes >= 1000000 },
+  // ── 文章數 ──
+  { label: '第一篇文章上線，作者本人讀了六遍確認沒有錯字，第七遍發現標點符號打錯',       metric: allStories.length,   target: 1,     unit: '篇', funny: false },
+  { label: '10 篇文章，家人覺得「還不錯」，但沒有人按讚',                              metric: allStories.length,   target: 10,    unit: '篇', funny: false },
+  { label: '20 篇文章，網站有了第一個陌生人讀者，或者是搜尋引擎爬蟲，我們不確定',        metric: allStories.length,   target: 20,    unit: '篇', funny: false },
+  { label: '30 篇文章，我哥說「你要怎麼靠這個賺錢」，我說我沒有要賺錢，他說「那你在幹嘛」', metric: allStories.length, target: 30,    unit: '篇', funny: true },
+  { label: '50 篇文章，正式超越我哥的 Instagram 發文數，這很重要',                     metric: allStories.length,   target: 50,    unit: '篇', funny: true },
+  { label: '100 篇文章，我媽問「那個網站有沒有在賺錢」，我說沒有，她傳來一篇養生文章', metric: allStories.length,   target: 100,   unit: '篇', funny: true },
+  { label: '200 篇文章',                                                              metric: allStories.length,   target: 200,   unit: '篇', funny: false },
+  { label: '500 篇文章，我弟說「你寫這麼多有什麼用」，然後繼續打遊戲打到前一百名',     metric: allStories.length,   target: 500,   unit: '篇', funny: true },
+  { label: '1,000 篇文章，我妹說「哥你好厲害」，我問她真的有讀嗎，她說沒有但是氣質有感受到', metric: allStories.length, target: 1000,  unit: '篇', funny: true },
+  { label: '2,000 篇文章，板南線全線每一站都有一篇對應的故事，任務完成，可以死了',      metric: allStories.length,   target: 2000,  unit: '篇', funny: true },
+
+  // ── 瀏覽數 ──
+  { label: '累計 1,000 次瀏覽',         metric: stats.views, target: 1000,    unit: '次', funny: false },
+  { label: '累計 10,000 次瀏覽',        metric: stats.views, target: 10000,   unit: '次', funny: false },
+  { label: '累計 100,000 次瀏覽，大約等於台北市每三十個人裡有一個人進來看過，或者是同一個人進來十萬次，我們不排除後者', metric: stats.views, target: 100000, unit: '次', funny: true },
+
+  // ── 按讚數 ──
+  { label: '第一個讚，來自老婆，她是被迫的',                                          metric: stats.likes, target: 1,         unit: '讚', funny: true },
+  { label: '100 個讚，發現有人真的在按讚',                                            metric: stats.likes, target: 100,       unit: '讚', funny: false },
+  { label: '1,000 個讚',                                                             metric: stats.likes, target: 1000,      unit: '讚', funny: false },
+  { label: '10,000 個讚，我哥問「那個網站有沒有在賺錢」，這次換他問了',               metric: stats.likes, target: 10000,     unit: '讚', funny: true },
+  { label: '50,000 個讚，正式超越我哥最紅那支影片的觀看次數乘以二十五',              metric: stats.likes, target: 50000,     unit: '讚', funny: true },
+  { label: '100,000 個讚，我妹說她要把這件事告訴她首爾的男友，我說那個男生不認識你，她說「他很快就會認識了」', metric: stats.likes, target: 100000, unit: '讚', funny: true },
+  { label: '200,000 個讚，我弟說「我要把這件事告訴我遊戲隊友」，這大概是他能給的最高讚美', metric: stats.likes, target: 200000, unit: '讚', funny: true },
+  { label: '500,000 個讚，一半了，爸媽從養生文章群組宣傳這個網站，群組裡全是六七十歲的人，但我很感動', metric: stats.likes, target: 500000, unit: '讚', funny: true },
+  { label: '1,000,000 個讚 🎉 一百萬！據說達成後作者要在捷運月台上跳舞，目前還沒有確認這個說法', metric: stats.likes, target: 1000000, unit: '讚', funny: true },
+  { label: '2,000,000 個讚，這時候我哥的粉絲數大概還是兩千四',                       metric: stats.likes, target: 2000000,  unit: '讚', funny: true },
+  { label: '5,000,000 個讚，我媽傳來一篇《按讚也可以養生？科學家這樣說》',           metric: stats.likes, target: 5000000,  unit: '讚', funny: true },
+  { label: '10,000,000 個讚，一千萬個讚。如果你是在宇宙中某個還沒被命名的星球讀到這段話，謝謝你，也謝謝你願意按讚。', metric: stats.likes, target: 10000000, unit: '讚', funny: true },
 ];
+
+function isDone(m: typeof MILESTONES[0]) {
+  return m.metric >= m.target;
+}
 ---
 
 <BaseLayout
@@ -21,63 +49,161 @@ const MILESTONES = [
   description="狂小說網的故事：一個人、一個網站、通勤時間裡的文學宇宙。"
 >
   <article class="max-w-xl mx-auto px-5 py-10">
-    <h1 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-8">關於本站</h1>
+    <h1 class="text-xl font-semibold text-[#202124] dark:text-[#e8eaed] mb-8">關於本站</h1>
 
-    <section class="story-body text-base mb-12">
-      <p>
-        這個網站是我為了個人的喜好做的。
-      </p>
-      <p>
-        我喜歡在通勤的時候讀短篇故事——不需要記情節、不用從上次讀到哪裡找起，一篇完整的東西，從捷運到公司剛好讀完，像是每天早上給自己一小塊時間，活在別人的故事裡。
-      </p>
-      <p>
-        所以我開始寫，也開始把這個地方建起來。沒有複雜的設計，沒有演算法，沒有廣告。就是一個能好好讀文章的地方。
-      </p>
-      <p>
-        這個網站，獻給我的老婆——她是第一個讀者，也是最誠實的讀者。
-        也獻給所有喜愛通勤文學的你，謝謝你願意把通勤的時間花在這裡。
-      </p>
+    <!-- 故事本文 -->
+    <section class="story-body text-base mb-14">
+      <p>這個網站是從一個丟臉的早晨開始的。</p>
+
+      <p>那天早上，我坐在板南線上，對面坐著我爸。</p>
+
+      <p>對，就是我爸。我們住同一個捷運站，每天早上搭同一班車去不同的地方，中間十八分鐘，什麼話也不說——不是因為父子關係有問題，是因為我爸早上六點四十五分的樣子，跟他的嘴巴還沒開機差不多。他就坐在那裡，盯著手機，表情像在看一份重要的政府公文，但他看的是我媽傳來的養生文章。</p>
+
+      <p>我媽每天早上固定傳三件事：第一，昨晚夢到什麼（通常跟過世的外婆有關，而且每次外婆說的話都不一樣，我懷疑我媽在夢裡發展了一套自己的養生哲學）；第二，從某個 LINE 群組複製來的健康知識（今天是薑黃，明天是苦瓜，後天是「不要吃冷氣吹多了的西瓜」，大後天是「睡前喝這個讓你腸胃一整年不生病」，字裡行間永遠有三個驚嘆號和一個錯別字）；第三，一個沒有標點符號、全大寫的訊息，內容永遠是「你今天要記得吃早餐」，哪怕她自己根本不知道我在哪裡、在做什麼，這件事她每天都傳，雷打不動，比鬧鐘還準時。</p>
+
+      <p>我哥比我早半小時出門，但他從來不搭捷運，因為他覺得捷運會讓他「失去靈感」。他是個自稱創作者的人，粉絲數兩千四，七百個是同學，三百個是親戚，剩下一千個裡面有一半是他自己買的，另外五百個是迷路點進來的路人，大概在看了三秒之後默默離開了。他目前最紅的作品是一支教人「如何在捷運上看起來很有深度」的影片，觀看次數是兩千三，比他粉絲數還少，我跟他說這個數學，他說「演算法的問題」，我說「你根本沒有演算法」，他說「我在說未來的演算法」。</p>
+
+      <p>我妹高三，她每天早上進廁所要四十分鐘，而且不是在洗澡，是在對鏡子練習告白。她把告白的對象設定成某個韓國男歌手，每次出來眼睛都紅紅的，不是哭了，是感動了。有一次她告訴我媽這件事，說她在練習表達感情，我媽沉默了五秒，說：「那個男生知道嗎？」她說：「還不知道。」我媽沉默了十秒，傳來一篇《如何跨越語言障礙找到真愛》，我不確定那是鼓勵還是祝福，但我妹把那篇文章截圖存起來了。</p>
+
+      <p>我弟國中二年級，人生目前只有一個目標：在某個遊戲裡打進全台前一百名。前幾天他打到前兩百名，在家裡大喊「我做到了」，聲音之大讓鄰居以為有人受傷。我媽衝出來，發現他站在電腦前比出勝利手勢，她把他電源拔掉，他沉默站著三秒，說：「我去讀書。」然後回房間從另一個插頭把電腦接回去。我媽站在客廳嘆了一口氣，然後傳給我一篇《孩子沉迷遊戲怎麼辦》，大概是一種無聲的求援。</p>
+
+      <p>這就是我的家。</p>
+
+      <p>有一天晚上，我一個人坐在捷運上，從西門到南港，在手機裡讀一篇我很久以前寫的東西，突然覺得，這種感覺很好——通勤的時候讀自己的故事，有一種奇怪的和解感，不是跟世界和解，是跟每天早上六點四十五分的爸、跟每天準時發送「記得吃早餐」的媽、跟兩千四粉絲的哥、跟首爾男友的妹、跟全台前兩百名的弟，還有跟那十八分鐘什麼話也沒說的自己，全部和解。</p>
+
+      <p>所以我就做了這個網站。</p>
+
+      <p>沒有特別的理由。只是想讓一些東西被讀到。這個網站，獻給我老婆——她是第一個讀者，也是最誠實的讀者，她說過最好的評語是：「還不錯，但那個字打錯了。」</p>
+
+      <p>也獻給你。謝謝你願意把通勤的時間花在這裡。</p>
     </section>
 
     <!-- 100 萬按讚企劃 -->
-    <section id="million" class="mb-12">
-      <h2 class="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-4">100 萬按讚企劃</h2>
-      <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
-        目標是讓這個網站收到 100 萬個讚。不是 follower、不是點擊，是每一篇故事讓你覺得值得按的那個讚。
+    <section id="million" class="mb-14">
+      <h2 class="text-[10px] text-[#9aa0a6] uppercase tracking-widest mb-5">100 萬按讚企劃</h2>
+
+      <p class="text-sm text-[#5f6368] dark:text-[#9aa0a6] mb-6 leading-relaxed">
+        目標是讓這個網站收到 100 萬個讚。不是追蹤、不是點擊，是每一篇故事讓你覺得值得按的那一下。<br/>
+        這個數字很荒謬，我知道。但荒謬的事才值得好好做完。
       </p>
-      <div class="mb-2">
-        <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-1.5">
+
+      <!-- 進度條 -->
+      <div class="mb-6">
+        <div class="flex items-center justify-between text-xs text-[#5f6368] dark:text-[#9aa0a6] mb-2">
           <span>目前進度</span>
-          <span class="tabular-nums">{stats.likes.toLocaleString('zh-TW')} / 1,000,000</span>
+          <span class="tabular-nums font-medium">{stats.likes.toLocaleString('zh-TW')} <span class="font-normal text-[#9aa0a6]">/ 1,000,000</span></span>
         </div>
-        <div class="h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+        <div class="h-3 bg-[#f1f3f4] dark:bg-[#3c4043] rounded-full overflow-hidden">
           <div
-            class="h-full bg-gray-900 dark:bg-gray-100 rounded-full transition-all"
-            style={`width: ${Math.min(100, (stats.likes / 1000000) * 100).toFixed(2)}%`}
+            id="likes-bar"
+            class="h-full bg-[#1a73e8] rounded-full transition-all duration-1000"
+            style={`width: ${Math.min(100, (stats.likes / 1000000) * 100).toFixed(4)}%`}
           ></div>
         </div>
-        <div class="text-right text-[10px] text-gray-300 dark:text-gray-600 mt-1">
-          {((stats.likes / 1000000) * 100).toFixed(3)}%
+        <div class="flex justify-between text-[10px] text-[#9aa0a6] mt-1.5">
+          <span>0</span>
+          <span id="likes-pct" class="text-[#1a73e8] dark:text-[#8ab4f8] font-medium">{((stats.likes / 1000000) * 100).toFixed(4)}%</span>
+          <span>1,000,000</span>
         </div>
+      </div>
+
+      <!-- 互動按鈕 -->
+      <div class="bg-[#f8f9fa] dark:bg-[#303134] rounded-2xl p-5 mb-6">
+        <p class="text-sm text-[#5f6368] dark:text-[#9aa0a6] mb-4 text-center">你今天讀完一篇了嗎？</p>
+        <div class="flex justify-center">
+          <button
+            id="cheer-btn"
+            class="px-6 py-2.5 rounded-full bg-[#1a73e8] text-white text-sm font-medium hover:bg-[#1557b0] transition-colors cursor-pointer active:scale-95"
+          >
+            我讀完了！幫我記錄一下
+          </button>
+        </div>
+        <p id="cheer-msg" class="text-sm text-center mt-4 text-[#5f6368] dark:text-[#9aa0a6] min-h-[1.5rem] transition-all"></p>
+        <p id="cheer-count" class="text-[10px] text-center text-[#9aa0a6] mt-1"></p>
       </div>
     </section>
 
-    <!-- Milestones -->
-    <section>
-      <h2 class="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-4">網站里程碑</h2>
-      <ul class="flex flex-col gap-2">
-        {MILESTONES.map(m => (
-          <li class="flex items-center gap-3 text-sm">
-            <span class={`w-3.5 h-3.5 rounded-full shrink-0 border-2 ${m.done ? 'bg-gray-900 border-gray-900 dark:bg-gray-100 dark:border-gray-100' : 'border-gray-300 dark:border-gray-600'}`}></span>
-            <span class={m.done ? 'text-gray-700 dark:text-gray-300' : 'text-gray-400 dark:text-gray-600'}>{m.label}</span>
-            <span class="text-[10px] text-gray-300 dark:text-gray-600 ml-auto">{m.date}</span>
-          </li>
-        ))}
-      </ul>
+    <!-- 里程碑 -->
+    <section class="mb-14">
+      <h2 class="text-[10px] text-[#9aa0a6] uppercase tracking-widest mb-5">網站里程碑</h2>
+
+      <div class="relative">
+        <!-- 垂直線 -->
+        <div class="absolute left-[6px] top-2 bottom-2 w-px bg-[#dadce0] dark:bg-[#3c4043]"></div>
+
+        <ul class="flex flex-col gap-0">
+          {MILESTONES.map((m, i) => {
+            const done = isDone(m);
+            const isArticle = m.unit === '篇';
+            const isView    = m.unit === '次';
+            const dotColor  = done
+              ? isArticle ? 'bg-[#1a73e8]'
+              : isView    ? 'bg-[#34a853]'
+              :              'bg-[#fbbc05]'
+              : 'bg-[#f1f3f4] dark:bg-[#3c4043] border-2 border-[#dadce0] dark:border-[#5f6368]';
+            return (
+              <li class={`flex gap-4 py-3 group ${done ? '' : 'opacity-50'}`}>
+                <div class="relative flex-shrink-0 w-3.5 flex justify-center pt-1">
+                  <div class={`w-3.5 h-3.5 rounded-full z-10 ${dotColor}`}></div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class={`text-sm leading-relaxed ${done ? 'text-[#202124] dark:text-[#e8eaed]' : 'text-[#9aa0a6]'}`}>
+                    {m.label}
+                  </p>
+                  <div class="flex items-center gap-2 mt-1">
+                    <span class={`text-[10px] px-2 py-0.5 rounded-full ${
+                      isArticle ? 'bg-[#e8f0fe] text-[#1a73e8]'
+                      : isView  ? 'bg-[#e6f4ea] text-[#34a853]'
+                      :           'bg-[#fef7e0] text-[#ea8600]'
+                    }`}>
+                      {m.target.toLocaleString('zh-TW')} {m.unit}
+                    </span>
+                    {done && <span class="text-[10px] text-[#9aa0a6]">✓ 達成</span>}
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </section>
 
-    <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 text-xs text-gray-400 dark:text-gray-500">
-      目前共 {allStories.length} 篇文章 · {stats.views.toLocaleString('zh-TW')} 次瀏覽
+    <div class="mt-4 pt-8 border-t border-[#dadce0] dark:border-[#3c4043] text-xs text-[#9aa0a6]">
+      目前共 {allStories.length} 篇文章 · {stats.views.toLocaleString('zh-TW')} 次瀏覽 · {stats.likes.toLocaleString('zh-TW')} 個讚
     </div>
   </article>
 </BaseLayout>
+
+<script>
+  const CHEERS = [
+    '太厲害了！我替你把這件事記在心裡了（我沒有資料庫可以真的記，但我記在心裡）',
+    '你今天的通勤時間沒有浪費。這很重要。',
+    '讀完一篇的感覺，比那個遊戲打進前兩百名更有成就感（我弟不同意）',
+    '你媽如果知道你今天讀了一篇文章，一定會傳一篇《閱讀讓你更長壽》給你',
+    '很好，繼續讀，我哥說的演算法說不定哪天就來了',
+    '捷運上的你，應該比辦公室的你快樂一點點吧',
+    '你今天讀完了一篇，這個網站就多了一點存在的理由，謝謝你',
+    '我妹說「氣質是可以感受到的」——你今天的氣質很好',
+    '把早餐記得吃（這是我媽要我說的）',
+    '你已經是這個網站第 N 位讀完一篇的人，N 是一個我沒有精確統計的數字但感覺很大',
+  ];
+
+  let clickCount = 0;
+
+  document.getElementById('cheer-btn')?.addEventListener('click', () => {
+    clickCount++;
+    const msg = CHEERS[Math.floor(Math.random() * CHEERS.length)];
+    const msgEl  = document.getElementById('cheer-msg')!;
+    const cntEl  = document.getElementById('cheer-count')!;
+
+    msgEl.style.opacity = '0';
+    setTimeout(() => {
+      msgEl.textContent = msg;
+      msgEl.style.opacity = '1';
+    }, 150);
+
+    cntEl.textContent = clickCount === 1
+      ? '你今天第一次按這個按鈕'
+      : `你今天已經按了 ${clickCount} 次這個按鈕，你很認真`;
+  });
+</script>
