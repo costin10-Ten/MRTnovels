@@ -7,7 +7,7 @@ type Theme = 'light' | 'dark' | 'system';
 const FONT_MAP: Record<Font, string> = {
   sans:    "'Noto Sans TC','Google Sans','PingFang TC','Microsoft JhengHei',sans-serif",
   serif:   "'Noto Serif TC','Songti SC','PMingLiU','新細明體',Georgia,serif",
-  cursive: "'DFKai-SB','標楷體','BiauKai','Ma Shan Zheng',cursive,serif",
+  cursive: "'LXGW WenKai TC','DFKai-SB','標楷體',BiauKai,cursive,serif",
   system:  "system-ui,-apple-system,'Segoe UI',sans-serif",
 };
 
