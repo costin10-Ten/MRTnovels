@@ -1,14 +1,26 @@
 import { config, fields, collection } from '@keystatic/core';
 
 const TAG_OPTIONS = [
-  { label: '驚悚', value: 'thriller' },
-  { label: '政治', value: 'politics' },
-  { label: '環保', value: 'eco' },
-  { label: '推理', value: 'mystery' },
-  { label: '科幻', value: 'scifi' },
-  { label: '青春', value: 'youth' },
-  { label: '感情', value: 'romance' },
-  { label: '職業', value: 'career' },
+  { label: '驚悚', value: '驚悚' },
+  { label: '推理', value: '推理' },
+  { label: '科幻', value: '科幻' },
+  { label: '幽默', value: '幽默' },
+  { label: '諷刺', value: '諷刺' },
+  { label: '愛情', value: '愛情' },
+  { label: '青春', value: '青春' },
+  { label: '職場', value: '職場' },
+  { label: '環保', value: '環保' },
+  { label: '政治', value: '政治' },
+  { label: '財經', value: '財經' },
+  { label: '社會', value: '社會' },
+  { label: '科技', value: '科技' },
+  { label: '文化', value: '文化' },
+  { label: '散文', value: '散文' },
+  { label: '成長', value: '成長' },
+  { label: '親情', value: '親情' },
+  { label: '台北', value: '台北' },
+  { label: '美食', value: '美食' },
+  { label: '健康', value: '健康' },
 ];
 
 export default config({
