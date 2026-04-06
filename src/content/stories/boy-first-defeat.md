@@ -2,7 +2,7 @@
 title: 關於一個八歲男孩的人生第一次重大挫敗，及其後續發展
 publishDate: 2026-04-05
 author: 站長
-tags: [成長, 親情, 散文, 童年]
+tags: [growth, family, essay, youth]
 access: public
 summary: 林柏宇，八歲，小學二年級，在全校師生面前背完了一半的演講稿，然後忘記了剩下的那一半。這是他人生第一次理解「努力不一定有結果」這件事。
 cover: https://picsum.photos/seed/boy-speech/800/400

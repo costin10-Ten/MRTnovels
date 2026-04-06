@@ -2,7 +2,7 @@
 title: 家族LINE群的政治風暴
 publishDate: 2026-04-03
 author: 站長
-tags: [politics]
+tags: [politics, family]
 access: public
 summary: 家族LINE群因為一篇新聞引發政治討論，從長輩吵到晚輩，最後連從不發言的外婆都出現了。
 cover: https://picsum.photos/seed/linegroup/800/400

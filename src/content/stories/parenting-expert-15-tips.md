@@ -2,7 +2,7 @@
 title: 教養專家教你15件事，這些事都做到，不保證小孩會變乖
 publishDate: 2026-04-06
 author: 站長
-tags: [幽默, 諷刺, 社會, 親子, 生活]
+tags: [humor, sarcasm, society, family]
 access: public
 summary: 我研究了大量的教養建議，發現它們有一個共同特色：聽起來非常正確，做起來沒有任何意義，而且做了之後如果小孩還是很鬧，那是你做得不夠好。
 cover: https://picsum.photos/seed/parenting-expert/800/400

@@ -2,7 +2,7 @@
 title: 有些路走得慢，是因為你正在被燒
 publishDate: 2026-04-04
 author: 站長
-tags: [青春, 成長, 散文, 人生]
+tags: [youth, growth, essay]
 access: public
 summary: 二十八歲那年我仍然不知道自己要做什麼。後來我明白，那幾年不是浪費，是一種我當時不懂讀的語言。
 cover: https://picsum.photos/seed/slow-fire/800/400

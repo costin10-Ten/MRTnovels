@@ -2,7 +2,7 @@
 title: 搭到終點站的人
 publishDate: 2026-04-06
 author: 站長
-tags: [台北, 捷運, 散文, 人物, 生活]
+tags: [taipei, essay]
 access: public
 summary: 捷運終點站，是一個城市裡少數幾個你不得不停下來的地方。我觀察了那些搭到終點的人，發現他們每個人的理由都不一樣，但都說不清楚。
 cover: https://picsum.photos/seed/mrt-terminus/800/400

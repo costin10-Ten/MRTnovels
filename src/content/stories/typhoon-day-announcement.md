@@ -2,7 +2,7 @@
 title: 颱風假宣布的那一秒，全台灣人同時做了同一件事
 publishDate: 2026-04-06
 author: 站長
-tags: [幽默, 諷刺, 台灣, 社會, 生活]
+tags: [humor, sarcasm, society, taipei]
 access: public
 summary: 颱風假宣布的瞬間，是台灣全民意識最高度同步的時刻，沒有之一。我決定把這件事研究得徹底一點。
 cover: https://picsum.photos/seed/typhoon-holiday/800/400

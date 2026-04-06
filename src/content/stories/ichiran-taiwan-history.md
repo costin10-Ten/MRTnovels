@@ -2,7 +2,7 @@
 title: 一蘭拉麵在台灣的辛辣發展史：一部關於排隊、孤獨與豚骨的史詩
 publishDate: 2026-04-05
 author: 站長
-tags: [幽默, 諷刺, 美食, 文化, 社會]
+tags: [humor, sarcasm, food, culture, society]
 access: public
 summary: 一蘭拉麵進台灣的這些年，我們排過隊、吃過麵、拍過照，然後繼續排隊。這是一段值得被記錄的、關於台灣人與日本拉麵之間複雜情感關係的完整歷史。
 cover: https://picsum.photos/seed/ichiran-tw/800/400

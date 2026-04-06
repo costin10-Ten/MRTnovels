@@ -2,7 +2,7 @@
 title: 沉默的礦物：一棟老學校的致命遺產
 publishDate: 2025-03-08
 author: 站長
-tags: [推理, 科學, 健康, 環境, 驚悚]
+tags: [mystery, health, eco, thriller]
 access: public
 summary: 法醫病理科收到第三具相同死因的遺體，死者都曾在同一棟建於1970年代的學校任教。調查員開始追溯一種潛伏了三十年的殺手。
 cover: https://picsum.photos/seed/asbestos-school/800/400

@@ -2,7 +2,7 @@
 title: 台灣媒體報導天才數學家，第一個字是「美女」
 publishDate: 2026-04-06
 author: 站長
-tags: [幽默, 諷刺, 媒體, 科技, 社會]
+tags: [humor, sarcasm, tech, society]
 access: public
 summary: 洪樂潼，25歲，MIT三年雙學位、九篇論文、牛津碩士、史丹福退學、2億美元A輪融資。台灣媒體的報導標題第一個形容詞是「美女」。我們來談談這件事。
 cover: https://picsum.photos/seed/carina-math/800/400

@@ -2,7 +2,7 @@
 title: 裁掉我的是AI，但牠也幫我修了分手訊息
 publishDate: 2026-04-04
 author: 站長
-tags: [幽默, 諷刺, 愛情, 科技, 職場]
+tags: [humor, sarcasm, romance, tech, career]
 access: public
 summary: 公司說我被AI取代了。我回家打開AI，請牠幫我寫分手訊息。這是我人生中最對稱的一天。
 cover: https://picsum.photos/seed/ai-breakup/800/400

@@ -9,19 +9,21 @@ const sorted = allStories.sort(
 );
 
 const TAG_LABELS: Record<string, string> = {
-  thriller: '驚悚', politics: '政治', eco: '環保',
-  mystery: '推理', scifi: '科幻', youth: '青春',
-  romance: '感情', career: '職業',
-  humor: '幽默', finance: '財經', culture: '文化',
-  society: '社會', health: '健康', nature: '自然',
-  sport: '運動', food: '美食', travel: '旅行',
+  thriller: '驚悚', mystery: '推理', scifi: '科幻',
+  humor: '幽默', sarcasm: '諷刺', romance: '愛情',
+  youth: '青春', career: '職場', eco: '環保',
+  politics: '政治', finance: '財經', society: '社會',
+  tech: '科技', culture: '文化', essay: '散文',
+  growth: '成長', family: '親情', taipei: '台北',
+  food: '美食', health: '健康',
 };
 
-// Gather all tags that actually have stories
-const usedTags = [...new Set(sorted.flatMap(s => s.data.tags))];
-const orderedTags = ['thriller', 'mystery', 'scifi', 'humor', 'romance', 'youth', 'career', 'politics', 'eco', 'culture', 'society', 'finance', 'health', 'nature', 'food']
-  .filter(t => usedTags.includes(t))
-  .concat(usedTags.filter(t => !['thriller', 'mystery', 'scifi', 'humor', 'romance', 'youth', 'career', 'politics', 'eco', 'culture', 'society', 'finance', 'health', 'nature', 'food'].includes(t)));
+// Gather all tags that actually have stories, sorted by article count (descending)
+const tagCounts = new Map<string, number>();
+sorted.forEach(s => s.data.tags.forEach(t => tagCounts.set(t, (tagCounts.get(t) ?? 0) + 1)));
+const orderedTags = [...tagCounts.entries()]
+  .sort((a, b) => b[1] - a[1])
+  .map(([t]) => t);
 
 const grouped = Object.fromEntries(
   orderedTags.map(tag => [tag, sorted.filter(s => s.data.tags.includes(tag))]),
