@@ -1,0 +1,16 @@
+# Build output
+dist/
+.vercel/
+.astro/
+
+# Dependencies
+node_modules/
+package-lock.json
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# OS
+.DS_Store
