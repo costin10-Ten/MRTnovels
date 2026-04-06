@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import StoryCard from '../components/story/StoryCard.astro';
-import { getMultipleStoryStats, getLikedSlugs, getReadSlugs } from '../lib/supabase';
+import { getLikedSlugs, getReadSlugs } from '../lib/supabase';
 
 const PAGE_SIZE = 4;
 
@@ -35,16 +35,12 @@ const pageStories = filteredStories.slice(
   currentPage * PAGE_SIZE,
 );
 
-// Stats for current page — one batch query instead of N individual queries
-const pageStats = await getMultipleStoryStats(pageStories.map(s => s.slug)).catch(
-  () => pageStories.map(() => ({ views: 0, likes: 0 })),
-);
+// Cache non-authenticated homepage at CDN edge for 60s
+if (!userId) {
+  Astro.response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
+}
 
 // Tag folder grouping
-const TAG_LABELS: Record<string, string> = {
-  thriller: '驚悚', politics: '政治', eco: '環保', mystery: '推理',
-  scifi: '科幻',   youth: '青春',   romance: '感情', career: '職業',
-};
 const byTag: Record<string, typeof sorted> = {};
 for (const story of sorted) {
   for (const tag of (story.data.tags ?? [])) {
@@ -114,7 +110,7 @@ function pageRange(cur: number, total: number): (number | '…')[] {
       <!-- Story cards -->
       {pageStories.length > 0 ? (
         <div class="flex flex-col gap-3">
-          {pageStories.map((s, i) => (
+          {pageStories.map((s) => (
             <StoryCard
               variant="featured"
               slug={s.slug}
@@ -125,8 +121,6 @@ function pageRange(cur: number, total: number): (number | '…')[] {
               access={s.data.access}
               summary={s.data.summary}
               cover={s.data.cover}
-              views={pageStats[i].views}
-              likes={pageStats[i].likes}
             />
           ))}
         </div>
@@ -194,7 +188,7 @@ function pageRange(cur: number, total: number): (number | '…')[] {
                 <!-- Chevron -->
                 <span class="text-[#9aa0a6] text-[10px] transition-transform group-open:rotate-90">▶</span>
                 <span class="text-sm font-medium text-[#202124] dark:text-[#e8eaed]">
-                  {TAG_LABELS[tag] ?? tag}
+                  {tag}
                 </span>
                 <span class="text-xs text-[#9aa0a6] ml-auto pr-1">{stories.length}</span>
               </summary>
@@ -222,4 +216,24 @@ function pageRange(cur: number, total: number): (number | '…')[] {
       </section>
     )}
   </div>
+<script>
+  // Fetch story stats client-side to avoid blocking SSR
+  const spans = document.querySelectorAll<HTMLElement>('.story-stats[data-slug]');
+  const slugs = [...spans].map(el => el.dataset.slug).filter(Boolean) as string[];
+  if (slugs.length > 0) {
+    fetch(`/api/stats?slugs=${slugs.join(',')}`)
+      .then(r => r.json())
+      .then((data: { slug: string; views: number; likes: number }[]) => {
+        data.forEach(({ slug, views, likes }) => {
+          const el = document.querySelector<HTMLElement>(`.story-stats[data-slug="${CSS.escape(slug)}"]`);
+          if (!el) return;
+          const parts: string[] = [];
+          if (views > 0) parts.push(`· ${views.toLocaleString('zh-TW')} 讀`);
+          if (likes > 0) parts.push(`· ${likes.toLocaleString('zh-TW')} 讚`);
+          el.textContent = parts.join(' ');
+        });
+      })
+      .catch(() => {});
+  }
+</script>
 </BaseLayout>

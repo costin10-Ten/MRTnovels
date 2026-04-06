@@ -8,7 +8,9 @@ export const GET: APIRoute = async (ctx) => {
     const userId = requireAuth(ctx);
     const action = ctx.url.searchParams.get('action');
     const slug = ctx.url.searchParams.get('slug');
-    const ref = ctx.url.searchParams.get('ref') ?? '/';
+    // Validate ref is a relative path to prevent open redirect
+    const rawRef = ctx.url.searchParams.get('ref') ?? '/';
+    const ref = rawRef.startsWith('/') && !rawRef.startsWith('//') ? rawRef : '/';
 
     if (action && slug) {
       if (action === 'add') await addBookmark(userId, slug);

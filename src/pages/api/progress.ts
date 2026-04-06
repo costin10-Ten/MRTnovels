@@ -20,7 +20,8 @@ export const POST: APIRoute = async (ctx) => {
     const userId = requireAuth(ctx);
     const body = await ctx.request.json();
     const { storySlug, pct } = body;
-    if (!storySlug || typeof pct !== 'number' || pct < 0 || pct > 100) {
+    if (!storySlug || typeof storySlug !== 'string' || !/^[a-z0-9][a-z0-9-]{0,98}$/.test(storySlug) ||
+        typeof pct !== 'number' || pct < 0 || pct > 100) {
       return new Response(JSON.stringify({ error: 'Invalid payload' }), { status: 400 });
     }
     await upsertProgress(userId, storySlug, pct);

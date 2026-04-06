@@ -62,8 +62,10 @@ const dateStr = publishDate.toLocaleDateString('zh-TW', {
           <span>{dateStr}</span>
           <span>·</span>
           <span>{author}</span>
-          {views > 0 && <><span>·</span><span>{views.toLocaleString('zh-TW')} 讀</span></>}
-          {likes > 0 && <><span>·</span><span>{likes.toLocaleString('zh-TW')} 讚</span></>}
+          <span class="story-stats" data-slug={slug}>
+            {views > 0 && `· ${views.toLocaleString('zh-TW')} 讀`}
+            {likes > 0 && ` · ${likes.toLocaleString('zh-TW')} 讚`}
+          </span>
         </div>
       </div>
     </div>
