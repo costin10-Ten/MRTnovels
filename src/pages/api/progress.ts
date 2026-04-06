@@ -20,7 +20,7 @@ export const POST: APIRoute = async (ctx) => {
     const userId = requireAuth(ctx);
     const body = await ctx.request.json();
     const { storySlug, pct } = body;
-    if (!storySlug || typeof storySlug !== 'string' || !/^[a-z0-9][a-z0-9-]{0,98}$/.test(storySlug) ||
+    if (!storySlug || typeof storySlug !== 'string' || storySlug.length > 200 || /[/\\.]/.test(storySlug) ||
         typeof pct !== 'number' || pct < 0 || pct > 100) {
       return new Response(JSON.stringify({ error: 'Invalid payload' }), { status: 400 });
     }

@@ -19,7 +19,7 @@ export const POST: APIRoute = async (ctx) => {
   try {
     const userId = requireAuth(ctx);
     const { storySlug } = await ctx.request.json();
-    if (!storySlug || typeof storySlug !== 'string' || !/^[a-z0-9][a-z0-9-]{0,98}$/.test(storySlug)) {
+    if (!storySlug || typeof storySlug !== 'string' || storySlug.length > 200 || /[/\\.]/.test(storySlug)) {
       return new Response(JSON.stringify({ error: 'Invalid slug' }), { status: 400 });
     }
     const liked = await toggleLike(userId, storySlug);

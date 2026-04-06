@@ -6,7 +6,7 @@ export const GET: APIRoute = async (ctx) => {
   const slugs = raw
     .split(',')
     .map(s => s.trim())
-    .filter(s => /^[a-z0-9][a-z0-9-]{0,98}$/.test(s))
+    .filter(s => s.length > 0 && s.length <= 200 && !/[/\\.]/.test(s))
     .slice(0, 20);
 
   if (slugs.length === 0) {
