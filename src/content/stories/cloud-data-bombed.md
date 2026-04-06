@@ -6,7 +6,8 @@ tags: [幽默, 諷刺, 驚悚]
 themeTags: [科技]
 access: public
 summary: 伊朗宣稱攻擊了杜拜和巴林的Oracle和Amazon雲端資料中心。我在那裡備份了兩萬七千張照片。
-cover: https://picsum.photos/seed/cloud-bomb/800/400---
+cover: https://picsum.photos/seed/cloud-bomb/800/400
+---
 
 伊朗宣稱攻擊了杜拜和巴林的Oracle和Amazon雲端資料中心。
 

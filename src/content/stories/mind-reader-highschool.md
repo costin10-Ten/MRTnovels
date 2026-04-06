@@ -5,7 +5,8 @@ author: 站長
 tags: [青春, 幽默, 驚悚, 科幻]
 access: public
 summary: 我以為讀心術會讓我知道她喜不喜歡我。結果我知道了全班每個人腦子裡在想什麼，包括老師，包括我自己，這是我人生中最後悔的一次能力覺醒。
-cover: https://picsum.photos/seed/mindread-hs/800/400---
+cover: https://picsum.photos/seed/mindread-hs/800/400
+---
 
 能力是在某個週一早上第一節數學課開始的。
 

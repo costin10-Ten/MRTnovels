@@ -6,7 +6,8 @@ tags: [幽默]
 themeTags: [環保, 台北]
 access: public
 summary: 台北城市公園的黑冠麻鷺數量近年顯著增加，與此同時，我個人觀察到草地蚯蚓似乎越來越少。這兩件事有沒有關係？我決定認真調查。
-cover: https://picsum.photos/seed/heron-worm/800/400---
+cover: https://picsum.photos/seed/heron-worm/800/400
+---
 
 這篇文章源於一個我無法忽視的觀察。
 

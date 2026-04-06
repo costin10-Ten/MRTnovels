@@ -5,7 +5,8 @@ author: 站長
 tags: [科幻, 職場]
 access: public
 summary: 公司導入AI主管系統之後，工作效率提升了，但員工開始懷疑自己究竟在為誰工作。
-cover: https://picsum.photos/seed/aisup/800/400---
+cover: https://picsum.photos/seed/aisup/800/400
+---
 
 公司在三月一日正式導入AI主管系統，代號ARIA，全名是Automated Resource and Instruction Administrator，人資部說這個名字是公司花三十萬請顧問公司取的，我覺得這三十萬可以發成年終。
 

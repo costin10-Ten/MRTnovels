@@ -6,7 +6,8 @@ tags: [幽默, 諷刺]
 themeTags: [財經]
 access: public
 summary: 川普說油價會迅速回落。我信了。這是我這輩子做過最貴的一個決定。
-cover: https://picsum.photos/seed/wtishort/800/400---
+cover: https://picsum.photos/seed/wtishort/800/400
+---
 
 事情要從三週前說起。
 

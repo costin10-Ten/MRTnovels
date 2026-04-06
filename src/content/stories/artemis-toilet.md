@@ -6,7 +6,8 @@ tags: [幽默, 諷刺, 科幻]
 themeTags: [科技]
 access: public
 summary: NASA的Artemis II正在飛向月球，這是人類五十三年來最遠的旅程。太空船廁所傳出燒焦味。這是全體人類文明的最高峰。
-cover: https://picsum.photos/seed/artemis-toilet/800/400---
+cover: https://picsum.photos/seed/artemis-toilet/800/400
+---
 
 四月一日，NASA的獵戶座太空船從甘迺迪太空中心升空，載著四名太空人飛向月球。這是一九七二年阿波羅十七號之後，五十三年來人類第一次離地球這麼遠。
 

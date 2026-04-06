@@ -5,7 +5,8 @@ author: 站長
 tags: [驚悚]
 access: member
 summary: 她第一次醒來的地方是仁愛路的人行道，鞋底沾著不知道從哪裡來的血。
-cover: https://picsum.photos/seed/rainy-city-sidewalk/800/400---
+cover: https://picsum.photos/seed/rainy-city-sidewalk/800/400
+---
 
 她第一次醒來的地方，是仁愛路的人行道。
 

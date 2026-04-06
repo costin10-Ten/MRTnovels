@@ -5,7 +5,8 @@ author: 站長
 tags: [科幻, 愛情]
 access: public
 summary: 在愛丁堡的實驗室裡，物理學家感覺到一萬公里外的妻子正在哭泣。
-cover: https://picsum.photos/seed/physics-quantum-lab/800/400---
+cover: https://picsum.photos/seed/physics-quantum-lab/800/400
+---
 
 那天林教授在愛丁堡的實驗室裡整理數據，忽然有一種說不清楚的難過壓下來，像窗外的霧，沒有來由。他放下鉛筆，在椅子上坐了很久。
 

@@ -5,7 +5,8 @@ author: 站長
 tags: [推理]
 access: public
 summary: 一起被判定為意外的命案，唯一的線索是鄰居家的一隻老獵犬。
-cover: https://picsum.photos/seed/detective-dog-crime/800/400---
+cover: https://picsum.photos/seed/detective-dog-crime/800/400
+---
 
 那個案子結案的時候，警方認定是意外。王醫師當晚在東京，有入出境記錄，有飯店刷卡紀錄，有同事的證詞。他的妻子是一個人摔下樓梯的。案件就這樣翻篇了。
 

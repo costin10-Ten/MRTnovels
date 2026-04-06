@@ -6,7 +6,8 @@ tags: [散文]
 themeTags: [台北]
 access: public
 summary: 捷運終點站，是一個城市裡少數幾個你不得不停下來的地方。我觀察了那些搭到終點的人，發現他們每個人的理由都不一樣，但都說不清楚。
-cover: https://picsum.photos/seed/mrt-terminus/800/400---
+cover: https://picsum.photos/seed/mrt-terminus/800/400
+---
 
 我有一個習慣，如果心情很亂，我會去搭捷運，搭到終點，再搭回來。
 

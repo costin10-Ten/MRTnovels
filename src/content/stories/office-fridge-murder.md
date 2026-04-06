@@ -5,7 +5,8 @@ author: 站長
 tags: [推理, 職場]
 access: public
 summary: 公司冰箱裡有人的便當一直消失，人事部決定展開正式調查，規模比任何刑事案件都嚴肅。
-cover: https://picsum.photos/seed/fridge/800/400---
+cover: https://picsum.photos/seed/fridge/800/400
+---
 
 案發時間：本年三月十五日，星期一。
 

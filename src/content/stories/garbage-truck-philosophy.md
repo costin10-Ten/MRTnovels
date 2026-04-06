@@ -6,7 +6,8 @@ tags: [職場]
 themeTags: [環保]
 access: public
 summary: 每天傍晚五點五十，一群人聚集在巷口等垃圾車，沒有人說話，但每個人都有一個故事。
-cover: https://picsum.photos/seed/garbage/800/400---
+cover: https://picsum.photos/seed/garbage/800/400
+---
 
 垃圾車每天傍晚五點五十分到，播著「少女的祈禱」，準時得像一個從不請假的員工。
 

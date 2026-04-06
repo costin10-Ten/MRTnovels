@@ -6,7 +6,8 @@ tags: []
 themeTags: [環保]
 access: public
 summary: 一個「環保意識很強」的人清點了家裡的環保袋，發現自己可能是台灣棉花消耗量最大的個人用戶之一。
-cover: https://picsum.photos/seed/ecobag/800/400---
+cover: https://picsum.photos/seed/ecobag/800/400
+---
 
 我今天清點了一下家裡的環保袋。
 

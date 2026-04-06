@@ -6,7 +6,8 @@ tags: [幽默, 諷刺]
 themeTags: [社會]
 access: public
 summary: 我這輩子包過的紅包加起來超過十二萬，每一次我都在心裡進行一場極其複雜的計算，每一次計算的答案都不一樣，因為那個題目每次都不一樣。
-cover: https://picsum.photos/seed/redenvelope/800/400---
+cover: https://picsum.photos/seed/redenvelope/800/400
+---
 
 沒有人正式教過我紅包要包多少，但我二十五歲之後就自然知道了，就像沒有人教你怎麼在捷運上知道要讓座，但你就是知道，而且你也知道不讓座要付出的社會代價。
 

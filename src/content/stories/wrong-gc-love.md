@@ -5,7 +5,8 @@ author: 站長
 tags: [愛情, 青春, 幽默]
 access: public
 summary: 我以為那是朋友的讀書群，加進去之後認識了一個很有趣的女生，聊了三個月，才發現那是里長在管理的鄰里公告群。
-cover: https://picsum.photos/seed/groupchat-love/800/400---
+cover: https://picsum.photos/seed/groupchat-love/800/400
+---
 
 一切從一個錯誤的QR code開始。
 

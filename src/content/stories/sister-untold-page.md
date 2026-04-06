@@ -6,7 +6,8 @@ tags: [散文, 成長]
 themeTags: [親情]
 access: public
 summary: 妹妹得了作文獎，寫她如果是烘焙師會做什麼甜點給家人。那篇文章我讀了很多遍。她沒有寫的那一頁，只有我知道。
-cover: https://picsum.photos/seed/sister-untold/800/400---
+cover: https://picsum.photos/seed/sister-untold/800/400
+---
 
 妹妹的作文得獎了，老師影印了好幾份，一份貼在教室佈告欄，一份給阿嬤，一份給叔叔，老師說還有一份要寄給縣政府存檔。
 

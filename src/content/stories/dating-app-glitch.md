@@ -5,7 +5,8 @@ author: 站長
 tags: [愛情, 科幻]
 access: public
 summary: 交友APP的演算法出現異常，開始給用戶配對一些完全不該配對的對象，工程師緊急介入，發現演算法說不定是對的。
-cover: https://picsum.photos/seed/datingapp/800/400---
+cover: https://picsum.photos/seed/datingapp/800/400
+---
 
 事件發生在某個週四上午十點二十三分。
 

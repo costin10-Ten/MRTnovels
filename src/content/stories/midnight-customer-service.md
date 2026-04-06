@@ -5,7 +5,8 @@ author: 站長
 tags: [驚悚, 職場]
 access: public
 summary: 深夜客服人員小葉接到一通普通的退貨詢問電話，但這通電話有一些地方越來越不對勁。
-cover: https://picsum.photos/seed/callcenter/800/400---
+cover: https://picsum.photos/seed/callcenter/800/400
+---
 
 小葉接起電話的時候，時間是凌晨一點四十七分。
 

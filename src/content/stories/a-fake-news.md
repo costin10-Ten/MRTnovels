@@ -6,7 +6,8 @@ tags: []
 themeTags: [政治]
 access: member
 summary: 一則在早上九點發出的假訊息，在下午奪走了一個人的生命。
-cover: https://picsum.photos/seed/phone-social-media/800/400---
+cover: https://picsum.photos/seed/phone-social-media/800/400
+---
 
 早上九點十七分，一個沒有大頭貼的帳號發出訊息：「緊急！XX醫院加護病房發現不明病毒，多人死亡，醫院已封鎖！」
 

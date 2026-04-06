@@ -6,7 +6,8 @@ tags: [推理, 驚悚]
 themeTags: [健康, 環保]
 access: public
 summary: 環境調查員在一個濱海鄉鎮發現異常的甲狀腺癌和腎臟癌集群，追溯源頭，發現一種比他以為的更古老、更廣泛的污染，它不會消失，因為它從設計上就不打算消失。
-cover: https://picsum.photos/seed/pfas-river/800/400---
+cover: https://picsum.photos/seed/pfas-river/800/400
+---
 
 環境調查員謝宗翰接到這個案子的時候，唯一確定的事是：那個鄉鎮的腎臟癌發生率是全國平均值的三點四倍。
 

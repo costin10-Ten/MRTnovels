@@ -6,7 +6,8 @@ tags: []
 themeTags: [政治]
 access: public
 summary: 投票日前十二小時，志工在廢紙槽裡找到了一份不該存在的名單。
-cover: https://picsum.photos/seed/voting-night-politics/800/400---
+cover: https://picsum.photos/seed/voting-night-politics/800/400
+---
 
 投票日前十二小時，我接到了林秘書的電話。
 

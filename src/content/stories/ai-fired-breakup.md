@@ -6,7 +6,8 @@ tags: [幽默, 諷刺, 愛情, 職場]
 themeTags: [科技]
 access: public
 summary: 公司說我被AI取代了。我回家打開AI，請牠幫我寫分手訊息。這是我人生中最對稱的一天。
-cover: https://picsum.photos/seed/ai-breakup/800/400---
+cover: https://picsum.photos/seed/ai-breakup/800/400
+---
 
 三月三十一日，我的主管叫我進會議室，說公司決定「引進AI輔助工作流程」，因此「部分職位將進行結構性調整」。他說這些話的時候語速很快，像在念稿，我猜那份稿也是AI生成的。
 

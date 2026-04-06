@@ -5,7 +5,8 @@ author: 站長
 tags: [青春]
 access: public
 summary: 我欺負陳小毛三年，然後有一天我成了那個蜷縮在牆角的人。
-cover: https://picsum.photos/seed/school-hallway/800/400---
+cover: https://picsum.photos/seed/school-hallway/800/400
+---
 
 陳小毛是國一下學期轉來的。他的鉛筆盒是用橡皮筋綁著的，因為卡榫壞了。我第一天就注意到了，然後叫旁邊的人也去注意。
 

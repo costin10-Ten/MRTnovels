@@ -5,7 +5,8 @@ author: 站長
 tags: [推理]
 access: public
 summary: 捷運失物招領處有一件無人認領的物品放了三個月，每個看到它的人都有不同的反應，沒有人知道它究竟是什麼。
-cover: https://picsum.photos/seed/lostfound/800/400---
+cover: https://picsum.photos/seed/lostfound/800/400
+---
 
 那個東西是在三月第一週出現在忠孝復興站失物招領處的。
 

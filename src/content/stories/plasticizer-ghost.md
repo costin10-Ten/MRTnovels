@@ -6,7 +6,8 @@ tags: [推理, 驚悚]
 themeTags: [健康, 環保]
 access: public
 summary: 食品安全調查員接到一起異常內分泌病例的通報，追查源頭，發現一條深藏在合法食品供應鏈裡的隱形污染路徑。
-cover: https://picsum.photos/seed/plasticizer-lab/800/400---
+cover: https://picsum.photos/seed/plasticizer-lab/800/400
+---
 
 食品安全調查員林佳穎收到那份通報的時候，正在處理另一個案子。
 

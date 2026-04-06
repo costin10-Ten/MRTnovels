@@ -5,7 +5,8 @@ author: 站長
 tags: [職場]
 access: public
 summary: 主管說「你今年表現非常不錯」，然後加了一個「但是」，從此展開一場漫長的、精神折磨式的績效面談。
-cover: https://picsum.photos/seed/review/800/400---
+cover: https://picsum.photos/seed/review/800/400
+---
 
 主管說：「你今年的表現非常不錯。」
 

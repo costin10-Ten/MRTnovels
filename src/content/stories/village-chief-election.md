@@ -6,7 +6,8 @@ tags: []
 themeTags: [政治]
 access: public
 summary: 里長選舉到了，候選人的政見越來越離譜，居民也越來越入戲。
-cover: https://picsum.photos/seed/election/800/400---
+cover: https://picsum.photos/seed/election/800/400
+---
 
 里長選舉公告貼出來的那天，我們里一共有三位候選人。
 

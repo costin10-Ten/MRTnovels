@@ -5,7 +5,8 @@ author: 站長
 tags: [驚悚]
 access: public
 summary: 最後一班車上，車廂最末端坐著某個說不清楚是不是人的東西。
-cover: https://picsum.photos/seed/dark-mrt-train/800/400---
+cover: https://picsum.photos/seed/dark-mrt-train/800/400
+---
 
 最後一班車，板橋往南港，零時零四分。整列車只有六個人。
 
