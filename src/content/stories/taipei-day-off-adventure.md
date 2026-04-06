@@ -6,6 +6,7 @@ tags: [幽默, 諷刺, 青春, 散文]
 themeTags: [台北, 社會]
 access: public
 summary: 我在台北工作三年，第一次在工作日休假，打算「好好探索這座城市」。結果我花了一個半小時滑手機，最後跑去排了一間我根本不確定自己喜不喜歡的餐廳，然後在捷運上頓悟了一件事。
+cover: https://picsum.photos/seed/taipei-day-off/800/400
 ---
 
 我在台北工作三年了。

@@ -5,6 +5,7 @@ author: 站長
 tags: [愛情, 青春, 幽默]
 access: public
 summary: 兩個人，因為手機設定錯誤，在同一個群組裡互相驚擾對方的睡眠。就這樣，在凌晨三點，他們開始了一段不正常但非常真實的感情。
+cover: https://picsum.photos/seed/3am-notification/800/400
 ---
 
 那是一個雨天的下午，葉庭在超商排隊結帳的時候，被一個陌生人加進了一個叫做「住戶公告群」的 LINE 群組。
