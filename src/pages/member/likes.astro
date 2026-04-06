@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Badge from '../../components/ui/Badge.astro';
 import { getLikedSlugs } from '../../lib/supabase';
+import { getTags } from '../../lib/tags';
 
 const { userId } = Astro.locals.auth();
 if (!userId) return Astro.redirect('/sign-in');
@@ -55,7 +56,7 @@ const liked = likedSlugs
               </div>
             </a>
             <div class="flex items-center gap-1.5 shrink-0">
-              {story.data.tags.slice(0, 1).map(t => <Badge type="tag" value={t} />)}
+              {getTags(story.data).slice(0, 1).map(t => <Badge type="tag" value={t} />)}
             </div>
           </div>
         ))}

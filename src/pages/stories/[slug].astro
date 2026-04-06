@@ -10,6 +10,7 @@ import {
   getStoryStats, getComments, isLiked, isBookmarked,
   incrementViews, getProgress,
 } from '../../lib/supabase';
+import { getTags } from '../../lib/tags';
 
 const { slug } = Astro.params;
 if (!slug) return Astro.redirect('/stories');
@@ -52,11 +53,8 @@ const { Content } = await render(story);
 const siteURL = import.meta.env.PUBLIC_SITE_URL ?? Astro.url.origin;
 const canonicalURL = `${siteURL}/stories/${slug}`;
 
-const TAG_ZH: Record<string, string> = {
-  thriller: '驚悚', politics: '政治', eco: '環保', mystery: '推理',
-  scifi: '科幻', youth: '青春', romance: '感情', career: '職業',
-};
-const storyKeywords = story.data.tags.map(t => TAG_ZH[t] ?? t);
+const storyTags = getTags(story.data);
+const storyKeywords = storyTags;
 
 const dateStr = story.data.publishDate.toLocaleDateString('zh-TW', {
   year: 'numeric', month: 'long', day: 'numeric',
@@ -94,7 +92,7 @@ const dateStr = story.data.publishDate.toLocaleDateString('zh-TW', {
     <!-- Tags -->
     <div class="flex flex-wrap items-center gap-1.5 mb-8">
       {story.data.access !== 'public' && <Badge type="access" value={story.data.access} />}
-      {story.data.tags.map(t => <Badge type="tag" value={t} />)}
+      {storyTags.map(t => <Badge type="tag" value={t} />)}
     </div>
 
     <!-- Cover image -->

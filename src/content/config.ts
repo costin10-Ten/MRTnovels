@@ -7,6 +7,7 @@ const stories = defineCollection({
     publishDate: z.coerce.date(),
     author: z.string().default('站長'),
     tags: z.array(z.string()).default([]),
+    customTags: z.array(z.string()).default([]),
     access: z.enum(['public', 'member', 'paid']).default('public'),
     summary: z.string(),
     cover: z.string().optional(),

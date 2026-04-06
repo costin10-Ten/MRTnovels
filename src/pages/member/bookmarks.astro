@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Badge from '../../components/ui/Badge.astro';
+import { getTags } from '../../lib/tags';
 import { getBookmarks } from '../../lib/supabase';
 
 const { userId } = Astro.locals.auth();
@@ -39,7 +40,7 @@ const bookmarks = await getBookmarks(userId);
                 {story.data.title}
               </a>
               <div class="flex items-center gap-1.5 shrink-0">
-                {story.data.tags.slice(0, 1).map(t => <Badge type="tag" value={t} />)}
+                {getTags(story.data).slice(0, 1).map(t => <Badge type="tag" value={t} />)}
                 <a
                   href={`/api/bookmarks?action=remove&slug=${b.story_slug}&ref=/member/bookmarks`}
                   class="text-xs text-gray-300 dark:text-gray-600 hover:text-gray-500 dark:hover:text-gray-400 ml-2 transition-colors"

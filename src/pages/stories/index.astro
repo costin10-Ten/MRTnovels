@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Badge from '../../components/ui/Badge.astro';
+import { getTags } from '../../lib/tags';
 
 const allStories = await getCollection('stories');
 const sorted = allStories.sort(
@@ -10,20 +11,20 @@ const sorted = allStories.sort(
 
 // Gather all tags that actually have stories, sorted by article count (descending)
 const tagCounts = new Map<string, number>();
-sorted.forEach(s => s.data.tags.forEach(t => tagCounts.set(t, (tagCounts.get(t) ?? 0) + 1)));
+sorted.forEach(s => getTags(s.data).forEach(t => tagCounts.set(t, (tagCounts.get(t) ?? 0) + 1)));
 const orderedTags = [...tagCounts.entries()]
   .sort((a, b) => b[1] - a[1])
   .map(([t]) => t);
 
 const grouped = Object.fromEntries(
-  orderedTags.map(tag => [tag, sorted.filter(s => s.data.tags.includes(tag))]),
+  orderedTags.map(tag => [tag, sorted.filter(s => getTags(s.data).includes(tag))]),
 );
 
 const q   = Astro.url.searchParams.get('q')   ?? '';
 const tag = Astro.url.searchParams.get('tag') ?? '';
 
 const filtered = sorted.filter(s => {
-  const matchTag = !tag || s.data.tags.includes(tag);
+  const matchTag = !tag || getTags(s.data).includes(tag);
   const matchQ   = !q   || s.data.title.includes(q) || s.data.summary.includes(q);
   return matchTag && matchQ;
 });
@@ -166,7 +167,7 @@ function slugColor(slug: string) {
               <span class="text-sm text-gray-900 dark:text-gray-100 group-hover:underline flex-1 truncate">{s.data.title}</span>
               <div class="flex items-center gap-1.5 shrink-0">
                 {s.data.access !== 'public' && <Badge type="access" value={s.data.access} />}
-                {s.data.tags.slice(0, 1).map(t => <Badge type="tag" value={t} />)}
+                {getTags(s.data).slice(0, 1).map(t => <Badge type="tag" value={t} />)}
               </div>
             </a>
           ))

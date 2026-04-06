@@ -64,9 +64,17 @@ export default config({
         }),
 
         tags: fields.multiselect({
-          label: '分類標籤',
+          label: '標準標籤（勾選）',
           options: TAG_OPTIONS,
         }),
+
+        customTags: fields.array(
+          fields.text({ label: '標籤名稱' }),
+          {
+            label: '自訂標籤（輸入新標籤）',
+            itemLabel: props => props.fields.value,
+          },
+        ),
 
         access: fields.select({
           label: '機密等級',

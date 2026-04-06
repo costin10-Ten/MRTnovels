@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import StoryCard from '../components/story/StoryCard.astro';
 import { getLikedSlugs, getReadSlugs } from '../lib/supabase';
+import { getTags } from '../lib/tags';
 
 const PAGE_SIZE = 4;
 
@@ -43,7 +44,7 @@ if (!userId) {
 // Tag folder grouping
 const byTag: Record<string, typeof sorted> = {};
 for (const story of sorted) {
-  for (const tag of (story.data.tags ?? [])) {
+  for (const tag of getTags(story.data)) {
     if (!byTag[tag]) byTag[tag] = [];
     byTag[tag].push(story);
   }
@@ -117,7 +118,7 @@ function pageRange(cur: number, total: number): (number | '…')[] {
               title={s.data.title}
               publishDate={s.data.publishDate}
               author={s.data.author}
-              tags={s.data.tags}
+              tags={getTags(s.data)}
               access={s.data.access}
               summary={s.data.summary}
               cover={s.data.cover}
