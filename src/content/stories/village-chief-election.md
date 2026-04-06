@@ -2,7 +2,7 @@
 title: 里長的政見
 publishDate: 2026-04-03
 author: 站長
-tags: [politics]
+tags: [政治]
 access: public
 summary: 里長選舉到了，候選人的政見越來越離譜，居民也越來越入戲。
 cover: https://picsum.photos/seed/election/800/400

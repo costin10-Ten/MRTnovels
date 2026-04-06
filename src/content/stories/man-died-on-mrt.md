@@ -2,7 +2,7 @@
 title: 在捷運上死去的男人
 publishDate: 2023-02-14
 author: 站長
-tags: [thriller]
+tags: [驚悚]
 access: public
 summary: 通勤高峰時段，一個不該醒來的男人坐在我的對面。
 cover: https://picsum.photos/seed/metro-morning-commute/800/400

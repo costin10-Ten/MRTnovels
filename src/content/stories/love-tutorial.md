@@ -2,7 +2,7 @@
 title: 戀愛補習班（退費中）
 publishDate: 2026-04-03
 author: 站長
-tags: [romance, youth]
+tags: [愛情, 青春]
 access: public
 summary: 有人開了一家號稱「科學化戀愛訓練」的補習班，學員報名之後才發現，老師的情史比任何人都慘。
 cover: https://picsum.photos/seed/lovetutorial/800/400

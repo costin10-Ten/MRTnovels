@@ -2,7 +2,7 @@
 title: 廢氣之城
 publishDate: 2024-07-15
 author: 站長
-tags: [eco]
+tags: [環保]
 access: public
 summary: 八歲的小志從來沒有見過藍天，在灰色的世界裡仰望消失的顏色。
 cover: https://picsum.photos/seed/grey-pollution-city/800/400

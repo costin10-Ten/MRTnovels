@@ -2,7 +2,7 @@
 title: 深夜超商
 publishDate: 2024-01-08
 author: 站長
-tags: [romance]
+tags: [愛情]
 access: public
 summary: 凌晨兩點半，他每天都坐在第三排靠牆的位置，她每天都在收銀台後面看著他。
 cover: https://picsum.photos/seed/convenience-store-night/800/400

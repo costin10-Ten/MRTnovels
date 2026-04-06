@@ -2,7 +2,7 @@
 title: 最後的珊瑚礁
 publishDate: 2023-06-05
 author: 站長
-tags: [eco]
+tags: [環保]
 access: public
 summary: 台灣海峽最後一片活著的珊瑚礁，藏在無人島的陰影裡，等待著消失。
 cover: https://picsum.photos/seed/coral-reef-ocean/800/400

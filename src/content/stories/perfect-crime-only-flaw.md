@@ -2,7 +2,7 @@
 title: 完美犯罪的唯一破綻
 publishDate: 2024-08-20
 author: 站長
-tags: [mystery]
+tags: [推理]
 access: public
 summary: 一起被判定為意外的命案，唯一的線索是鄰居家的一隻老獵犬。
 cover: https://picsum.photos/seed/detective-dog-crime/800/400

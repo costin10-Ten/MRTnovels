@@ -2,7 +2,7 @@
 title: 配對系統出了點小問題
 publishDate: 2026-04-03
 author: 站長
-tags: [romance, scifi]
+tags: [愛情, 科幻]
 access: public
 summary: 交友APP的演算法出現異常，開始給用戶配對一些完全不該配對的對象，工程師緊急介入，發現演算法說不定是對的。
 cover: https://picsum.photos/seed/datingapp/800/400

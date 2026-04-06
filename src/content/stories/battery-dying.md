@@ -2,7 +2,7 @@
 title: 剩三格
 publishDate: 2026-04-03
 author: 站長
-tags: [scifi]
+tags: [科幻]
 access: public
 summary: 手機剩百分之三，距離家還有四十分鐘的路程，一個現代人開始面對存在主義的考驗。
 cover: https://picsum.photos/seed/battery/800/400

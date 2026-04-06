@@ -2,7 +2,7 @@
 title: 永久的化學物質：一條河流的長期招供
 publishDate: 2025-12-20
 author: 站長
-tags: [mystery, health, eco, thriller]
+tags: [推理, 健康, 環保, 驚悚]
 access: public
 summary: 環境調查員在一個濱海鄉鎮發現異常的甲狀腺癌和腎臟癌集群，追溯源頭，發現一種比他以為的更古老、更廣泛的污染，它不會消失，因為它從設計上就不打算消失。
 cover: https://picsum.photos/seed/pfas-river/800/400

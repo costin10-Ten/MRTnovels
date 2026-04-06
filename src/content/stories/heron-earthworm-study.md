@@ -2,7 +2,7 @@
 title: 黑冠麻鷺是否正在吃光台北的蚯蚓？一份認真的田野調查
 publishDate: 2026-04-05
 author: 站長
-tags: [humor, eco, taipei]
+tags: [幽默, 環保, 台北]
 access: public
 summary: 台北城市公園的黑冠麻鷺數量近年顯著增加，與此同時，我個人觀察到草地蚯蚓似乎越來越少。這兩件事有沒有關係？我決定認真調查。
 cover: https://picsum.photos/seed/heron-worm/800/400

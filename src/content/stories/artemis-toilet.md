@@ -2,7 +2,7 @@
 title: 人類睽違五十三年重返月球，廁所冒煙了
 publishDate: 2026-04-04
 author: 站長
-tags: [humor, sarcasm, tech, scifi]
+tags: [幽默, 諷刺, 科技, 科幻]
 access: public
 summary: NASA的Artemis II正在飛向月球，這是人類五十三年來最遠的旅程。太空船廁所傳出燒焦味。這是全體人類文明的最高峰。
 cover: https://picsum.photos/seed/artemis-toilet/800/400

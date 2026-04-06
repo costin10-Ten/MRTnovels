@@ -2,7 +2,7 @@
 title: 我暗戀她兩年，後來發現她也在觀察我，然後我們都嚇到了
 publishDate: 2026-04-05
 author: 站長
-tags: [romance, youth, humor, thriller]
+tags: [愛情, 青春, 幽默, 驚悚]
 access: public
 summary: 這是一個正常的暗戀故事。完全正常。我只是剛好記得她所有的習慣、行程、慣用手、以及她雨天會帶哪把傘。這很正常。大家都這樣。
 cover: https://picsum.photos/seed/mutual-stalk/800/400

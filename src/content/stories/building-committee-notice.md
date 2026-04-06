@@ -2,7 +2,7 @@
 title: 管委會公告第七號
 publishDate: 2026-04-03
 author: 站長
-tags: [thriller]
+tags: [驚悚]
 access: public
 summary: 大樓管委會的公告從第一號開始就有點奇怪，到第七號的時候，居民開始懷疑這棟樓是不是有什麼問題。
 cover: https://picsum.photos/seed/committee/800/400

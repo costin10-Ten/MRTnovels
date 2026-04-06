@@ -2,7 +2,7 @@
 title: 命中注定的排班
 publishDate: 2025-04-01
 author: 站長
-tags: [career, romance]
+tags: [職場, 愛情]
 access: public
 summary: 急診室的排班表不會說謊，她數了很多次，他們的名字總是在一起。
 cover: https://picsum.photos/seed/hospital-night-shift/800/400

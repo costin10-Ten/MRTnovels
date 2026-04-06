@@ -2,7 +2,7 @@
 title: 制服
 publishDate: 2023-11-15
 author: 站長
-tags: [youth]
+tags: [青春]
 access: public
 summary: 今天是穿制服的最後一天，捨不得的不只是那條深藍色的領帶。
 cover: https://picsum.photos/seed/school-uniform-tie/800/400

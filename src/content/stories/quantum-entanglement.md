@@ -2,7 +2,7 @@
 title: 量子纏繞
 publishDate: 2024-09-01
 author: 站長
-tags: [scifi, romance]
+tags: [科幻, 愛情]
 access: public
 summary: 在愛丁堡的實驗室裡，物理學家感覺到一萬公里外的妻子正在哭泣。
 cover: https://picsum.photos/seed/physics-quantum-lab/800/400

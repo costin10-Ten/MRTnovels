@@ -8,16 +8,6 @@ const sorted = allStories.sort(
   (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime(),
 );
 
-const TAG_LABELS: Record<string, string> = {
-  thriller: '驚悚', mystery: '推理', scifi: '科幻',
-  humor: '幽默', sarcasm: '諷刺', romance: '愛情',
-  youth: '青春', career: '職場', eco: '環保',
-  politics: '政治', finance: '財經', society: '社會',
-  tech: '科技', culture: '文化', essay: '散文',
-  growth: '成長', family: '親情', taipei: '台北',
-  food: '美食', health: '健康',
-};
-
 // Gather all tags that actually have stories, sorted by article count (descending)
 const tagCounts = new Map<string, number>();
 sorted.forEach(s => s.data.tags.forEach(t => tagCounts.set(t, (tagCounts.get(t) ?? 0) + 1)));
@@ -85,7 +75,7 @@ function slugColor(slug: string) {
           href={`/stories?tag=${t}${q ? '&q=' + encodeURIComponent(q) : ''}`}
           class={`text-xs px-3 py-1 border transition-colors ${tag === t ? 'border-gray-900 bg-gray-900 text-white dark:border-gray-100 dark:bg-gray-100 dark:text-gray-900' : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-gray-900 dark:hover:border-gray-100 hover:text-gray-900 dark:hover:text-gray-100'}`}
         >
-          {TAG_LABELS[t] ?? t}
+          {t}
         </a>
       ))}
     </div>
@@ -98,7 +88,7 @@ function slugColor(slug: string) {
             <!-- Row header -->
             <div class="flex items-baseline gap-2 mb-3">
               <h2 class="text-sm font-medium text-gray-900 dark:text-gray-100">
-                {TAG_LABELS[t] ?? t}
+                {t}
               </h2>
               <span class="text-[10px] text-gray-300 dark:text-gray-600">{grouped[t].length} 篇</span>
               <a

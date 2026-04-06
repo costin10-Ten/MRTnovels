@@ -2,7 +2,7 @@
 title: 外科主任的最後一刀
 publishDate: 2024-03-22
 author: 站長
-tags: [career]
+tags: [職場]
 access: public
 summary: 四十一年後，手術刀再一次放到他的手上，這次是最後一次。
 cover: https://picsum.photos/seed/surgery-operating-room/800/400

@@ -2,7 +2,7 @@
 title: 健身手環替我的人生打了六十二分
 publishDate: 2026-04-05
 author: 站長
-tags: [humor, sarcasm, tech]
+tags: [幽默, 諷刺, 科技]
 access: public
 summary: 我買了一個健身手環，它說我睡眠品質差、壓力指數高、活動量不足。它比我媽更了解我，比我主管更嚴格，而且二十四小時不下班。
 cover: https://picsum.photos/seed/fitness-ring/800/400

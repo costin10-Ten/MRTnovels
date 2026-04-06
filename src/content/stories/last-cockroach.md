@@ -2,7 +2,7 @@
 title: 最後一隻蟑螂的遺言
 publishDate: 2026-04-03
 author: 站長
-tags: [eco, thriller]
+tags: [環保, 驚悚]
 access: public
 summary: 一隻在台北公寓生活了三億年（演化意義上）的蟑螂，用第一人稱記錄了它最後一夜的見聞。
 cover: https://picsum.photos/seed/cockroach/800/400

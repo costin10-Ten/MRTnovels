@@ -2,7 +2,7 @@
 title: 大考前一晚的正確姿勢
 publishDate: 2026-04-03
 author: 站長
-tags: [youth]
+tags: [青春]
 access: public
 summary: 學測前一晚，一個考生和他的家人各自用荒謬的方式應對這個被過度神聖化的夜晚。
 cover: https://picsum.photos/seed/exameve/800/400

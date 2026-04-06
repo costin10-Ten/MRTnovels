@@ -2,7 +2,7 @@
 title: 紙箱裡的貓毛
 publishDate: 2023-08-12
 author: 站長
-tags: [mystery]
+tags: [推理]
 access: public
 summary: 命案現場一塵不染，但推理的起點是一根波斯貓的白毛。
 cover: https://picsum.photos/seed/detective-mystery/800/400

@@ -2,7 +2,7 @@
 title: 拉麵師傅的禪
 publishDate: 2024-12-25
 author: 站長
-tags: [career]
+tags: [職場]
 access: public
 summary: 每天早上五點開始熬湯，那鍋湯裡有他說不出口的一切。
 cover: https://picsum.photos/seed/ramen-bowl-steam/800/400

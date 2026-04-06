@@ -2,7 +2,7 @@
 title: 已讀不回研究報告（第十七版）
 publishDate: 2026-04-03
 author: 站長
-tags: [romance]
+tags: [愛情]
 access: public
 summary: 一個人用科學方法研究自己被已讀不回的可能原因，越研究越崩潰，最後得出一個意想不到的結論。
 cover: https://picsum.photos/seed/readreceipt/800/400

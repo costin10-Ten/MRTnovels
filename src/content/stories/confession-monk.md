@@ -2,7 +2,7 @@
 title: 我暗戀他三年，告白那天他說他要出家
 publishDate: 2026-04-04
 author: 站長
-tags: [romance, youth, humor]
+tags: [愛情, 青春, 幽默]
 access: public
 summary: 我花了三年做好心理準備，準備了一份告白計畫，選了黃道吉日，然後他說他要去出家。
 cover: https://picsum.photos/seed/monk-love/800/400

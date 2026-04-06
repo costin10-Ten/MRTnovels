@@ -2,7 +2,7 @@
 title: 姐姐沒有寫的那一頁
 publishDate: 2026-04-05
 author: 站長
-tags: [family, essay, growth]
+tags: [親情, 散文, 成長]
 access: public
 summary: 妹妹得了作文獎，寫她如果是烘焙師會做什麼甜點給家人。那篇文章我讀了很多遍。她沒有寫的那一頁，只有我知道。
 cover: https://picsum.photos/seed/sister-untold/800/400

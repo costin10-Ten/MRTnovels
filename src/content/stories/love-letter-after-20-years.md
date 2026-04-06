@@ -2,7 +2,7 @@
 title: 二十年後的情書
 publishDate: 2024-11-14
 author: 站長
-tags: [romance]
+tags: [愛情]
 access: member
 summary: 媽媽壓在鞋盒底層的那封信，等了二十年才被找到。
 cover: https://picsum.photos/seed/old-love-letter/800/400

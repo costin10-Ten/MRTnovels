@@ -2,7 +2,7 @@
 title: 夢遊者的城市
 publishDate: 2024-05-10
 author: 站長
-tags: [thriller]
+tags: [驚悚]
 access: member
 summary: 她第一次醒來的地方是仁愛路的人行道，鞋底沾著不知道從哪裡來的血。
 cover: https://picsum.photos/seed/rainy-city-sidewalk/800/400

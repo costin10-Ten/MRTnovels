@@ -2,7 +2,7 @@
 title: 我有八十七個環保袋
 publishDate: 2026-04-03
 author: 站長
-tags: [eco]
+tags: [環保]
 access: public
 summary: 一個「環保意識很強」的人清點了家裡的環保袋，發現自己可能是台灣棉花消耗量最大的個人用戶之一。
 cover: https://picsum.photos/seed/ecobag/800/400

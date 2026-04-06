@@ -2,7 +2,7 @@
 title: 選舉前夕
 publishDate: 2023-04-20
 author: 站長
-tags: [politics]
+tags: [政治]
 access: public
 summary: 投票日前十二小時，志工在廢紙槽裡找到了一份不該存在的名單。
 cover: https://picsum.photos/seed/voting-night-politics/800/400

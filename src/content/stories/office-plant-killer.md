@@ -2,7 +2,7 @@
 title: 幸運竹謀殺案
 publishDate: 2026-04-03
 author: 站長
-tags: [mystery, career]
+tags: [推理, 職場]
 access: public
 summary: 公司前台的幸運竹死了，有人展開了一場認真到離譜的調查，最後揭開了一個無人預料的真相。
 cover: https://picsum.photos/seed/bamboo/800/400

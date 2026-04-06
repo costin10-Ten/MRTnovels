@@ -2,7 +2,7 @@
 title: 捷運深夜
 publishDate: 2025-01-18
 author: 站長
-tags: [thriller]
+tags: [驚悚]
 access: public
 summary: 最後一班車上，車廂最末端坐著某個說不清楚是不是人的東西。
 cover: https://picsum.photos/seed/dark-mrt-train/800/400

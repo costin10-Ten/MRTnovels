@@ -2,7 +2,7 @@
 title: 深夜客服專線
 publishDate: 2026-04-03
 author: 站長
-tags: [thriller, career]
+tags: [驚悚, 職場]
 access: public
 summary: 深夜客服人員小葉接到一通普通的退貨詢問電話，但這通電話有一些地方越來越不對勁。
 cover: https://picsum.photos/seed/callcenter/800/400

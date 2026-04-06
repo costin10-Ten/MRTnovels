@@ -2,7 +2,7 @@
 title: 看不見的成分：一場從飲料開始的系統性毒害
 publishDate: 2025-08-25
 author: 站長
-tags: [mystery, health, eco, thriller]
+tags: [推理, 健康, 環保, 驚悚]
 access: public
 summary: 食品安全調查員接到一起異常內分泌病例的通報，追查源頭，發現一條深藏在合法食品供應鏈裡的隱形污染路徑。
 cover: https://picsum.photos/seed/plasticizer-lab/800/400

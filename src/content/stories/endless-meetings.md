@@ -2,7 +2,7 @@
 title: 今天的會議是討論要不要開更多會議
 publishDate: 2026-04-03
 author: 站長
-tags: [career]
+tags: [職場]
 access: public
 summary: 一個人從早上九點開始開會，開到下午五點，議題越來越荒謬，最後一場會議是討論要不要再開一場會議。
 cover: https://picsum.photos/seed/meetings/800/400

@@ -2,7 +2,7 @@
 title: 校園霸凌的另一面
 publishDate: 2024-10-05
 author: 站長
-tags: [youth]
+tags: [青春]
 access: public
 summary: 我欺負陳小毛三年，然後有一天我成了那個蜷縮在牆角的人。
 cover: https://picsum.photos/seed/school-hallway/800/400

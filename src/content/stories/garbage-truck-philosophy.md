@@ -2,7 +2,7 @@
 title: 等垃圾車的人
 publishDate: 2026-04-03
 author: 站長
-tags: [eco, career]
+tags: [環保, 職場]
 access: public
 summary: 每天傍晚五點五十，一群人聚集在巷口等垃圾車，沒有人說話，但每個人都有一個故事。
 cover: https://picsum.photos/seed/garbage/800/400

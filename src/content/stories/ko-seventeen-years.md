@@ -2,7 +2,7 @@
 title: 我投過他三次，現在他被判了十七年，我在學成長
 publishDate: 2026-04-04
 author: 站長
-tags: [humor, sarcasm, politics, society]
+tags: [幽默, 諷刺, 政治, 社會]
 access: public
 summary: 我三次投票都投給同一個人，每次都覺得這一次不一樣。法院說他判了十七年。我在認真思考什麼叫做「獨立判斷」。
 cover: https://picsum.photos/seed/ko-vote/800/400

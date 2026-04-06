@@ -2,7 +2,7 @@
 title: 我的主管是AI，它給了我一個九十八分的考績
 publishDate: 2026-04-03
 author: 站長
-tags: [scifi, career]
+tags: [科幻, 職場]
 access: public
 summary: 公司導入AI主管系統之後，工作效率提升了，但員工開始懷疑自己究竟在為誰工作。
 cover: https://picsum.photos/seed/aisup/800/400

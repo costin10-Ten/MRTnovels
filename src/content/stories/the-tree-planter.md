@@ -2,7 +2,7 @@
 title: 種樹的人
 publishDate: 2025-03-15
 author: 站長
-tags: [eco]
+tags: [環保]
 access: public
 summary: 沒有人請他，也沒有補助，他只是每個禮拜日帶著樹苗上山。
 cover: https://picsum.photos/seed/forest-tree-planting/800/400
