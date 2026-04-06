@@ -41,10 +41,10 @@ function pctBar(value: number, total: number) {
         <div class="text-2xl font-light text-gray-900 dark:text-gray-100 tabular-nums">{readCount}</div>
         <div class="text-[10px] text-gray-400 dark:text-gray-500 mt-1">已讀完</div>
       </div>
-      <div class="border border-gray-200 dark:border-gray-700 py-4">
+      <a href="/member/likes" class="border border-gray-200 dark:border-gray-700 py-4 block hover:border-gray-900 dark:hover:border-gray-100 transition-colors no-underline">
         <div class="text-2xl font-light text-gray-900 dark:text-gray-100 tabular-nums">{likedCount}</div>
         <div class="text-[10px] text-gray-400 dark:text-gray-500 mt-1">已按讚</div>
-      </div>
+      </a>
       <div class="border border-gray-200 dark:border-gray-700 py-4">
         <div class="text-2xl font-light text-gray-900 dark:text-gray-100 tabular-nums">{bookmarkCount}</div>
         <div class="text-[10px] text-gray-400 dark:text-gray-500 mt-1">收藏</div>
@@ -89,11 +89,14 @@ function pctBar(value: number, total: number) {
     </div>
 
     <!-- Quick links -->
-    <div class="flex gap-3 mb-10 text-sm">
-      <a href="/member/history" class="flex-1 border border-gray-200 dark:border-gray-700 py-2.5 text-center text-gray-600 dark:text-gray-400 hover:border-gray-900 dark:hover:border-gray-100 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
+    <div class="grid grid-cols-3 gap-2 mb-10 text-sm">
+      <a href="/member/history" class="border border-gray-200 dark:border-gray-700 py-2.5 text-center text-gray-600 dark:text-gray-400 hover:border-gray-900 dark:hover:border-gray-100 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
         閱讀紀錄
       </a>
-      <a href="/member/bookmarks" class="flex-1 border border-gray-200 dark:border-gray-700 py-2.5 text-center text-gray-600 dark:text-gray-400 hover:border-gray-900 dark:hover:border-gray-100 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
+      <a href="/member/likes" class="border border-gray-200 dark:border-gray-700 py-2.5 text-center text-gray-600 dark:text-gray-400 hover:border-gray-900 dark:hover:border-gray-100 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
+        已讚清單
+      </a>
+      <a href="/member/bookmarks" class="border border-gray-200 dark:border-gray-700 py-2.5 text-center text-gray-600 dark:text-gray-400 hover:border-gray-900 dark:hover:border-gray-100 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
         收藏清單
       </a>
     </div>

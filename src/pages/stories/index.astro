@@ -12,25 +12,41 @@ const TAG_LABELS: Record<string, string> = {
   thriller: '驚悚', politics: '政治', eco: '環保',
   mystery: '推理', scifi: '科幻', youth: '青春',
   romance: '感情', career: '職業',
+  humor: '幽默', finance: '財經', culture: '文化',
+  society: '社會', health: '健康', nature: '自然',
+  sport: '運動', food: '美食', travel: '旅行',
 };
 
-// Group by tag for "file explorer" view
-const allTags = ['thriller', 'politics', 'eco', 'mystery', 'scifi', 'youth', 'romance', 'career'];
+// Gather all tags that actually have stories
+const usedTags = [...new Set(sorted.flatMap(s => s.data.tags))];
+const orderedTags = ['thriller', 'mystery', 'scifi', 'humor', 'romance', 'youth', 'career', 'politics', 'eco', 'culture', 'society', 'finance', 'health', 'nature', 'food']
+  .filter(t => usedTags.includes(t))
+  .concat(usedTags.filter(t => !['thriller', 'mystery', 'scifi', 'humor', 'romance', 'youth', 'career', 'politics', 'eco', 'culture', 'society', 'finance', 'health', 'nature', 'food'].includes(t)));
+
 const grouped = Object.fromEntries(
-  allTags.map(tag => [
-    tag,
-    sorted.filter(s => s.data.tags.includes(tag)),
-  ]),
+  orderedTags.map(tag => [tag, sorted.filter(s => s.data.tags.includes(tag))]),
 );
 
-const q = Astro.url.searchParams.get('q') ?? '';
+const q   = Astro.url.searchParams.get('q')   ?? '';
 const tag = Astro.url.searchParams.get('tag') ?? '';
 
 const filtered = sorted.filter(s => {
   const matchTag = !tag || s.data.tags.includes(tag);
-  const matchQ = !q || s.data.title.includes(q) || s.data.summary.includes(q);
+  const matchQ   = !q   || s.data.title.includes(q) || s.data.summary.includes(q);
   return matchTag && matchQ;
 });
+
+// Seed for cover gradient from slug
+function slugColor(slug: string) {
+  const colors = [
+    ['#1a1a2e','#16213e'], ['#2d1b69','#1a1033'],
+    ['#0f3460','#162447'], ['#1b262c','#0f3460'],
+    ['#2c003e','#1b1b2f'], ['#0d0d0d','#1a1a1a'],
+    ['#16213e','#0f3460'], ['#1a0a2e','#2d1b69'],
+  ];
+  const i = slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0) % colors.length;
+  return colors[i];
+}
 ---
 
 <BaseLayout
@@ -38,11 +54,11 @@ const filtered = sorted.filter(s => {
   description="狂小說網全部短篇故事索引。驚悚、推理、科幻、職場、青春、感情、政治、環保，依分類瀏覽或關鍵字搜尋。"
   keywords={['短篇故事', '驚悚', '推理', '科幻', '職場', '青春', '感情', '政治', '環保', '台灣小說']}
 >
-  <div class="max-w-2xl mx-auto px-5 py-10">
-    <h1 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-6">內容索引</h1>
+  <div class="max-w-[1200px] mx-auto px-5 py-8">
+    <h1 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-5">內容索引</h1>
 
-    <!-- Search + filter bar -->
-    <form method="get" class="flex gap-2 mb-6">
+    <!-- Search + tag bar -->
+    <form method="get" class="flex gap-2 mb-4">
       <input
         type="text"
         name="q"
@@ -62,48 +78,86 @@ const filtered = sorted.filter(s => {
         href="/stories"
         class={`text-xs px-3 py-1 border transition-colors ${!tag ? 'border-gray-900 bg-gray-900 text-white dark:border-gray-100 dark:bg-gray-100 dark:text-gray-900' : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-gray-900 dark:hover:border-gray-100 hover:text-gray-900 dark:hover:text-gray-100'}`}
       >全部</a>
-      {allTags.map(t => (
+      {orderedTags.map(t => (
         <a
           href={`/stories?tag=${t}${q ? '&q=' + encodeURIComponent(q) : ''}`}
           class={`text-xs px-3 py-1 border transition-colors ${tag === t ? 'border-gray-900 bg-gray-900 text-white dark:border-gray-100 dark:bg-gray-100 dark:text-gray-900' : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-gray-900 dark:hover:border-gray-100 hover:text-gray-900 dark:hover:text-gray-100'}`}
         >
-          {TAG_LABELS[t]}
+          {TAG_LABELS[t] ?? t}
         </a>
       ))}
     </div>
 
-    {/* File-explorer view (no filter active) */}
     {!tag && !q ? (
-      <div class="flex flex-col gap-6">
-        {allTags.filter(t => grouped[t].length > 0).map(t => (
-          <div>
-            <div class="flex items-center gap-2 py-1.5 border-b border-gray-200 dark:border-gray-800 mb-1">
-              <span class="text-xs text-gray-400 dark:text-gray-500">▶</span>
-              <span class="text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">{TAG_LABELS[t]}</span>
-              <span class="text-xs text-gray-300 dark:text-gray-600 ml-auto">{grouped[t].length}</span>
-            </div>
-            {grouped[t].map(s => (
+      /* ── Netflix rows ── */
+      <div class="flex flex-col gap-10">
+        {orderedTags.filter(t => grouped[t]?.length > 0).map(t => (
+          <section>
+            <!-- Row header -->
+            <div class="flex items-baseline gap-2 mb-3">
+              <h2 class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                {TAG_LABELS[t] ?? t}
+              </h2>
+              <span class="text-[10px] text-gray-300 dark:text-gray-600">{grouped[t].length} 篇</span>
               <a
-                href={`/stories/${s.slug}`}
-                class="story-tree-item no-underline flex items-center justify-between"
-              >
-                <span class="flex items-center gap-2 min-w-0">
-                  <span class="text-gray-300 dark:text-gray-600 text-xs">·</span>
-                  <span class="truncate">{s.data.title}</span>
-                </span>
-                <div class="flex items-center gap-1.5 shrink-0 ml-2">
-                  {s.data.access !== 'public' && <Badge type="access" value={s.data.access} />}
-                  <span class="text-[10px] text-gray-300 dark:text-gray-600">
-                    {s.data.publishDate.toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' })}
-                  </span>
-                </div>
-              </a>
-            ))}
-          </div>
+                href={`/stories?tag=${t}`}
+                class="ml-auto text-[11px] text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 no-underline whitespace-nowrap"
+              >全部 →</a>
+            </div>
+
+            <!-- Horizontal scroll row -->
+            <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide snap-x snap-mandatory">
+              {grouped[t].map(s => {
+                const [c1, c2] = slugColor(s.slug);
+                const hasCover = !!s.data.cover;
+                return (
+                  <a
+                    href={`/stories/${s.slug}`}
+                    class="shrink-0 w-36 sm:w-44 snap-start no-underline group"
+                  >
+                    {/* Card thumbnail */}
+                    <div class="relative w-full aspect-[3/4] rounded overflow-hidden mb-2">
+                      {hasCover ? (
+                        <img
+                          src={s.data.cover}
+                          alt={s.data.title}
+                          class="w-full h-full object-cover grayscale opacity-80 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-300"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div
+                          class="w-full h-full flex items-end p-2"
+                          style={`background: linear-gradient(135deg, ${c1}, ${c2})`}
+                        >
+                          <span class="text-[10px] text-white/60 leading-tight line-clamp-2">
+                            {s.data.title}
+                          </span>
+                        </div>
+                      )}
+                      {s.data.access !== 'public' && (
+                        <div class="absolute top-1.5 right-1.5">
+                          <Badge type="access" value={s.data.access} />
+                        </div>
+                      )}
+                    </div>
+                    {/* Card info */}
+                    <div class="px-0.5">
+                      <p class="text-xs text-gray-900 dark:text-gray-100 font-medium line-clamp-2 leading-snug group-hover:underline mb-1">
+                        {s.data.title}
+                      </p>
+                      <p class="text-[10px] text-gray-400 dark:text-gray-500">
+                        {s.data.publishDate.toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' })}
+                      </p>
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
+          </section>
         ))}
       </div>
     ) : (
-      /* Filtered list view */
+      /* ── Filtered list view ── */
       <div class="flex flex-col">
         <div class="text-xs text-gray-400 dark:text-gray-500 mb-3">共 {filtered.length} 篇</div>
         {filtered.length === 0 ? (
@@ -129,3 +183,13 @@ const filtered = sorted.filter(s => {
     )}
   </div>
 </BaseLayout>
+
+<style>
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+</style>

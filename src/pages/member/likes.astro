@@ -1,0 +1,65 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Badge from '../../components/ui/Badge.astro';
+import { getLikedSlugs } from '../../lib/supabase';
+
+const { userId } = Astro.locals.auth();
+if (!userId) return Astro.redirect('/sign-in');
+
+const allStories = await getCollection('stories');
+const storyMap = Object.fromEntries(allStories.map(s => [s.slug, s]));
+
+const likedSlugs = await getLikedSlugs(userId);
+
+// Preserve order: newest liked first (Supabase returns in insert order, so reverse)
+const liked = likedSlugs
+  .map(slug => storyMap[slug])
+  .filter(Boolean)
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+---
+
+<BaseLayout title="我按讚的文章" noindex={true}>
+  <div class="max-w-xl mx-auto px-5 py-10">
+    <div class="flex items-center gap-4 mb-6">
+      <a href="/member" class="text-xs text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">← 會員中心</a>
+    </div>
+    <div class="flex items-baseline justify-between mb-6">
+      <h1 class="text-sm font-medium text-gray-900 dark:text-gray-100">我按讚的文章</h1>
+      {liked.length > 0 && (
+        <span class="text-xs text-gray-400 dark:text-gray-500 tabular-nums">{liked.length} 篇</span>
+      )}
+    </div>
+
+    {liked.length === 0 ? (
+      <div class="py-16 text-center">
+        <div class="text-3xl mb-4 opacity-30">♡</div>
+        <p class="text-sm text-gray-400 dark:text-gray-500 mb-2">還沒有按讚的文章</p>
+        <a href="/stories" class="text-xs underline text-gray-500 dark:text-gray-400">去看看文章</a>
+      </div>
+    ) : (
+      <div class="flex flex-col">
+        {liked.map(story => (
+          <div class="flex items-center gap-3 py-2.5 border-b border-gray-100 dark:border-gray-800">
+            <a
+              href={`/stories/${story.slug}`}
+              class="flex-1 min-w-0 group no-underline"
+            >
+              <div class="flex items-baseline gap-2">
+                <span class="text-xs text-gray-300 dark:text-gray-600 whitespace-nowrap w-12 shrink-0">
+                  {story.data.publishDate.toLocaleDateString('zh-TW', { month: '2-digit', day: '2-digit' })}
+                </span>
+                <span class="text-sm text-gray-900 dark:text-gray-100 group-hover:underline truncate">
+                  {story.data.title}
+                </span>
+              </div>
+            </a>
+            <div class="flex items-center gap-1.5 shrink-0">
+              {story.data.tags.slice(0, 1).map(t => <Badge type="tag" value={t} />)}
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+</BaseLayout>

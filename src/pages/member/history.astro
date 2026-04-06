@@ -1,6 +1,5 @@
 ---
 import { getCollection } from 'astro:content';
-
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getUserHistory } from '../../lib/supabase';
 
@@ -11,36 +10,80 @@ const allStories = await getCollection('stories');
 const storyMap = Object.fromEntries(allStories.map(s => [s.slug, s]));
 
 const history = await getUserHistory(userId);
+
+const filter = Astro.url.searchParams.get('f') ?? 'all'; // all | done | progress
+
+const filtered = history.filter(h => {
+  if (filter === 'done')     return h.pct >= 70;
+  if (filter === 'progress') return h.pct < 70;
+  return true;
+});
+
+const doneCount     = history.filter(h => h.pct >= 70).length;
+const progressCount = history.filter(h => h.pct < 70).length;
+
+const tabs = [
+  { key: 'all',      label: '全部',    count: history.length },
+  { key: 'done',     label: '已讀完',  count: doneCount },
+  { key: 'progress', label: '讀一半',  count: progressCount },
+];
 ---
 
-<BaseLayout title="閱讀紀錄">
+<BaseLayout title="閱讀紀錄" noindex={true}>
   <div class="max-w-xl mx-auto px-5 py-10">
     <div class="flex items-center gap-4 mb-6">
       <a href="/member" class="text-xs text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">← 會員中心</a>
     </div>
-    <h1 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-6">閱讀紀錄</h1>
+    <h1 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-5">閱讀紀錄</h1>
 
-    {history.length === 0 ? (
-      <p class="text-sm text-gray-400 dark:text-gray-500 py-8 text-center">
-        還沒有閱讀紀錄。<a href="/stories" class="underline text-gray-600 dark:text-gray-400">去看看文章</a>。
-      </p>
+    <!-- Filter tabs -->
+    <div class="flex gap-1 mb-6 border-b border-gray-100 dark:border-gray-800">
+      {tabs.map(tab => (
+        <a
+          href={`/member/history?f=${tab.key}`}
+          class={`px-3 py-2 text-xs border-b-2 -mb-px transition-colors no-underline whitespace-nowrap ${
+            filter === tab.key
+              ? 'border-gray-900 dark:border-gray-100 text-gray-900 dark:text-gray-100 font-medium'
+              : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+          }`}
+        >
+          {tab.label}
+          <span class="ml-1 tabular-nums opacity-60">{tab.count}</span>
+        </a>
+      ))}
+    </div>
+
+    {filtered.length === 0 ? (
+      <div class="py-16 text-center">
+        <p class="text-sm text-gray-400 dark:text-gray-500 mb-2">
+          {filter === 'done'     ? '還沒有讀完的文章（需超過70%）' :
+           filter === 'progress' ? '沒有讀到一半的文章' :
+           '還沒有閱讀紀錄'}
+        </p>
+        <a href="/stories" class="text-xs underline text-gray-500 dark:text-gray-400">去看看文章</a>
+      </div>
     ) : (
       <div class="flex flex-col gap-3">
-        {history.map(h => {
+        {filtered.map(h => {
           const story = storyMap[h.story_slug];
           if (!story) return null;
+          const isDone = h.pct >= 70;
           return (
-            <a
-              href={`/stories/${h.story_slug}`}
-              class="group block no-underline"
-            >
+            <a href={`/stories/${h.story_slug}`} class="group block no-underline">
               <div class="flex items-center justify-between mb-1">
-                <span class="text-sm text-gray-900 dark:text-gray-100 group-hover:underline">{story.data.title}</span>
-                <span class="text-xs text-gray-400 dark:text-gray-500 tabular-nums">{h.pct}%</span>
+                <div class="flex items-center gap-2 min-w-0">
+                  {isDone && (
+                    <span class="text-[10px] text-gray-400 dark:text-gray-500 shrink-0">✓</span>
+                  )}
+                  <span class="text-sm text-gray-900 dark:text-gray-100 group-hover:underline truncate">
+                    {story.data.title}
+                  </span>
+                </div>
+                <span class="text-xs text-gray-400 dark:text-gray-500 tabular-nums ml-2 shrink-0">{h.pct}%</span>
               </div>
               <div class="h-1 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
                 <div
-                  class={`h-full rounded-full ${h.pct >= 70 ? 'bg-gray-900 dark:bg-gray-100' : 'bg-gray-400 dark:bg-gray-500'}`}
+                  class={`h-full rounded-full ${isDone ? 'bg-gray-900 dark:bg-gray-100' : 'bg-gray-300 dark:bg-gray-600'}`}
                   style={`width: ${h.pct}%`}
                 ></div>
               </div>
