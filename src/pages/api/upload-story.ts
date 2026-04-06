@@ -21,6 +21,14 @@ export const POST: APIRoute = async ({ request, locals }) => {
     return new Response(JSON.stringify({ error: '標題與本文為必填' }), { status: 400 });
   }
 
+  // Validate access against allowlist to prevent frontmatter injection
+  const safeAccess = ['public', 'member', 'paid'].includes(access) ? access : 'public';
+
+  // Validate publishDate is a valid YYYY-MM-DD date to prevent frontmatter injection
+  const safeDate = /^\d{4}-\d{2}-\d{2}$/.test(publishDate)
+    ? publishDate
+    : new Date().toISOString().slice(0, 10);
+
   // Generate slug from title
   const slug = title
     .toLowerCase()
@@ -34,10 +42,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
   const lines: string[] = [
     '---',
     `title: ${JSON.stringify(title)}`,
-    `publishDate: ${publishDate || new Date().toISOString().slice(0, 10)}`,
+    `publishDate: ${safeDate}`,
     `author: ${JSON.stringify(author || '站長')}`,
     `tags: [${(tags || '').split(',').map((t: string) => JSON.stringify(t.trim())).filter(Boolean).join(', ')}]`,
-    `access: ${access || 'public'}`,
+    `access: ${safeAccess}`,
     `summary: ${JSON.stringify(summary || '')}`,
   ];
   if (cover)      lines.push(`cover: ${JSON.stringify(cover)}`);

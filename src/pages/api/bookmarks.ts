@@ -12,7 +12,7 @@ export const GET: APIRoute = async (ctx) => {
     const rawRef = ctx.url.searchParams.get('ref') ?? '/';
     const ref = rawRef.startsWith('/') && !rawRef.startsWith('//') ? rawRef : '/';
 
-    if (action && slug) {
+    if (action && slug && slug.length <= 200 && !/[/\\.]/.test(slug)) {
       if (action === 'add') await addBookmark(userId, slug);
       if (action === 'remove') await removeBookmark(userId, slug);
       return ctx.redirect(ref, 302);
