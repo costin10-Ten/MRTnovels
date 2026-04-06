@@ -89,7 +89,7 @@ function pctBar(value: number, total: number) {
     </div>
 
     <!-- Quick links -->
-    <div class="grid grid-cols-3 gap-2 mb-10 text-sm">
+    <div class="grid grid-cols-3 gap-2 mb-2 text-sm">
       <a href="/member/history" class="border border-gray-200 dark:border-gray-700 py-2.5 text-center text-gray-600 dark:text-gray-400 hover:border-gray-900 dark:hover:border-gray-100 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
         閱讀紀錄
       </a>
@@ -98,6 +98,14 @@ function pctBar(value: number, total: number) {
       </a>
       <a href="/member/bookmarks" class="border border-gray-200 dark:border-gray-700 py-2.5 text-center text-gray-600 dark:text-gray-400 hover:border-gray-900 dark:hover:border-gray-100 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
         收藏清單
+      </a>
+    </div>
+    <div class="grid grid-cols-2 gap-2 mb-10 text-sm">
+      <a href="/?filter=unread" class="border border-gray-200 dark:border-gray-700 py-2.5 text-center text-gray-600 dark:text-gray-400 hover:border-gray-900 dark:hover:border-gray-100 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
+        未讀清單
+      </a>
+      <a href="/?filter=unliked" class="border border-gray-200 dark:border-gray-700 py-2.5 text-center text-gray-600 dark:text-gray-400 hover:border-gray-900 dark:hover:border-gray-100 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
+        未讚清單
       </a>
     </div>
 
