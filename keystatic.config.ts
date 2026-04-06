@@ -1,6 +1,6 @@
 import { config, fields, collection } from '@keystatic/core';
 
-const TAG_OPTIONS = [
+const TAG_OPTIONS_GENRE = [
   { label: '驚悚', value: '驚悚' },
   { label: '推理', value: '推理' },
   { label: '科幻', value: '科幻' },
@@ -9,14 +9,17 @@ const TAG_OPTIONS = [
   { label: '愛情', value: '愛情' },
   { label: '青春', value: '青春' },
   { label: '職場', value: '職場' },
+  { label: '散文', value: '散文' },
+  { label: '成長', value: '成長' },
+];
+
+const TAG_OPTIONS_THEME = [
   { label: '環保', value: '環保' },
   { label: '政治', value: '政治' },
   { label: '財經', value: '財經' },
   { label: '社會', value: '社會' },
   { label: '科技', value: '科技' },
   { label: '文化', value: '文化' },
-  { label: '散文', value: '散文' },
-  { label: '成長', value: '成長' },
   { label: '親情', value: '親情' },
   { label: '台北', value: '台北' },
   { label: '美食', value: '美食' },
@@ -64,15 +67,22 @@ export default config({
         }),
 
         tags: fields.multiselect({
-          label: '標準標籤（勾選）',
-          options: TAG_OPTIONS,
+          label: '文體標籤',
+          description: '驚悚／推理／科幻／幽默／諷刺／愛情／青春／職場／散文／成長',
+          options: TAG_OPTIONS_GENRE,
+        }),
+
+        themeTags: fields.multiselect({
+          label: '主題標籤',
+          description: '環保／政治／財經／社會／科技／文化／親情／台北／美食／健康',
+          options: TAG_OPTIONS_THEME,
         }),
 
         customTags: fields.array(
           fields.text({ label: '標籤名稱' }),
           {
             label: '自訂標籤（輸入新標籤）',
-            itemLabel: props => props.fields.value,
+            itemLabel: props => props.value ?? '新標籤',
           },
         ),
 
