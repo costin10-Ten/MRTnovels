@@ -2,11 +2,11 @@
 title: 我的離職通知上寫著「AI取代」，我把它裱框了
 publishDate: 2026-04-04
 author: 站長
-tags: [幽默, 諷刺, 職場, 科技]
+tags: [幽默, 諷刺, 職場]
+themeTags: [科技]
 access: public
 summary: 全球第一季五萬兩千個科技業職缺消失，四分之一標記AI取代。我決定把我的通知書裱起來，這是我職涯中最誠實的一份文件。
-cover: https://picsum.photos/seed/layoff-cert/800/400
----
+cover: https://picsum.photos/seed/layoff-cert/800/400---
 
 我工作了七年，拿過四次績效評核，每次都是「良好」，從未拿過「優秀」，也從未被列入「需改進」，我是一個完美的中間值員工，不出色，不出錯，準時上班，準時下班，提交的報告從來不讓人驚喜，也從來不讓人失望。
 

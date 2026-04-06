@@ -2,11 +2,11 @@
 title: 群體智慧在我的筆電上跑了三分鐘，然後告訴我一件我不想知道的事
 publishDate: 2026-04-06
 author: 站長
-tags: [科幻, 驚悚, 科技, 愛情]
+tags: [科幻, 驚悚, 愛情]
+themeTags: [科技]
 access: public
 summary: 我在公司的測試伺服器上跑了一個用多個AI agent模擬群體智慧的預測系統，輸入的不是股市資料，是我的感情狀況。系統跑了三分鐘，給了我一個答案。
-cover: https://picsum.photos/seed/swarm-predict/800/400
----
+cover: https://picsum.photos/seed/swarm-predict/800/400---
 
 我是在加班的時候做這件事的，所以請先理解這個決定的背景。
 

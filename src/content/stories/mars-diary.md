@@ -5,8 +5,7 @@ author: 站長
 tags: [科幻]
 access: public
 summary: 2147年，第一個在火星出生的孩子，試圖想像自己從未見過的地球。
-cover: https://picsum.photos/seed/mars-red-planet/800/400
----
+cover: https://picsum.photos/seed/mars-red-planet/800/400---
 
 2147年3月11日
 

@@ -5,8 +5,7 @@ author: 站長
 tags: [愛情]
 access: member
 summary: 媽媽壓在鞋盒底層的那封信，等了二十年才被找到。
-cover: https://picsum.photos/seed/old-love-letter/800/400
----
+cover: https://picsum.photos/seed/old-love-letter/800/400---
 
 林曉雯四十八歲，在整理媽媽的遺物。
 

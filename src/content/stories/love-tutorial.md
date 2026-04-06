@@ -5,8 +5,7 @@ author: 站長
 tags: [愛情, 青春]
 access: public
 summary: 有人開了一家號稱「科學化戀愛訓練」的補習班，學員報名之後才發現，老師的情史比任何人都慘。
-cover: https://picsum.photos/seed/lovetutorial/800/400
----
+cover: https://picsum.photos/seed/lovetutorial/800/400---
 
 補習班的名字叫「戀愛研究所」，地點在捷運古亭站附近的一棟老公寓四樓，旁邊是一家鹽酥雞和一個投幣洗衣店。
 

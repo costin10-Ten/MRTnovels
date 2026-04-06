@@ -2,11 +2,11 @@
 title: 廢氣之城
 publishDate: 2024-07-15
 author: 站長
-tags: [環保]
+tags: []
+themeTags: [環保]
 access: public
 summary: 八歲的小志從來沒有見過藍天，在灰色的世界裡仰望消失的顏色。
-cover: https://picsum.photos/seed/grey-pollution-city/800/400
----
+cover: https://picsum.photos/seed/grey-pollution-city/800/400---
 
 書包上掛著一個小小的空氣品質偵測器，那是小志媽媽開學前幫他別上去的。數字如果變紅，就不能在外面跑。數字幾乎每天都是紅的。
 

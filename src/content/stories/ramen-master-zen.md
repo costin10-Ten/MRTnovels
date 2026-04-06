@@ -5,8 +5,7 @@ author: 站長
 tags: [職場]
 access: public
 summary: 每天早上五點開始熬湯，那鍋湯裡有他說不出口的一切。
-cover: https://picsum.photos/seed/ramen-bowl-steam/800/400
----
+cover: https://picsum.photos/seed/ramen-bowl-steam/800/400---
 
 阿文每天早上五點開始熬湯底。豬骨下鍋之前要汆燙，撈去血水，這個步驟急不得，急了就有腥味，蓋不住的那種。
 

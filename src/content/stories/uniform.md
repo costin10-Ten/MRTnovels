@@ -5,8 +5,7 @@ author: 站長
 tags: [青春]
 access: public
 summary: 今天是穿制服的最後一天，捨不得的不只是那條深藍色的領帶。
-cover: https://picsum.photos/seed/school-uniform-tie/800/400
----
+cover: https://picsum.photos/seed/school-uniform-tie/800/400---
 
 今天是穿制服的最後一天。
 

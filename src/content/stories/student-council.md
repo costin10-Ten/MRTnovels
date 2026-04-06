@@ -2,11 +2,11 @@
 title: 班聯會政見發表大會
 publishDate: 2026-04-03
 author: 站長
-tags: [青春, 政治]
+tags: [青春]
+themeTags: [政治]
 access: public
 summary: 高中班聯會選舉政見發表，候選人的主張一個比一個離譜，但學生的反應比預期中更熱烈。
-cover: https://picsum.photos/seed/studentcouncil/800/400
----
+cover: https://picsum.photos/seed/studentcouncil/800/400---
 
 班聯會選舉政見發表會在週三的班會課進行，每個候選人有三分鐘，台下是全班四十一個人，以及一個負責計時的導師林老師，她坐在最後一排，表情已經說明了她打算把接下來的這四十五分鐘當作行政義務，而不是任何有意義的公民教育活動。
 

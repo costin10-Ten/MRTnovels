@@ -5,8 +5,7 @@ author: 站長
 tags: [青春, 成長, 散文]
 access: public
 summary: 二十八歲那年我仍然不知道自己要做什麼。後來我明白，那幾年不是浪費，是一種我當時不懂讀的語言。
-cover: https://picsum.photos/seed/slow-fire/800/400
----
+cover: https://picsum.photos/seed/slow-fire/800/400---
 
 我二十八歲的時候，還不知道自己要做什麼。
 

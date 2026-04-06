@@ -2,11 +2,11 @@
 title: 我外公寫過購物清單，我想拍賣它
 publishDate: 2026-04-04
 author: 站長
-tags: [幽默, 諷刺, 文化]
+tags: [幽默, 諷刺]
+themeTags: [文化]
 access: public
 summary: 聽說已故作家的手稿可以拍賣，我翻了一下外公留下的紙張，發現他的字跡很有歷史感，決定試試。
-cover: https://picsum.photos/seed/manuscript/800/400
----
+cover: https://picsum.photos/seed/manuscript/800/400---
 
 外公在二〇一五年過世，享年八十一歲，一輩子從事水電工程，晚年喜歡看布袋戲和吃花生，沒有出版過任何作品，也從未表達過文學方面的抱負，但他留下了大量的手寫紙張。
 

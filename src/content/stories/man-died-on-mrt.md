@@ -5,8 +5,7 @@ author: 站長
 tags: [驚悚]
 access: public
 summary: 通勤高峰時段，一個不該醒來的男人坐在我的對面。
-cover: https://picsum.photos/seed/metro-morning-commute/800/400
----
+cover: https://picsum.photos/seed/metro-morning-commute/800/400---
 
 早上七點四十分，板南線向西。車廂裡擠滿了沉默的通勤者，各自低頭滑著手機，沒有人注意到對面那個穿著深藍西裝的男人。
 

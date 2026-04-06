@@ -2,11 +2,11 @@
 title: 在信義計劃區仰望的人們
 publishDate: 2026-04-06
 author: 站長
-tags: [台北, 散文]
+tags: [散文]
+themeTags: [台北]
 access: public
 summary: 他們站在同一片地上，抬起頭，看向同一個方向。但他們看見的不是同一個東西。
-cover: https://picsum.photos/seed/xinyi-look-up/800/400
----
+cover: https://picsum.photos/seed/xinyi-look-up/800/400---
 
 有一個送貨員，
 停在路口等紅燈，

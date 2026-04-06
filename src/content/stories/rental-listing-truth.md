@@ -2,11 +2,11 @@
 title: 「溫馨雅致、近捷運、採光佳」的套房，我去看了
 publishDate: 2026-04-05
 author: 站長
-tags: [幽默, 諷刺, 社會]
+tags: [幽默, 諷刺]
+themeTags: [社會]
 access: public
 summary: 台灣租屋廣告有一套自己的語言，它的意思和中文字面意思只有大約三成的重疊。我花了半年時間，學會了翻譯。
-cover: https://picsum.photos/seed/rental-lies/800/400
----
+cover: https://picsum.photos/seed/rental-lies/800/400---
 
 「溫馨雅致」的意思是空間很小，但房東認為小是一種美學。
 

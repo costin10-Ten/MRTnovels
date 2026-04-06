@@ -2,11 +2,11 @@
 title: 立法院的秘密會議
 publishDate: 2024-06-30
 author: 站長
-tags: [政治]
+tags: []
+themeTags: [政治]
 access: member
 summary: 凌晨兩點的會議室，一張清潔推車裡藏著一份改變一切的議程。
-cover: https://picsum.photos/seed/legislature-parliament/800/400
----
+cover: https://picsum.photos/seed/legislature-parliament/800/400---
 
 我是在清潔女工的推車裡找到那份議程的。
 

@@ -5,8 +5,7 @@ author: 站長
 tags: [驚悚]
 access: public
 summary: 大樓管委會的公告從第一號開始就有點奇怪，到第七號的時候，居民開始懷疑這棟樓是不是有什麼問題。
-cover: https://picsum.photos/seed/committee/800/400
----
+cover: https://picsum.photos/seed/committee/800/400---
 
 第一號公告貼出來的時候，大家都沒有特別在意。
 

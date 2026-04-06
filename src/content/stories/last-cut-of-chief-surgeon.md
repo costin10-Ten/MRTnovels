@@ -5,8 +5,7 @@ author: 站長
 tags: [職場]
 access: public
 summary: 四十一年後，手術刀再一次放到他的手上，這次是最後一次。
-cover: https://picsum.photos/seed/surgery-operating-room/800/400
----
+cover: https://picsum.photos/seed/surgery-operating-room/800/400---
 
 手術室的燈光總是這樣——白而精準，把其他一切都消滅在陰影裡。
 

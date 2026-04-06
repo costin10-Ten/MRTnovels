@@ -5,8 +5,7 @@ author: 站長
 tags: [科幻]
 access: public
 summary: 手機剩百分之三，距離家還有四十分鐘的路程，一個現代人開始面對存在主義的考驗。
-cover: https://picsum.photos/seed/battery/800/400
----
+cover: https://picsum.photos/seed/battery/800/400---
 
 手機跳出電量警告的時候，我正在捷運上，距離家還有四站。
 

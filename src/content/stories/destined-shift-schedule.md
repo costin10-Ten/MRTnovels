@@ -5,8 +5,7 @@ author: 站長
 tags: [職場, 愛情]
 access: public
 summary: 急診室的排班表不會說謊，她數了很多次，他們的名字總是在一起。
-cover: https://picsum.photos/seed/hospital-night-shift/800/400
----
+cover: https://picsum.photos/seed/hospital-night-shift/800/400---
 
 小吳護理師拿到新的排班表，數了一遍：她和林護理師同班十一次，比上個月少了三次。她說不清楚自己為什麼要數這個。
 

@@ -5,8 +5,7 @@ author: 站長
 tags: [幽默, 散文, 成長]
 access: public
 summary: 有人說你要了解自己。我認真試過了，三個月，我把自己觀察得很仔細，最後發現的結論，比不觀察之前更讓我困惑。
-cover: https://picsum.photos/seed/self-mirror/800/400
----
+cover: https://picsum.photos/seed/self-mirror/800/400---
 
 有一個朋友對我說：「你要更了解自己。」
 

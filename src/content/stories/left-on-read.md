@@ -5,8 +5,7 @@ author: 站長
 tags: [愛情]
 access: public
 summary: 一個人用科學方法研究自己被已讀不回的可能原因，越研究越崩潰，最後得出一個意想不到的結論。
-cover: https://picsum.photos/seed/readreceipt/800/400
----
+cover: https://picsum.photos/seed/readreceipt/800/400---
 
 已讀時間：晚上九點十七分。
 目前時間：隔天早上七點四十三分。

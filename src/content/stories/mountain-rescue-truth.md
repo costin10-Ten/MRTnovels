@@ -2,11 +2,11 @@
 title: 第四十七天，他走出來了，但沒有人知道真相
 publishDate: 2026-04-05
 author: 站長
-tags: [驚悚, 推理, 社會]
+tags: [驚悚, 推理]
+themeTags: [社會]
 access: public
 summary: 我去採訪那場谷關搜救事件，想寫一篇還原真相的報導。我訪了教官、搜救隊員、家屬。最後我訪到了那個走失的人，他告訴我一件沒有人知道的事。
-cover: https://picsum.photos/seed/mountain-truth/800/400
----
+cover: https://picsum.photos/seed/mountain-truth/800/400---
 
 我去採訪這件事，是因為我覺得有東西沒說清楚。
 

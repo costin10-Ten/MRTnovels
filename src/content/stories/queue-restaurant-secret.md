@@ -2,11 +2,11 @@
 title: 我幫朋友打造了一間排隊名店，這是完整的操作手冊
 publishDate: 2026-04-05
 author: 站長
-tags: [幽默, 諷刺, 社會, 美食, 財經]
+tags: [幽默, 諷刺]
+themeTags: [社會, 美食, 財經]
 access: public
 summary: 我朋友開了一間店，找我幫他「顧問」，我們花了三個月，把一間普通的早午餐店變成了每天排隊兩小時的名店。食物沒有變，改變的是別的東西。
-cover: https://picsum.photos/seed/queue-secret/800/400
----
+cover: https://picsum.photos/seed/queue-secret/800/400---
 
 我先聲明：食物是真實的，廚師是認真的，沒有任何食安問題。
 

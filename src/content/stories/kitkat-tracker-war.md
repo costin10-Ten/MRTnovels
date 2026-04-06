@@ -2,11 +2,11 @@
 title: 我在伊朗戰爭第三十天輸入了KitKat的序號
 publishDate: 2026-04-04
 author: 站長
-tags: [幽默, 諷刺, 社會]
+tags: [幽默, 諷刺]
+themeTags: [社會]
 access: public
 summary: 油價破百一十美元，荷姆茲海峽封鎖，全球經濟顫抖。我坐在便利商店門口，低頭查我的KitKat是不是贓物。
-cover: https://picsum.photos/seed/kitkat-war/800/400
----
+cover: https://picsum.photos/seed/kitkat-war/800/400---
 
 那天是伊朗戰爭開打第三十天，油價報每桶一百一十一點五四美元，荷姆茲海峽一天只通過五艘船，瑞銀的分析師說如果再拖一個月可能突破一百五十美元，我剛在便利商店花三十二塊買了一條KitKat，坐在店門口的塑膠椅上準備吃。
 

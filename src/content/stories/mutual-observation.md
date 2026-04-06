@@ -5,8 +5,7 @@ author: 站長
 tags: [愛情, 青春, 幽默, 驚悚]
 access: public
 summary: 這是一個正常的暗戀故事。完全正常。我只是剛好記得她所有的習慣、行程、慣用手、以及她雨天會帶哪把傘。這很正常。大家都這樣。
-cover: https://picsum.photos/seed/mutual-stalk/800/400
----
+cover: https://picsum.photos/seed/mutual-stalk/800/400---
 
 我想先聲明，我的暗戀方式是正常的。
 

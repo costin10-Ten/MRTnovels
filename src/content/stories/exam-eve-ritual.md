@@ -5,8 +5,7 @@ author: 站長
 tags: [青春]
 access: public
 summary: 學測前一晚，一個考生和他的家人各自用荒謬的方式應對這個被過度神聖化的夜晚。
-cover: https://picsum.photos/seed/exameve/800/400
----
+cover: https://picsum.photos/seed/exameve/800/400---
 
 學測前一晚，我媽把家裡的鏡子全部蓋起來了。
 
