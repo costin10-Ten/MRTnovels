@@ -1,6 +1,6 @@
 ---
 title: "我看不懂加密幣新聞，但我每次都點進去"
-publishDate: 2026-04-07
+publishDate: 2026-04-08
 author: 站長
 tags: [幽默, 諷刺, 散文]
 themeTags: [財經, 科技]
