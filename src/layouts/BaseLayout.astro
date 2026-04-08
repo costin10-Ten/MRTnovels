@@ -123,6 +123,22 @@ const fullTitle = title === '狂小說網' ? title + '・通勤文學速讀' : `
 
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
+  <!-- Google Analytics 4 -->
+  {import.meta.env.PUBLIC_GA_MEASUREMENT_ID && (
+    <>
+      <script
+        async
+        src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GA_MEASUREMENT_ID}`}
+      ></script>
+      <script define:vars={{ gaId: import.meta.env.PUBLIC_GA_MEASUREMENT_ID }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', gaId);
+      </script>
+    </>
+  )}
+
   <!-- Anti-flash: apply theme/font/size BEFORE first paint -->
   <script>
     (function(){

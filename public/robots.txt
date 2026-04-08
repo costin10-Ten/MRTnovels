@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /keystatic/
+Disallow: /sign-in/
+Disallow: /sign-up/
+Disallow: /api/
+Disallow: /member/
+
+Sitemap: https://mrt-novels.vercel.app/sitemap-index.xml
