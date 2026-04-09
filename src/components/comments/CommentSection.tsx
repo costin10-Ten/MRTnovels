@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks';
+import { useState, useEffect } from 'preact/hooks';
 
 interface Comment {
   id: string;
@@ -30,6 +30,14 @@ export default function CommentSection({ storySlug, initialComments, isLoggedIn 
   const [body, setBody] = useState('');
   const [error, setError] = useState('');
   const [posting, setPosting] = useState(false);
+
+  // Fetch actual comments client-side (initialComments may be empty due to SSR optimisation)
+  useEffect(() => {
+    fetch(`/api/comments?slug=${encodeURIComponent(storySlug)}`)
+      .then(r => r.json())
+      .then((data: Comment[]) => { if (Array.isArray(data)) setComments(data); })
+      .catch(() => {});
+  }, [storySlug]);
 
   async function submit(e: Event) {
     e.preventDefault();

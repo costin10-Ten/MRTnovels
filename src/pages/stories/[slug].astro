@@ -6,10 +6,7 @@ import LikeButton from '../../components/reader/LikeButton';
 import ReadingTracker from '../../components/reader/ReadingTracker';
 import CommentSection from '../../components/comments/CommentSection';
 import ShareButtons from '../../components/ui/ShareButtons.astro';
-import {
-  getStoryStats, getComments, isLiked, isBookmarked,
-  incrementViews, getProgress,
-} from '../../lib/supabase';
+import { incrementViews } from '../../lib/supabase';
 import { getTags } from '../../lib/tags';
 
 const { slug } = Astro.params;
@@ -38,15 +35,6 @@ if (story.data.access === 'paid' && !userId) {
 
 // Increment view (fire and forget)
 incrementViews(slug).catch(() => {});
-
-// Parallel data fetching
-const [stats, comments, liked, bookmarked, savedPct] = await Promise.all([
-  getStoryStats(slug).catch(() => ({ views: 0, likes: 0 })),
-  getComments(slug).catch(() => []),
-  userId ? isLiked(userId, slug).catch(() => false) : false,
-  userId ? isBookmarked(userId, slug).catch(() => false) : false,
-  userId ? getProgress(userId, slug).catch(() => 0) : 0,
-]);
 
 const { Content } = await render(story);
 
@@ -80,9 +68,9 @@ const dateStr = story.data.publishDate.toLocaleDateString('zh-TW', {
 
     <!-- Meta row -->
     <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 dark:text-gray-400 mb-2">
-      <span>{stats.views.toLocaleString('zh-TW')} 人讀過</span>
+      <span id="meta-views">… 人讀過</span>
       <span>·</span>
-      <span>{stats.likes.toLocaleString('zh-TW')} 個讚</span>
+      <span id="meta-likes">… 個讚</span>
       <span>·</span>
       <span>{dateStr}</span>
       <span>·</span>
@@ -109,15 +97,16 @@ const dateStr = story.data.publishDate.toLocaleDateString('zh-TW', {
       <LikeButton
         client:load
         storySlug={slug}
-        initialLiked={liked}
-        initialCount={stats.likes}
+        initialLiked={false}
+        initialCount={0}
       />
       {userId && (
         <a
-          href={`/api/bookmarks?action=${bookmarked ? 'remove' : 'add'}&slug=${slug}&ref=/stories/${slug}`}
+          id="bookmark-btn"
+          href={`/api/bookmarks?action=add&slug=${slug}&ref=/stories/${slug}`}
           class="text-sm text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
         >
-          {bookmarked ? '★ 已收藏' : '☆ 收藏'}
+          ☆ 收藏
         </a>
       )}
     </div>
@@ -148,8 +137,8 @@ const dateStr = story.data.publishDate.toLocaleDateString('zh-TW', {
       <LikeButton
         client:load
         storySlug={slug}
-        initialLiked={liked}
-        initialCount={stats.likes}
+        initialLiked={false}
+        initialCount={0}
       />
     </div>
 
@@ -174,8 +163,39 @@ const dateStr = story.data.publishDate.toLocaleDateString('zh-TW', {
     <CommentSection
       client:load
       storySlug={slug}
-      initialComments={comments}
+      initialComments={[]}
       isLoggedIn={!!userId}
     />
   </article>
 </BaseLayout>
+
+<script define:vars={{ slug, isLoggedIn: !!userId }}>
+  // Fetch story state (stats + liked + bookmarked) client-side to avoid blocking SSR
+  fetch(`/api/story-state?slug=${encodeURIComponent(slug)}`)
+    .then(r => r.json())
+    .then(({ stats, liked, bookmarked }) => {
+      // Update meta row
+      const mv = document.getElementById('meta-views');
+      const ml = document.getElementById('meta-likes');
+      if (mv) mv.textContent = `${(stats.views ?? 0).toLocaleString('zh-TW')} 人讀過`;
+      if (ml) ml.textContent = `${(stats.likes ?? 0).toLocaleString('zh-TW')} 個讚`;
+
+      // Update LikeButton state via custom event (both top + bottom instances)
+      window.dispatchEvent(new CustomEvent('like-sync', {
+        detail: { slug, liked: !!liked, count: stats.likes ?? 0 },
+      }));
+
+      // Update bookmark button
+      const bm = document.getElementById('bookmark-btn');
+      if (bm && bookmarked) {
+        bm.textContent = '★ 已收藏';
+        bm.href = `/api/bookmarks?action=remove&slug=${encodeURIComponent(slug)}&ref=/stories/${encodeURIComponent(slug)}`;
+      }
+    })
+    .catch(() => {
+      const mv = document.getElementById('meta-views');
+      const ml = document.getElementById('meta-likes');
+      if (mv) mv.textContent = '';
+      if (ml) ml.textContent = '';
+    });
+</script>
