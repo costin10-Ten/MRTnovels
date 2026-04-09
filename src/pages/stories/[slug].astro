@@ -128,6 +128,7 @@ const dateStr = story.data.publishDate.toLocaleDateString('zh-TW', {
       title={story.data.title}
       description={story.data.summary}
       cover={story.data.cover}
+      isAdmin={!!import.meta.env.PUBLIC_ADMIN_USER_ID && userId === import.meta.env.PUBLIC_ADMIN_USER_ID}
     />
 
     <!-- Reading progress bar -->

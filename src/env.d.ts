@@ -10,6 +10,7 @@ interface ImportMetaEnv {
   readonly SUPABASE_SERVICE_ROLE_KEY: string;
   readonly PUBLIC_SITE_URL: string;
   readonly PUBLIC_GA_MEASUREMENT_ID?: string;
+  readonly PUBLIC_ADMIN_USER_ID?: string;
   readonly GITHUB_REPO_OWNER: string;
   readonly GITHUB_REPO_NAME: string;
 }

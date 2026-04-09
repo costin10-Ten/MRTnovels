@@ -14,11 +14,16 @@ const TAG_OPTIONS_GENRE = [
 ];
 
 const TAG_OPTIONS_THEME = [
-  { label: '環保', value: '環保' },
-  { label: '政治', value: '政治' },
-  { label: '財經', value: '財經' },
   { label: '社會', value: '社會' },
+  { label: '職場', value: '職場' },
+  { label: '環保', value: '環保' },
+  { label: '財經', value: '財經' },
   { label: '科技', value: '科技' },
+  { label: '政治', value: '政治' },
+  { label: '家庭', value: '家庭' },
+  { label: '都市', value: '都市' },
+  { label: '歷史', value: '歷史' },
+  { label: '心理', value: '心理' },
   { label: '文化', value: '文化' },
   { label: '親情', value: '親情' },
   { label: '台北', value: '台北' },

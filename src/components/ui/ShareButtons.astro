@@ -4,9 +4,10 @@ interface Props {
   title: string;
   description?: string;
   cover?: string;
+  isAdmin?: boolean;
 }
 
-const { url, title, description = '', cover } = Astro.props;
+const { url, title, description = '', cover, isAdmin = false } = Astro.props;
 
 const encoded     = encodeURIComponent(url);
 // LINE: use line.me/R/msg/text/ → opens LINE app directly, no web login required
@@ -32,21 +33,20 @@ const threadsURL  = `https://www.threads.net/intent/post?text=${encodeURICompone
     LINE
   </a>
 
-  <!-- Facebook -->
-  <a
-    href={fbURL}
-    target="_blank"
-    rel="noopener noreferrer"
+  <!-- Facebook — js-handled so mobile OS can route to FB app -->
+  <button
+    id="fb-share-btn"
+    type="button"
+    data-fb-url={fbURL}
     aria-label="分享到 Facebook"
-    title="Facebook 分享需要先登入 FB；手機請用「分享」按鈕直接選 Facebook App"
-    class="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium transition-opacity hover:opacity-80 no-underline"
+    class="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium transition-opacity hover:opacity-80 cursor-pointer border-0"
     style="background:#1877f2;color:#fff"
   >
     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
     </svg>
     Facebook
-  </a>
+  </button>
 
   <!-- Threads -->
   <a
@@ -62,6 +62,23 @@ const threadsURL  = `https://www.threads.net/intent/post?text=${encodeURICompone
     </svg>
     Threads
   </a>
+
+  <!-- Admin: copy full article (title + content) -->
+  {isAdmin && (
+    <button
+      id="copy-article-btn"
+      type="button"
+      data-title={title}
+      aria-label="複製全文"
+      class="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium transition-colors cursor-pointer"
+      style="background:#34a853;color:#fff"
+    >
+      <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <path d="M4 4h8v1H4zm0 3h8v1H4zm0 3h5v1H4z"/><rect x="2" y="2" width="12" height="16" rx="1.5"/>
+      </svg>
+      <span id="copy-article-text">複製全文</span>
+    </button>
+  )}
 
   <!-- Copy link -->
   <button
@@ -95,6 +112,20 @@ const threadsURL  = `https://www.threads.net/intent/post?text=${encodeURICompone
 </div>
 
 <script>
+  // ── Facebook: on mobile use location.href so OS can route to FB app ──
+  const fbBtn = document.getElementById('fb-share-btn') as HTMLButtonElement | null;
+  fbBtn?.addEventListener('click', () => {
+    const fbUrl = fbBtn.dataset.fbUrl ?? '';
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      // Let OS handle it — FB app registered to intercept these URLs
+      window.location.href = fbUrl;
+    } else {
+      window.open(fbUrl, 'fb-share', 'width=580,height=400,noopener');
+    }
+  });
+
+  // ── Copy link ──
   const copyBtn  = document.getElementById('copy-link-btn') as HTMLButtonElement | null;
   const copyText = document.getElementById('copy-link-text');
   copyBtn?.addEventListener('click', async () => {
@@ -105,6 +136,24 @@ const threadsURL  = `https://www.threads.net/intent/post?text=${encodeURICompone
     } catch { prompt('複製此連結：', url); }
   });
 
+  // ── Admin: copy full article (title + body text) ──
+  const copyArticleBtn  = document.getElementById('copy-article-btn') as HTMLButtonElement | null;
+  const copyArticleText = document.getElementById('copy-article-text');
+  copyArticleBtn?.addEventListener('click', async () => {
+    const storyTitle = copyArticleBtn.dataset.title ?? '';
+    const bodyEl = document.getElementById('story-content');
+    const bodyText = bodyEl ? bodyEl.innerText.trim() : '';
+    const full = `${storyTitle}\n\n${bodyText}`;
+    try {
+      await navigator.clipboard.writeText(full);
+      if (copyArticleText) {
+        copyArticleText.textContent = '已複製全文！';
+        setTimeout(() => { copyArticleText.textContent = '複製全文'; }, 2500);
+      }
+    } catch { prompt('複製全文：', full); }
+  });
+
+  // ── Native share (mobile) ──
   const nativeBtn = document.getElementById('native-share-btn') as HTMLButtonElement | null;
   if (nativeBtn && 'share' in navigator) {
     nativeBtn.classList.remove('hidden');
