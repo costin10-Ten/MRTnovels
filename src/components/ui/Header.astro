@@ -1,5 +1,6 @@
 ---
-import { SignedIn, SignedOut, UserButton } from '@clerk/astro/components';
+import { UserButton } from '@clerk/astro/components';
+const { userId } = Astro.locals.auth();
 ---
 <header class="top-bar">
   <div class="flex items-center gap-3">
@@ -27,22 +28,25 @@ import { SignedIn, SignedOut, UserButton } from '@clerk/astro/components';
   </div>
 
   <div class="flex items-center gap-3 text-sm">
-    <SignedOut>
-      <a
-        href="/sign-in"
-        class="text-[#5f6368] dark:text-[#9aa0a6] hover:text-[#1a73e8] dark:hover:text-[#8ab4f8] transition-colors no-underline"
-      >登入</a>
-      <a
-        href="/sign-up"
-        class="px-4 py-1.5 rounded-full bg-[#1a73e8] text-white text-xs font-medium hover:bg-[#1557b0] transition-colors no-underline"
-      >加入會員</a>
-    </SignedOut>
-    <SignedIn>
-      <a
-        href="/member"
-        class="text-[#5f6368] dark:text-[#9aa0a6] hover:text-[#1a73e8] dark:hover:text-[#8ab4f8] text-xs transition-colors no-underline"
-      >我的</a>
-      <UserButton />
-    </SignedIn>
+    {userId ? (
+      <>
+        <a
+          href="/member"
+          class="text-[#5f6368] dark:text-[#9aa0a6] hover:text-[#1a73e8] dark:hover:text-[#8ab4f8] text-xs transition-colors no-underline"
+        >我的</a>
+        <UserButton />
+      </>
+    ) : (
+      <>
+        <a
+          href="/sign-in"
+          class="text-[#5f6368] dark:text-[#9aa0a6] hover:text-[#1a73e8] dark:hover:text-[#8ab4f8] transition-colors no-underline"
+        >登入</a>
+        <a
+          href="/sign-up"
+          class="px-4 py-1.5 rounded-full bg-[#1a73e8] text-white text-xs font-medium hover:bg-[#1557b0] transition-colors no-underline"
+        >加入會員</a>
+      </>
+    )}
   </div>
 </header>
