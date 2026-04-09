@@ -2,7 +2,6 @@
 import { getCollection } from 'astro:content';
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getUserHistory, getBookmarks, getLikedSlugs } from '../../lib/supabase';
 
 const { userId } = Astro.locals.auth();
 if (!userId) return Astro.redirect('/sign-in');
@@ -10,25 +9,15 @@ if (!userId) return Astro.redirect('/sign-in');
 const allStories = await getCollection('stories');
 const totalStories = allStories.length;
 
-const [history, bookmarks, likedSlugs] = await Promise.all([
-  getUserHistory(userId),
-  getBookmarks(userId),
-  getLikedSlugs(userId),
-]);
-
-const readCount = history.filter(h => h.pct >= 70).length;
-const likedCount = likedSlugs.length;
-const bookmarkCount = bookmarks.length;
-
-// Unliked public stories for recommendation
-const unlikedPublic = allStories
-  .filter(s => s.data.access === 'public' && !likedSlugs.includes(s.slug))
+// Embed public story metadata for client-side recommendations
+const publicStories = allStories
+  .filter(s => s.data.access === 'public')
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
-  .slice(0, 5);
-
-function pctBar(value: number, total: number) {
-  return total === 0 ? 0 : Math.round((value / total) * 100);
-}
+  .map(s => ({
+    slug: s.slug,
+    title: s.data.title,
+    date: s.data.publishDate.toLocaleDateString('zh-TW', { month: '2-digit', day: '2-digit' }),
+  }));
 ---
 
 <BaseLayout title="會員中心" noindex={true}>
@@ -38,15 +27,15 @@ function pctBar(value: number, total: number) {
     <!-- Stats grid -->
     <div class="grid grid-cols-3 gap-4 mb-10 text-center">
       <div class="border border-gray-200 dark:border-gray-700 py-4">
-        <div class="text-2xl font-light text-gray-900 dark:text-gray-100 tabular-nums">{readCount}</div>
+        <div id="stat-read" class="text-2xl font-light text-gray-900 dark:text-gray-100 tabular-nums">—</div>
         <div class="text-[10px] text-gray-400 dark:text-gray-500 mt-1">已讀完</div>
       </div>
       <a href="/member/likes" class="border border-gray-200 dark:border-gray-700 py-4 block hover:border-gray-900 dark:hover:border-gray-100 transition-colors no-underline">
-        <div class="text-2xl font-light text-gray-900 dark:text-gray-100 tabular-nums">{likedCount}</div>
+        <div id="stat-liked" class="text-2xl font-light text-gray-900 dark:text-gray-100 tabular-nums">—</div>
         <div class="text-[10px] text-gray-400 dark:text-gray-500 mt-1">已按讚</div>
       </a>
       <div class="border border-gray-200 dark:border-gray-700 py-4">
-        <div class="text-2xl font-light text-gray-900 dark:text-gray-100 tabular-nums">{bookmarkCount}</div>
+        <div id="stat-bookmark" class="text-2xl font-light text-gray-900 dark:text-gray-100 tabular-nums">—</div>
         <div class="text-[10px] text-gray-400 dark:text-gray-500 mt-1">收藏</div>
       </div>
     </div>
@@ -57,34 +46,32 @@ function pctBar(value: number, total: number) {
       <div>
         <div class="flex items-center justify-between mb-1.5 text-xs text-gray-500 dark:text-gray-400">
           <span>閱讀進度</span>
-          <span class="tabular-nums">{readCount} / {totalStories} 篇已讀完</span>
+          <span id="read-label" class="tabular-nums">… / {totalStories} 篇已讀完</span>
         </div>
         <div class="h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
           <div
+            id="read-bar"
             class="h-full bg-gray-900 dark:bg-gray-100 rounded-full transition-all"
-            style={`width: ${pctBar(readCount, totalStories)}%`}
+            style="width: 0%"
           ></div>
         </div>
-        <div class="text-right text-[10px] text-gray-300 dark:text-gray-600 mt-1">
-          {pctBar(readCount, totalStories)}%
-        </div>
+        <div id="read-pct" class="text-right text-[10px] text-gray-300 dark:text-gray-600 mt-1">0%</div>
       </div>
 
       <!-- Like progress -->
       <div>
         <div class="flex items-center justify-between mb-1.5 text-xs text-gray-500 dark:text-gray-400">
           <span>按讚進度</span>
-          <span class="tabular-nums">{likedCount} / {totalStories} 篇已按讚</span>
+          <span id="like-label" class="tabular-nums">… / {totalStories} 篇已按讚</span>
         </div>
         <div class="h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
           <div
+            id="like-bar"
             class="h-full bg-gray-800 dark:bg-gray-200 rounded-full transition-all"
-            style={`width: ${pctBar(likedCount, totalStories)}%`}
+            style="width: 0%"
           ></div>
         </div>
-        <div class="text-right text-[10px] text-gray-300 dark:text-gray-600 mt-1">
-          {pctBar(likedCount, totalStories)}%
-        </div>
+        <div id="like-pct" class="text-right text-[10px] text-gray-300 dark:text-gray-600 mt-1">0%</div>
       </div>
     </div>
 
@@ -109,24 +96,62 @@ function pctBar(value: number, total: number) {
       </a>
     </div>
 
-    <!-- Unliked recommendations -->
-    {unlikedPublic.length > 0 && (
-      <section>
-        <h2 class="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-3">還沒按讚的文章</h2>
-        <div class="flex flex-col">
-          {unlikedPublic.map(s => (
-            <a
-              href={`/stories/${s.slug}`}
-              class="flex items-baseline gap-3 py-2 px-1 hover:bg-gray-50 dark:hover:bg-gray-900 group no-underline border-b border-gray-100 dark:border-gray-800"
-            >
-              <span class="text-xs text-gray-400 dark:text-gray-500 whitespace-nowrap">
-                {s.data.publishDate.toLocaleDateString('zh-TW', { month: '2-digit', day: '2-digit' })}
-              </span>
-              <span class="text-sm text-gray-900 dark:text-gray-100 group-hover:underline flex-1 truncate">{s.data.title}</span>
-            </a>
-          ))}
-        </div>
-      </section>
-    )}
+    <!-- Unliked recommendations (populated client-side) -->
+    <section id="recs-section" class="hidden">
+      <h2 class="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-3">還沒按讚的文章</h2>
+      <div id="recs-list" class="flex flex-col"></div>
+    </section>
   </div>
 </BaseLayout>
+
+<script define:vars={{ totalStories, publicStories }}>
+  const pct = (v, t) => t === 0 ? 0 : Math.round((v / t) * 100);
+
+  fetch('/api/member-stats')
+    .then(r => {
+      if (!r.ok) throw new Error('not ok');
+      return r.json();
+    })
+    .then(({ history, bookmarks, likedSlugs }) => {
+      const readCount     = history.filter(h => h.pct >= 70).length;
+      const likedCount    = likedSlugs.length;
+      const bookmarkCount = bookmarks.length;
+
+      // Stats
+      document.getElementById('stat-read').textContent     = readCount;
+      document.getElementById('stat-liked').textContent    = likedCount;
+      document.getElementById('stat-bookmark').textContent = bookmarkCount;
+
+      // Read bar
+      const readPct = pct(readCount, totalStories);
+      document.getElementById('read-label').textContent = `${readCount} / ${totalStories} 篇已讀完`;
+      document.getElementById('read-bar').style.width   = `${readPct}%`;
+      document.getElementById('read-pct').textContent   = `${readPct}%`;
+
+      // Like bar
+      const likePct = pct(likedCount, totalStories);
+      document.getElementById('like-label').textContent = `${likedCount} / ${totalStories} 篇已按讚`;
+      document.getElementById('like-bar').style.width   = `${likePct}%`;
+      document.getElementById('like-pct').textContent   = `${likePct}%`;
+
+      // Recommendations: first 5 public stories not yet liked
+      const likedSet   = new Set(likedSlugs);
+      const unliked    = publicStories.filter(s => !likedSet.has(s.slug)).slice(0, 5);
+      if (unliked.length > 0) {
+        const list = document.getElementById('recs-list');
+        list.innerHTML = unliked.map(s => `
+          <a href="/stories/${s.slug}"
+             class="flex items-baseline gap-3 py-2 px-1 hover:bg-gray-50 dark:hover:bg-gray-900 group no-underline border-b border-gray-100 dark:border-gray-800">
+            <span class="text-xs text-gray-400 dark:text-gray-500 whitespace-nowrap">${s.date}</span>
+            <span class="text-sm text-gray-900 dark:text-gray-100 group-hover:underline flex-1 truncate">${s.title}</span>
+          </a>`).join('');
+        document.getElementById('recs-section').classList.remove('hidden');
+      }
+    })
+    .catch(() => {
+      // Show dashes on error so it's clear data didn't load
+      ['stat-read', 'stat-liked', 'stat-bookmark'].forEach(id => {
+        document.getElementById(id).textContent = '—';
+      });
+    });
+</script>

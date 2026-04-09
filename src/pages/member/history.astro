@@ -1,31 +1,21 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getUserHistory } from '../../lib/supabase';
 
 const { userId } = Astro.locals.auth();
 if (!userId) return Astro.redirect('/sign-in');
 
 const allStories = await getCollection('stories');
-const storyMap = Object.fromEntries(allStories.map(s => [s.slug, s]));
+const storyMap = Object.fromEntries(
+  allStories.map(s => [s.slug, { title: s.data.title }])
+);
 
-const history = await getUserHistory(userId);
-
-const filter = Astro.url.searchParams.get('f') ?? 'all'; // all | done | progress
-
-const filtered = history.filter(h => {
-  if (filter === 'done')     return h.pct >= 70;
-  if (filter === 'progress') return h.pct < 70;
-  return true;
-});
-
-const doneCount     = history.filter(h => h.pct >= 70).length;
-const progressCount = history.filter(h => h.pct < 70).length;
+const filter = Astro.url.searchParams.get('f') ?? 'all';
 
 const tabs = [
-  { key: 'all',      label: '全部',    count: history.length },
-  { key: 'done',     label: '已讀完',  count: doneCount },
-  { key: 'progress', label: '讀一半',  count: progressCount },
+  { key: 'all',      label: '全部' },
+  { key: 'done',     label: '已讀完' },
+  { key: 'progress', label: '讀一半' },
 ];
 ---
 
@@ -48,52 +38,74 @@ const tabs = [
           }`}
         >
           {tab.label}
-          <span class="ml-1 tabular-nums opacity-60">{tab.count}</span>
+          <span id={`tab-count-${tab.key}`} class="ml-1 tabular-nums opacity-60"></span>
         </a>
       ))}
     </div>
 
-    {filtered.length === 0 ? (
-      <div class="py-16 text-center">
-        <p class="text-sm text-gray-400 dark:text-gray-500 mb-2">
-          {filter === 'done'     ? '還沒有讀完的文章（需超過70%）' :
-           filter === 'progress' ? '沒有讀到一半的文章' :
-           '還沒有閱讀紀錄'}
-        </p>
-        <a href="/stories" class="text-xs underline text-gray-500 dark:text-gray-400">去看看文章</a>
-      </div>
-    ) : (
-      <div class="flex flex-col gap-3">
-        {filtered.map(h => {
-          const story = storyMap[h.story_slug];
-          if (!story) return null;
-          const isDone = h.pct >= 70;
-          return (
-            <a href={`/stories/${h.story_slug}`} class="group block no-underline">
-              <div class="flex items-center justify-between mb-1">
-                <div class="flex items-center gap-2 min-w-0">
-                  {isDone && (
-                    <span class="text-[10px] text-gray-400 dark:text-gray-500 shrink-0">✓</span>
-                  )}
-                  <span class="text-sm text-gray-900 dark:text-gray-100 group-hover:underline truncate">
-                    {story.data.title}
-                  </span>
-                </div>
-                <span class="text-xs text-gray-400 dark:text-gray-500 tabular-nums ml-2 shrink-0">{h.pct}%</span>
-              </div>
-              <div class="h-1 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
-                <div
-                  class={`h-full rounded-full ${isDone ? 'bg-gray-900 dark:bg-gray-100' : 'bg-gray-300 dark:bg-gray-600'}`}
-                  style={`width: ${h.pct}%`}
-                ></div>
-              </div>
-              <div class="text-[10px] text-gray-300 dark:text-gray-600 mt-1">
-                {new Date(h.updated_at).toLocaleDateString('zh-TW')}
-              </div>
-            </a>
-          );
-        })}
-      </div>
-    )}
+    <div id="history-list" class="flex flex-col gap-3">
+      <div class="py-8 text-center text-xs text-gray-300 dark:text-gray-600">載入中…</div>
+    </div>
   </div>
 </BaseLayout>
+
+<script define:vars={{ storyMap, filter }}>
+  fetch('/api/member-stats')
+    .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+    .then(({ history }) => {
+      const doneCount     = history.filter(h => h.pct >= 70).length;
+      const progressCount = history.filter(h => h.pct < 70).length;
+
+      // Update tab counts
+      document.getElementById('tab-count-all').textContent      = history.length;
+      document.getElementById('tab-count-done').textContent     = doneCount;
+      document.getElementById('tab-count-progress').textContent = progressCount;
+
+      const filtered = history.filter(h => {
+        if (filter === 'done')     return h.pct >= 70;
+        if (filter === 'progress') return h.pct < 70;
+        return true;
+      });
+
+      const list = document.getElementById('history-list');
+
+      if (filtered.length === 0) {
+        const msg = filter === 'done'     ? '還沒有讀完的文章（需超過70%）'
+                  : filter === 'progress' ? '沒有讀到一半的文章'
+                  : '還沒有閱讀紀錄';
+        list.innerHTML = `
+          <div class="py-16 text-center">
+            <p class="text-sm text-gray-400 dark:text-gray-500 mb-2">${msg}</p>
+            <a href="/stories" class="text-xs underline text-gray-500 dark:text-gray-400">去看看文章</a>
+          </div>`;
+        return;
+      }
+
+      list.innerHTML = filtered.map(h => {
+        const story = storyMap[h.story_slug];
+        if (!story) return '';
+        const isDone     = h.pct >= 70;
+        const barClass   = isDone ? 'bg-gray-900 dark:bg-gray-100' : 'bg-gray-300 dark:bg-gray-600';
+        const checkmark  = isDone ? '<span class="text-[10px] text-gray-400 dark:text-gray-500 shrink-0">✓</span>' : '';
+        const dateStr    = new Date(h.updated_at).toLocaleDateString('zh-TW');
+        return `
+          <a href="/stories/${h.story_slug}" class="group block no-underline">
+            <div class="flex items-center justify-between mb-1">
+              <div class="flex items-center gap-2 min-w-0">
+                ${checkmark}
+                <span class="text-sm text-gray-900 dark:text-gray-100 group-hover:underline truncate">${story.title}</span>
+              </div>
+              <span class="text-xs text-gray-400 dark:text-gray-500 tabular-nums ml-2 shrink-0">${h.pct}%</span>
+            </div>
+            <div class="h-1 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+              <div class="h-full rounded-full ${barClass}" style="width: ${h.pct}%"></div>
+            </div>
+            <div class="text-[10px] text-gray-300 dark:text-gray-600 mt-1">${dateStr}</div>
+          </a>`;
+      }).join('');
+    })
+    .catch(() => {
+      document.getElementById('history-list').innerHTML =
+        '<div class="py-8 text-center text-xs text-gray-400 dark:text-gray-500">載入失敗，請重新整理</div>';
+    });
+</script>

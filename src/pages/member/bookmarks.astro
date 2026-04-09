@@ -2,17 +2,15 @@
 import { getCollection } from 'astro:content';
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Badge from '../../components/ui/Badge.astro';
 import { getTags } from '../../lib/tags';
-import { getBookmarks } from '../../lib/supabase';
 
 const { userId } = Astro.locals.auth();
 if (!userId) return Astro.redirect('/sign-in');
 
 const allStories = await getCollection('stories');
-const storyMap = Object.fromEntries(allStories.map(s => [s.slug, s]));
-
-const bookmarks = await getBookmarks(userId);
+const storyMap = Object.fromEntries(
+  allStories.map(s => [s.slug, { title: s.data.title, tag: getTags(s.data)[0] ?? '' }])
+);
 ---
 
 <BaseLayout title="收藏清單">
@@ -22,35 +20,49 @@ const bookmarks = await getBookmarks(userId);
     </div>
     <h1 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-6">收藏清單</h1>
 
-    {bookmarks.length === 0 ? (
-      <p class="text-sm text-gray-400 dark:text-gray-500 py-8 text-center">
-        還沒有收藏文章。<a href="/stories" class="underline text-gray-600 dark:text-gray-400">去看看文章</a>。
-      </p>
-    ) : (
-      <div class="flex flex-col">
-        {bookmarks.map(b => {
-          const story = storyMap[b.story_slug];
-          if (!story) return null;
-          return (
-            <div class="flex items-center gap-3 py-2.5 border-b border-gray-100 dark:border-gray-800">
-              <a
-                href={`/stories/${b.story_slug}`}
-                class="flex-1 min-w-0 text-sm text-gray-900 dark:text-gray-100 hover:underline truncate"
-              >
-                {story.data.title}
-              </a>
-              <div class="flex items-center gap-1.5 shrink-0">
-                {getTags(story.data).slice(0, 1).map(t => <Badge type="tag" value={t} />)}
-                <a
-                  href={`/api/bookmarks?action=remove&slug=${b.story_slug}&ref=/member/bookmarks`}
-                  class="text-xs text-gray-300 dark:text-gray-600 hover:text-gray-500 dark:hover:text-gray-400 ml-2 transition-colors"
-                  title="移除收藏"
-                >✕</a>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    )}
+    <div id="bookmarks-list">
+      <div class="py-8 text-center text-xs text-gray-300 dark:text-gray-600">載入中…</div>
+    </div>
   </div>
 </BaseLayout>
+
+<script define:vars={{ storyMap }}>
+  fetch('/api/member-stats')
+    .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+    .then(({ bookmarks }) => {
+      const list = document.getElementById('bookmarks-list');
+
+      if (bookmarks.length === 0) {
+        list.innerHTML = `
+          <p class="text-sm text-gray-400 dark:text-gray-500 py-8 text-center">
+            還沒有收藏文章。<a href="/stories" class="underline text-gray-600 dark:text-gray-400">去看看文章</a>。
+          </p>`;
+        return;
+      }
+
+      list.innerHTML = '<div class="flex flex-col">' + bookmarks.map(b => {
+        const story = storyMap[b.story_slug];
+        if (!story) return '';
+        const tagBadge = story.tag
+          ? `<span class="inline-block text-[10px] px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400">${story.tag}</span>`
+          : '';
+        return `
+          <div class="flex items-center gap-3 py-2.5 border-b border-gray-100 dark:border-gray-800">
+            <a href="/stories/${b.story_slug}"
+               class="flex-1 min-w-0 text-sm text-gray-900 dark:text-gray-100 hover:underline truncate">
+              ${story.title}
+            </a>
+            <div class="flex items-center gap-1.5 shrink-0">
+              ${tagBadge}
+              <a href="/api/bookmarks?action=remove&slug=${b.story_slug}&ref=/member/bookmarks"
+                 class="text-xs text-gray-300 dark:text-gray-600 hover:text-gray-500 dark:hover:text-gray-400 ml-2 transition-colors"
+                 title="移除收藏">✕</a>
+            </div>
+          </div>`;
+      }).join('') + '</div>';
+    })
+    .catch(() => {
+      document.getElementById('bookmarks-list').innerHTML =
+        '<div class="py-8 text-center text-xs text-gray-400 dark:text-gray-500">載入失敗，請重新整理</div>';
+    });
+</script>
