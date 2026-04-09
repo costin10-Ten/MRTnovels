@@ -76,15 +76,15 @@ const adminId = import.meta.env.ADMIN_USER_ID;
   <!-- Divider -->
   <div class="border-t border-[#dadce0] dark:border-[#3c4043] my-4"></div>
 
-  <!-- Stats -->
+  <!-- Stats (populated client-side to avoid blocking SSR) -->
   <div class="flex flex-col gap-3 px-3 mb-4">
     <div>
       <div class="text-[10px] text-[#9aa0a6] uppercase tracking-widest mb-0.5">瀏覽人次</div>
-      <div class="text-lg font-light text-[#202124] dark:text-[#e8eaed] tabular-nums">{fmt(views)}</div>
+      <div id="sidebar-views" class="text-lg font-light text-[#202124] dark:text-[#e8eaed] tabular-nums">{fmt(views)}</div>
     </div>
     <div>
       <div class="text-[10px] text-[#9aa0a6] uppercase tracking-widest mb-0.5">總按讚數</div>
-      <div class="text-lg font-light text-[#202124] dark:text-[#e8eaed] tabular-nums">{fmt(likes)}</div>
+      <div id="sidebar-likes" class="text-lg font-light text-[#202124] dark:text-[#e8eaed] tabular-nums">{fmt(likes)}</div>
     </div>
   </div>
 

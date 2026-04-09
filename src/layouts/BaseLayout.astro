@@ -2,7 +2,6 @@
 import '../styles/global.css';
 import Header from '../components/ui/Header.astro';
 import Sidebar from '../components/ui/Sidebar.astro';
-import { getGlobalStats } from '../lib/supabase';
 
 interface Props {
   title: string;
@@ -43,8 +42,8 @@ const ogImgFB = ogImg.includes('picsum.photos')
 const defaultKW = ['短篇小說', '台灣文學', '通勤文學', '短篇故事', '捷運'];
 const allKW = [...new Set([...defaultKW, ...keywords])].join(', ');
 
-let globalStats = { views: 0, likes: 0 };
-try { globalStats = await getGlobalStats(); } catch {}
+// Global stats loaded client-side after render — avoids blocking SSR on every page
+const globalStats = { views: 0, likes: 0 };
 
 const fullTitle = title === '狂小說網' ? title + '・通勤文學速讀' : `${title} — 狂小說網`;
 ---
@@ -188,6 +187,22 @@ const fullTitle = title === '狂小說網' ? title + '・通勤文學速讀' : `
   <main class="main-wrap">
     <slot />
   </main>
+
+  <!-- Fetch global stats client-side so SSR is never blocked by this query -->
+  <script>
+    fetch('/api/global-stats')
+      .then(r => r.json())
+      .then(({ views, likes }) => {
+        function fmt(n) {
+          return n >= 10000 ? (n / 10000).toFixed(1) + ' 萬' : n.toLocaleString('zh-TW');
+        }
+        const v = document.getElementById('sidebar-views');
+        const l = document.getElementById('sidebar-likes');
+        if (v && views > 0) v.textContent = fmt(views);
+        if (l && likes > 0) l.textContent = fmt(likes);
+      })
+      .catch(() => {});
+  </script>
 
   <script>
     const btn = document.getElementById('sidebar-toggle');
