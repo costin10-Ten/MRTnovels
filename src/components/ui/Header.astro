@@ -1,8 +1,9 @@
 ---
-// Auth state is decided 100% by SSR (cookie-verified by Clerk middleware).
-// No Clerk client components here: ClerkJS hydration must never be able to
-// flip the header to logged-out after the page has rendered.
-const { userId } = Astro.locals.auth();
+// SignedIn / SignedOut are SSR-rendered Astro components — they read
+// Astro.locals.auth() on the server and never hydrate on the client.
+// Using them (instead of bare userId ternary) keeps @clerk/astro/components
+// in the server bundle, which is required for Clerk's SSR initialisation.
+import { SignedIn, SignedOut } from '@clerk/astro/components';
 ---
 <header class="top-bar">
   <div class="flex items-center gap-3">
@@ -30,39 +31,36 @@ const { userId } = Astro.locals.auth();
   </div>
 
   <div class="flex items-center gap-3 text-sm">
-    {userId ? (
-      <>
-        <a
-          href="/member"
-          class="text-[#5f6368] dark:text-[#9aa0a6] hover:text-[#1a73e8] dark:hover:text-[#8ab4f8] text-xs transition-colors no-underline"
-        >我的</a>
-        <div class="relative">
-          <button
-            id="user-menu-btn"
-            aria-label="會員選單"
-            class="w-7 h-7 rounded-full bg-[#1a73e8] text-white text-xs font-medium flex items-center justify-center hover:bg-[#1557b0] transition-colors"
-          >我</button>
-          <div
-            id="user-menu"
-            class="hidden absolute right-0 top-9 z-50 min-w-[120px] bg-white dark:bg-[#303134] border border-[#dadce0] dark:border-[#3c4043] rounded-xl shadow-lg py-1.5"
-          >
-            <a href="/member" class="block px-4 py-2 text-xs text-[#5f6368] dark:text-[#9aa0a6] hover:bg-[#f1f3f4] dark:hover:bg-[#3c4043] no-underline">會員中心</a>
-            <a href="/api/sign-out" class="block px-4 py-2 text-xs text-[#5f6368] dark:text-[#9aa0a6] hover:bg-[#f1f3f4] dark:hover:bg-[#3c4043] no-underline">登出</a>
-          </div>
+    <SignedIn>
+      <a
+        href="/member"
+        class="text-[#5f6368] dark:text-[#9aa0a6] hover:text-[#1a73e8] dark:hover:text-[#8ab4f8] text-xs transition-colors no-underline"
+      >我的</a>
+      <div class="relative">
+        <button
+          id="user-menu-btn"
+          aria-label="會員選單"
+          class="w-7 h-7 rounded-full bg-[#1a73e8] text-white text-xs font-medium flex items-center justify-center hover:bg-[#1557b0] transition-colors"
+        >我</button>
+        <div
+          id="user-menu"
+          class="hidden absolute right-0 top-9 z-50 min-w-[120px] bg-white dark:bg-[#303134] border border-[#dadce0] dark:border-[#3c4043] rounded-xl shadow-lg py-1.5"
+        >
+          <a href="/member" class="block px-4 py-2 text-xs text-[#5f6368] dark:text-[#9aa0a6] hover:bg-[#f1f3f4] dark:hover:bg-[#3c4043] no-underline">會員中心</a>
+          <a href="/api/sign-out" class="block px-4 py-2 text-xs text-[#5f6368] dark:text-[#9aa0a6] hover:bg-[#f1f3f4] dark:hover:bg-[#3c4043] no-underline">登出</a>
         </div>
-      </>
-    ) : (
-      <>
-        <a
-          href="/sign-in"
-          class="text-[#5f6368] dark:text-[#9aa0a6] hover:text-[#1a73e8] dark:hover:text-[#8ab4f8] transition-colors no-underline"
-        >登入</a>
-        <a
-          href="/sign-up"
-          class="px-4 py-1.5 rounded-full bg-[#1a73e8] text-white text-xs font-medium hover:bg-[#1557b0] transition-colors no-underline"
-        >加入會員</a>
-      </>
-    )}
+      </div>
+    </SignedIn>
+    <SignedOut>
+      <a
+        href="/sign-in"
+        class="text-[#5f6368] dark:text-[#9aa0a6] hover:text-[#1a73e8] dark:hover:text-[#8ab4f8] transition-colors no-underline"
+      >登入</a>
+      <a
+        href="/sign-up"
+        class="px-4 py-1.5 rounded-full bg-[#1a73e8] text-white text-xs font-medium hover:bg-[#1557b0] transition-colors no-underline"
+      >加入會員</a>
+    </SignedOut>
   </div>
 </header>
 
