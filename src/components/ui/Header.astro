@@ -47,7 +47,7 @@ const { userId } = Astro.locals.auth();
             class="hidden absolute right-0 top-9 z-50 min-w-[120px] bg-white dark:bg-[#303134] border border-[#dadce0] dark:border-[#3c4043] rounded-xl shadow-lg py-1.5"
           >
             <a href="/member" class="block px-4 py-2 text-xs text-[#5f6368] dark:text-[#9aa0a6] hover:bg-[#f1f3f4] dark:hover:bg-[#3c4043] no-underline">會員中心</a>
-            <button id="sign-out-btn" class="w-full text-left px-4 py-2 text-xs text-[#5f6368] dark:text-[#9aa0a6] hover:bg-[#f1f3f4] dark:hover:bg-[#3c4043]">登出</button>
+            <a href="/api/sign-out" class="block px-4 py-2 text-xs text-[#5f6368] dark:text-[#9aa0a6] hover:bg-[#f1f3f4] dark:hover:bg-[#3c4043] no-underline">登出</a>
           </div>
         </div>
       </>
@@ -75,15 +75,4 @@ const { userId } = Astro.locals.auth();
     menu?.classList.toggle('hidden');
   });
   document.addEventListener('click', () => menu?.classList.add('hidden'));
-
-  document.getElementById('sign-out-btn')?.addEventListener('click', async () => {
-    const clerk = (window as any).Clerk;
-    try {
-      if (clerk?.signOut) {
-        await clerk.signOut();
-      }
-    } finally {
-      window.location.href = '/';
-    }
-  });
 </script>
