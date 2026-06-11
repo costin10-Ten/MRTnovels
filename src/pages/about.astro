@@ -1,10 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import { getGlobalStats } from '../lib/supabase';
 
 const allStories = await getCollection('stories');
-const stats = await getGlobalStats().catch(() => ({ views: 0, likes: 0 }));
+// Stats are fetched client-side from /api/global-stats — never block SSR on Supabase
+const stats = { views: 0, likes: 0 };
 
 const MILESTONES = [
   // ── 文章數 ──
@@ -110,7 +110,7 @@ function isDone(m: typeof MILESTONES[0]) {
       <div class="mb-6">
         <div class="flex items-center justify-between text-xs text-[#5f6368] dark:text-[#9aa0a6] mb-2">
           <span>目前進度</span>
-          <span class="tabular-nums font-medium">{stats.likes.toLocaleString('zh-TW')} <span class="font-normal text-[#9aa0a6]">/ 1,000,000</span></span>
+          <span class="tabular-nums font-medium"><span id="likes-current">…</span> <span class="font-normal text-[#9aa0a6]">/ 1,000,000</span></span>
         </div>
         <div class="h-3 bg-[#f1f3f4] dark:bg-[#3c4043] rounded-full overflow-hidden">
           <div
@@ -161,12 +161,16 @@ function isDone(m: typeof MILESTONES[0]) {
               :              'bg-[#fbbc05]'
               : 'bg-[#f1f3f4] dark:bg-[#3c4043] border-2 border-[#dadce0] dark:border-[#5f6368]';
             return (
-              <li class={`flex gap-4 py-3 group ${done ? '' : 'opacity-50'}`}>
+              <li
+                class={`flex gap-4 py-3 group ${done ? '' : 'opacity-50'}`}
+                data-metric={isArticle ? undefined : (isView ? 'views' : 'likes')}
+                data-target={isArticle ? undefined : m.target}
+              >
                 <div class="relative flex-shrink-0 w-3.5 flex justify-center pt-1">
-                  <div class={`w-3.5 h-3.5 rounded-full z-10 ${dotColor}`}></div>
+                  <div class={`ms-dot w-3.5 h-3.5 rounded-full z-10 ${dotColor}`}></div>
                 </div>
                 <div class="flex-1 min-w-0">
-                  <p class={`text-sm leading-relaxed ${done ? 'text-[#202124] dark:text-[#e8eaed]' : 'text-[#9aa0a6]'}`}>
+                  <p class={`ms-label text-sm leading-relaxed ${done ? 'text-[#202124] dark:text-[#e8eaed]' : 'text-[#9aa0a6]'}`}>
                     {m.label}
                   </p>
                   <div class="flex items-center gap-2 mt-1">
@@ -177,7 +181,7 @@ function isDone(m: typeof MILESTONES[0]) {
                     }`}>
                       {m.target.toLocaleString('zh-TW')} {m.unit}
                     </span>
-                    {done && <span class="text-[10px] text-[#9aa0a6]">✓ 達成</span>}
+                    <span class={`ms-check text-[10px] text-[#9aa0a6] ${done ? '' : 'hidden'}`}>✓ 達成</span>
                   </div>
                 </div>
               </li>
@@ -188,10 +192,49 @@ function isDone(m: typeof MILESTONES[0]) {
     </section>
 
     <div class="mt-4 pt-8 border-t border-[#dadce0] dark:border-[#3c4043] text-xs text-[#9aa0a6]">
-      目前共 {allStories.length} 篇文章 · {stats.views.toLocaleString('zh-TW')} 次瀏覽 · {stats.likes.toLocaleString('zh-TW')} 個讚
+      目前共 {allStories.length} 篇文章 · <span id="footer-views">…</span> 次瀏覽 · <span id="footer-likes">…</span> 個讚
     </div>
   </article>
 </BaseLayout>
+
+<script>
+  // Populate stats client-side (SSR renders zeros so the page is never blocked by Supabase)
+  fetch('/api/global-stats')
+    .then(r => r.json())
+    .then(({ views, likes }: { views: number; likes: number }) => {
+      const fmt = (n: number) => n.toLocaleString('zh-TW');
+
+      const cur = document.getElementById('likes-current');
+      if (cur) cur.textContent = fmt(likes);
+      const bar = document.getElementById('likes-bar');
+      if (bar) bar.style.width = `${Math.min(100, (likes / 1000000) * 100).toFixed(4)}%`;
+      const pct = document.getElementById('likes-pct');
+      if (pct) pct.textContent = `${((likes / 1000000) * 100).toFixed(4)}%`;
+
+      const fv = document.getElementById('footer-views');
+      const fl = document.getElementById('footer-likes');
+      if (fv) fv.textContent = fmt(views);
+      if (fl) fl.textContent = fmt(likes);
+
+      // Flip stats-based milestones that are now achieved
+      document.querySelectorAll<HTMLElement>('li[data-metric]').forEach(li => {
+        const value = li.dataset.metric === 'views' ? views : likes;
+        const target = Number(li.dataset.target);
+        if (value < target) return;
+        li.classList.remove('opacity-50');
+        const dot = li.querySelector('.ms-dot');
+        if (dot) {
+          dot.className = `ms-dot w-3.5 h-3.5 rounded-full z-10 ${
+            li.dataset.metric === 'views' ? 'bg-[#34a853]' : 'bg-[#fbbc05]'
+          }`;
+        }
+        const label = li.querySelector('.ms-label');
+        if (label) label.className = 'ms-label text-sm leading-relaxed text-[#202124] dark:text-[#e8eaed]';
+        li.querySelector('.ms-check')?.classList.remove('hidden');
+      });
+    })
+    .catch(() => {});
+</script>
 
 <script>
   const CHEERS = [

@@ -6,7 +6,9 @@ export const GET: APIRoute = async (ctx) => {
   try {
     const userId = requireAuth(ctx);
     const slug = ctx.url.searchParams.get('slug');
-    if (!slug) return new Response(JSON.stringify({ error: 'Missing slug' }), { status: 400 });
+    if (!slug || slug.length > 200 || /[/\\.]/.test(slug)) {
+      return new Response(JSON.stringify({ error: 'Invalid slug' }), { status: 400 });
+    }
     const pct = await getProgress(userId, slug);
     return new Response(JSON.stringify({ pct }), { headers: { 'Content-Type': 'application/json' } });
   } catch (e) {

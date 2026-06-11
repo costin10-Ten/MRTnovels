@@ -1,5 +1,7 @@
 ---
-import { UserButton } from '@clerk/astro/components';
+// Auth state is decided 100% by SSR (cookie-verified by Clerk middleware).
+// No Clerk client components here: ClerkJS hydration must never be able to
+// flip the header to logged-out after the page has rendered.
 const { userId } = Astro.locals.auth();
 ---
 <header class="top-bar">
@@ -34,7 +36,20 @@ const { userId } = Astro.locals.auth();
           href="/member"
           class="text-[#5f6368] dark:text-[#9aa0a6] hover:text-[#1a73e8] dark:hover:text-[#8ab4f8] text-xs transition-colors no-underline"
         >我的</a>
-        <UserButton />
+        <div class="relative">
+          <button
+            id="user-menu-btn"
+            aria-label="會員選單"
+            class="w-7 h-7 rounded-full bg-[#1a73e8] text-white text-xs font-medium flex items-center justify-center hover:bg-[#1557b0] transition-colors"
+          >我</button>
+          <div
+            id="user-menu"
+            class="hidden absolute right-0 top-9 z-50 min-w-[120px] bg-white dark:bg-[#303134] border border-[#dadce0] dark:border-[#3c4043] rounded-xl shadow-lg py-1.5"
+          >
+            <a href="/member" class="block px-4 py-2 text-xs text-[#5f6368] dark:text-[#9aa0a6] hover:bg-[#f1f3f4] dark:hover:bg-[#3c4043] no-underline">會員中心</a>
+            <button id="sign-out-btn" class="w-full text-left px-4 py-2 text-xs text-[#5f6368] dark:text-[#9aa0a6] hover:bg-[#f1f3f4] dark:hover:bg-[#3c4043]">登出</button>
+          </div>
+        </div>
       </>
     ) : (
       <>
@@ -50,3 +65,25 @@ const { userId } = Astro.locals.auth();
     )}
   </div>
 </header>
+
+<script>
+  const menuBtn = document.getElementById('user-menu-btn');
+  const menu = document.getElementById('user-menu');
+
+  menuBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    menu?.classList.toggle('hidden');
+  });
+  document.addEventListener('click', () => menu?.classList.add('hidden'));
+
+  document.getElementById('sign-out-btn')?.addEventListener('click', async () => {
+    const clerk = (window as any).Clerk;
+    try {
+      if (clerk?.signOut) {
+        await clerk.signOut();
+      }
+    } finally {
+      window.location.href = '/';
+    }
+  });
+</script>

@@ -36,10 +36,10 @@ const pageStories = filteredStories.slice(
   currentPage * PAGE_SIZE,
 );
 
-// Cache non-authenticated homepage at CDN edge for 60s
-if (!userId) {
-  Astro.response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
-}
+// NOTE: do NOT set public Cache-Control on this HTML — the header/sidebar
+// render auth state, and Vercel's CDN caches by URL only (cookies ignored).
+// A cached logged-out page would otherwise be served to logged-in users.
+Astro.response.headers.set('Cache-Control', 'private, no-cache');
 
 // Tag folder grouping
 const byTag: Record<string, typeof sorted> = {};
