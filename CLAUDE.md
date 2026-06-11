@@ -10,7 +10,7 @@
 
 | 項目 | 版本 / 服務 |
 |---|---|
-| Node.js | 20.x（`engines.node` 鎖定） |
+| Node.js | 22.x（`engines.node` 鎖定；20.x 已 EOL，且新版 supabase-js 需要 Node 22 的原生 WebSocket） |
 | 套件管理 | npm（**不要用 yarn 或 pnpm**） |
 | 框架 | Astro 5 SSR（`output: 'server'`） |
 | 部署平台 | Vercel（`@astrojs/vercel`） |

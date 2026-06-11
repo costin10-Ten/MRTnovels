@@ -9,7 +9,7 @@
     "astro": "astro"
   },
   "engines": {
-    "node": "20.x"
+    "node": "22.x"
   },
   "dependencies": {
     "@astrojs/preact": "^4.0.0",
